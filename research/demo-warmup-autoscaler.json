@@ -1,0 +1,42 @@
+{
+  "at": "2026-09-19T17:32:01.845633+00:00",
+  "options_requested": {
+    "min_containers": 0,
+    "buffer_containers": 0,
+    "scaledown_window": 1200
+  },
+  "classifier": {
+    "min_containers": 0,
+    "max_containers": 2,
+    "scaledown_window": 1200,
+    "buffer_containers": 0
+  },
+  "api": {
+    "min_containers": 0,
+    "max_containers": 3,
+    "scaledown_window": 1200,
+    "buffer_containers": 0
+  },
+  "stats": {
+    "classifier": {
+      "backlog": 0,
+      "num_total_runners": 1,
+      "num_running_inputs": 0,
+      "input_headroom": 1
+    },
+    "api": {
+      "backlog": 0,
+      "num_total_runners": 1,
+      "num_running_inputs": 0,
+      "input_headroom": 8
+    }
+  },
+  "warm_call": {
+    "elapsed_seconds": 1.463,
+    "device": "cpu",
+    "torch_threads": 4,
+    "model": "fastino/gliner2.5-base-v1",
+    "revision": "78cea040597df251eedefa9d7ee2a756af39fe64"
+  },
+  "note": "Dynamic overrides persist until reset or redeploy; min=0 and buffer=0 permit scale-to-zero. The documented maximum idle window is 1200 seconds; it is not a keepalive guarantee."
+}

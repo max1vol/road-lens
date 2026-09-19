@@ -1,6 +1,6 @@
 # Cloud device adapter handoff
 
-The existing Raspberry Pi hardware, Gemini Live connection, one-press conversation and 20-second silence timeout are preserved. This cloud reporting adapter was installed on the Pi on 19 September 2026 after verifying the original source and passing all 43 checks in its existing Python environment. The existing voice service is active and ready. Installation paths, private backup and the separate physical rehearsal status are recorded in `docs/DEPLOYMENT.md`.
+The existing Raspberry Pi hardware, Gemini Live connection, one-press conversation and 20-second silence timeout are preserved. This cloud reporting adapter was installed on the Pi on 19 September 2026 after verifying the original source and passing all 46 checks in its existing Python environment. The existing voice service is active and ready. Installation paths, private backup and the separate physical rehearsal status are recorded in `docs/DEPLOYMENT.md`.
 
 The directory contains a replacement `roadlens.py`, the original working `aiy_gemini.py` with a small integration patch, and tests. Integrate the cloud changes around the existing working voice flow; preserve its model, audio handling, button control and silence timeout.
 
@@ -56,10 +56,10 @@ Declines, corrections, replacement drafts and ended conversations invalidate uns
 Run:
 
 ```text
-python -m unittest -v test_cloud_adapter test_voice_box test_cloud_voice
+python -m unittest -v test_cloud_adapter test_voice_box test_cloud_voice test_speaker_volume
 ```
 
-The local suite has 29 adapter/transport checks, 12 unchanged voice regression checks and 2 integration checks: 43 total. It exercises confirmation chronology, actual-turn grounding, cancellation, malformed receipts, exact-body/key retries, crash/restart recovery past expiry, private file modes, redirects, unchanged timeout/echo/button behavior, and readback/playback/IDLE gating. The additional alias cases accept only the documented Saint/St Matthew’s/Matthews variants, reject other streets and changed questions, and preserve the fresh-confirmation and refusal checks.
+The local suite has 29 adapter/transport checks, 12 unchanged voice regression checks 2 integration checks and 3 speaker-level checks: 46 total. It exercises confirmation chronology, actual-turn grounding, cancellation, malformed receipts, exact-body/key retries, crash/restart recovery past expiry, private file modes, redirects, unchanged timeout/echo/button behavior, and readback/playback/IDLE gating. The additional alias cases accept only the documented Saint/St Matthew’s/Matthews variants, reject other streets and changed questions, and preserve the fresh-confirmation and refusal checks.
 
 These tests use mocked HTTP and audio. A physical box → deployed API → real inbox rehearsal remains required; no report ID or physical success is asserted by this handoff. Public reference for the output audio transcription setup: https://ai.google.dev/gemini-api/docs/live-api/capabilities#audio-transcriptions
 
@@ -93,3 +93,13 @@ Set `ROADLENS_TEST_ISOLATED=1`, `ROADLENS_TEST_ORIGIN`, `ROADLENS_TEST_DB`, `ROA
 The five unittest methods cover simultaneous identical retries; simultaneous same-key/different-valid-confirmation conflicts; consumed draft reuse under a different key; duplicate successful completion of one active lease; and 230 feed events spanning three pages, including 125 distinct reports and repeated events. Race pairs run three times by default (`ROADLENS_TEST_RACE_ROUNDS` allows 1–4). Tests assert one report/job/receipt/event per submission and one persisted completion event per lease.
 
 The completion payload is a real Pydantic `AnalysisResult` containing an explicit infrastructure-only clarification, empty metrics/records, zero model usage, and `INTEGRATION_FIXTURE_NO_MODEL_EXECUTED` model identifiers. It is never presented as generated road-safety evidence. This agent verified that payload against the current production Python schema and checked the loopback guards, then confirmed the suite skips when the opt-in environment is absent. The parent subsequently ran all five methods against the isolated local API: 11 recorded fixtures passed, as recorded in the checkout's `research/http-race-results.json`. This is local API verification, not a new physical box rehearsal. These tests add no pytest dependency.
+
+## Requested conversation and volume settings — 19 September update
+
+The installed box now asks **“What road concern would you like to report?”** after one button press. Another press cancels the conversation and any unsubmitted draft. The opening trigger is a labeled device event; it is never stored as resident speech or confirmation. A concern with no stated location gets **“Which junction do you mean?”** before any cloud tool. Once the resident gives a location, the server still validates it before preparing a draft.
+
+The requested pause is **eight seconds of detected silence before replying**, configured by `--turn-silence-seconds` (default 8). The separate 20-second idle-session timeout remains in place and pauses during reasoning, tools and playback. The AIY HAT has no mixer control, so output PCM is attenuated in the existing speaker path. `AIY_SPEAKER_VOLUME=0.2` sets the installed output level to 20%; `--volume` overrides it. This changes amplitude without changing the PCM format, speed, button behavior or echo suppression.
+
+The user-service drop-in `/home/pi/.config/systemd/user/aiy-gemini-live.service.d/volume.conf` contains the nonsecret volume setting. Pre-update code is backed up in `/home/pi/aiy-gemini-live/backups/pre-location-volume-20260919T1734Z`. All 46 checks passed on the existing Pi runtime, including actual playback-write attenuation and cancellation/timeout regression checks. A no-recording Live setup check accepted the eight-second setting.
+
+`research/live-audio-eight-second-check.json` records a separate synthetic audio test against the actual Live service. It uses generated speech and actual server transcription, with no preregistered resident transcript. The opening question began after 0.681 seconds; the location question began 8.484 seconds after the last nonzero speech sample. No early `audioStreamEnd` or manual turn completion was sent. No microphone, speaker or GPIO opened, no cloud tool ran, and no report was submitted. This verifies live audio turn timing, not a physical microphone/speaker rehearsal.

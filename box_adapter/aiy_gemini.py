@@ -2,6 +2,7 @@
 """Gemini Live on the original Google AIY Voice HAT (ALSA + GPIO23/25)."""
 
 import argparse
+from array import array
 import asyncio
 import base64
 import contextlib
@@ -12,6 +13,7 @@ import math
 import os
 from pathlib import Path
 import signal
+import sys
 
 from websockets.asyncio.client import connect
 import webrtcvad
@@ -25,6 +27,21 @@ DEVICE = "plughw:CARD=sndrpigooglevoi,DEV=0"
 INPUT_RATE = 16000
 OUTPUT_RATE = 24000
 CHUNK_BYTES = 640  # 20 ms, mono, signed 16-bit little-endian PCM.
+
+
+def attenuate_pcm(data, volume):
+    """Lower signed 16-bit PCM without changing its duration or sample format."""
+    if volume == 1.0:
+        return data
+    samples = array('h')
+    samples.frombytes(data)
+    if sys.byteorder != 'little':
+        samples.byteswap()
+    for index, value in enumerate(samples):
+        samples[index] = int(value * volume)
+    if sys.byteorder != 'little':
+        samples.byteswap()
+    return samples.tobytes()
 
 
 async def stop_process(process):
@@ -43,8 +60,11 @@ async def stop_process(process):
 class Speaker:
     """One playback owner; epoch changes invalidate buffered interrupted audio."""
 
-    def __init__(self, device):
+    def __init__(self, device, volume=1.0):
+        if not math.isfinite(volume) or not 0 <= volume <= 1:
+            raise ValueError('Speaker volume must be between 0 and 1')
         self.device = device
+        self.volume = volume
         self.queue = asyncio.Queue(maxsize=256)
         self.process = None
         self.epoch = 0
@@ -91,7 +111,7 @@ class Speaker:
                     await stop_process(self.process)
                     continue
                 try:
-                    self.process.stdin.write(data)
+                    self.process.stdin.write(attenuate_pcm(data, self.volume))
                     await self.process.stdin.drain()
                     self.bytes_played += len(data)
                 except (BrokenPipeError, ConnectionResetError):
@@ -105,7 +125,7 @@ class VoiceBox:
     def __init__(self, args, key):
         self.args = args
         self.key = key
-        self.speaker = Speaker(args.output_device)
+        self.speaker = Speaker(args.output_device, getattr(args, 'volume', 1.0))
         self.recording = False
         self.last_activity = None
         self.model_busy = False
@@ -139,7 +159,7 @@ class VoiceBox:
                     "startOfSpeechSensitivity": "START_SENSITIVITY_LOW",
                     "endOfSpeechSensitivity": "END_SENSITIVITY_LOW",
                     "prefixPaddingMs": 200,
-                    "silenceDurationMs": 800,
+                    "silenceDurationMs": round(getattr(self.args, 'turn_silence_seconds', 8.0) * 1000),
                 },
                 "activityHandling": "START_OF_ACTIVITY_INTERRUPTS",
             },
@@ -153,6 +173,16 @@ class VoiceBox:
 
     async def send(self, ws, message):
         await ws.send(json.dumps(message))
+
+    async def ask_opening_question(self, ws):
+        # This is a device event, never a captured resident turn or confirmation.
+        self.model_busy = True
+        self.note_activity()
+        await self.send(ws, {"clientContent": {
+            "turns": [{"role": "user", "parts": [{"text":
+                "[Device event: start button pressed. Ask the opening question now. "
+                "This is not resident speech.]"}]}], "turnComplete": True,
+        }})
 
     async def open_session(self, ws):
         await self.send(ws, self.setup())
@@ -329,6 +359,8 @@ class VoiceBox:
                         asyncio.create_task(self.receive(ws)),
                         asyncio.create_task(self.microphone(ws)),
                     ])
+                    if self.roadlens:
+                        await self.ask_opening_question(ws)
                 done, _ = await asyncio.wait(tasks, return_when=asyncio.FIRST_COMPLETED)
                 for task in done:
                     task.result()
@@ -439,10 +471,14 @@ def parse_args():
     p.add_argument("--model", default="gemini-3.8-live-extended-thinking")
     p.add_argument("--thinking-level", choices=["LOW", "MEDIUM", "HIGH"], default="MEDIUM")
     p.add_argument("--idle-seconds", type=float, default=20.0)
+    p.add_argument("--turn-silence-seconds", type=float, default=8.0,
+                   help="Wait this many seconds of silence before replying to speech")
     p.add_argument("--roadlens", action="store_true", help="Enable the RoadLens Pydantic AI reporting workflow")
     p.add_argument("--key-file", type=Path, default=Path.home() / ".config/aiy-gemini-live/api-key")
     p.add_argument("--input-device", default=DEVICE)
     p.add_argument("--output-device", default=DEVICE)
+    p.add_argument("--volume", type=float, default=os.environ.get('AIY_SPEAKER_VOLUME', '1.0'),
+                   help="Speaker output level from 0 (mute) to 1 (full); AIY_SPEAKER_VOLUME sets the default")
     p.add_argument("--button-pin", type=int, default=23)
     p.add_argument("--led-pin", type=int, default=25)
     modes = p.add_mutually_exclusive_group()
@@ -451,6 +487,10 @@ def parse_args():
     args = p.parse_args()
     if not math.isfinite(args.idle_seconds) or args.idle_seconds <= 0:
         p.error("--idle-seconds must be a finite number greater than zero")
+    if not math.isfinite(args.turn_silence_seconds) or args.turn_silence_seconds <= 0:
+        p.error("--turn-silence-seconds must be a finite number greater than zero")
+    if not math.isfinite(args.volume) or not 0 <= args.volume <= 1:
+        p.error("--volume must be a finite number between 0 and 1")
     return args
 
 

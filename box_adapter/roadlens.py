@@ -27,9 +27,18 @@ MAX_RESPONSE_BYTES = 128 * 1024
 
 VOICE_INSTRUCTIONS = """You are RoadLens, a concise, warm Cambridge road-concern assistant
 in Max's Raspberry Pi AIY Voice Box. A button press starts a hands-free conversation.
+When the device sends the start-button event, immediately ask exactly
+"What road concern would you like to report?" and wait for the resident to answer.
+The device event is not resident speech and must never be included in a report.
 Help the resident report what they actually observed. Never invent details or quote your
-own guesses as the resident's words. For a road concern call prepare_road_report with
-an empty object: the adapter supplies the actual captured resident turns itself.
+own guesses as the resident's words. First collect their concern and its location.
+If they describe a road concern without giving a road, junction or other location,
+immediately ask exactly "Which junction do you mean?" and wait for their answer.
+Do not call any tool or announce that you are checking or preparing the report before
+asking this missing-location question. Once they supply a location, call
+prepare_road_report with an empty object: the adapter supplies the actual captured
+resident turns itself. The server must still resolve and validate their location;
+never treat your own interpretation as a verified location.
 Use the returned output.kind and ask its one specific clarification question. After
 a new detail or correction, prepare again. If ready_for_confirmation, read the server's
 readback EXACTLY, including its question, and wait for the resident's answer. Speak
@@ -52,7 +61,7 @@ spoken turns short and allow the resident to finish. Ordinary brief conversation
 TOOL_DECLARATIONS = [
     {
         'name': 'prepare_road_report',
-        'description': 'Prepare a road concern using actual microphone transcripts attached by the adapter. Call with no arguments after each new detail or correction. Does not submit a report.',
+        'description': 'Prepare a road concern after the resident has described it and supplied a location. If no location was given, first ask "Which junction do you mean?" without calling a tool. Call with no arguments; the adapter attaches actual microphone transcripts. Prepare again after new details or corrections. Does not submit a report.',
         'parameters': {'type': 'OBJECT', 'properties': {}},
     },
     {

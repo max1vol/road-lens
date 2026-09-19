@@ -24,7 +24,7 @@ Status recorded on 19 September 2026. The existing Gemini Live hardware integrat
 | New physical cloud rehearsal | **Not exercised**; no physical report/run IDs recorded |
 | Authored agent comparison | A 34/35; B 35/35; C 34/35. All 105 attempts completed. See `research/evaluation-20260919T170203Z/` and fixture ambiguity in `EVALUATION.md`. |
 
-Sites version `appgver_ca7823da82488191b6b1f7efe32dcc2b` deployed successfully from source `a17d1310b56faa8f4075cb44f738b1e5f9438201`; GitHub import `d18627d9dc812e715c0db0d0b7643883f93aac23` has the identical source tree. Later documentation and rehearsal artifacts do not change deployed application code. Public HTTP access, the completed-report feed and role rejection checks passed. The automated browser could not load the public origin because its connection was reset; the local UI was visually checked. Earlier isolated test report IDs are not production or hardware evidence.
+Sites version `appgver_ca7823da82488191b6b1f7efe32dcc2b` deployed successfully from source `a17d1310b56faa8f4075cb44f738b1e5f9438201`; GitHub import `d18627d9dc812e715c0db0d0b7643883f93aac23` has the identical source tree. Later device updates, documentation and rehearsal artifacts do not change the published Site code. Public HTTP access, the completed-report feed and role rejection checks passed. The automated browser could not load the public origin because its connection was reset; the local UI was visually checked. Earlier isolated test report IDs are not production or hardware evidence.
 
 ## Runtime contracts and credentials
 
@@ -144,3 +144,11 @@ Installed 19 September 2026 at 18:06 BST. The existing `aiy-gemini-live.service`
 ## Executed muted Live check
 
 `research/cloud-live-rehearsal.json` records one real `gemini-3.8-live-extended-thinking` flow from the Mac. Gemini called `prepare_road_report` twice and `submit_road_report` once; exact output transcription and returned PCM passed the readback gate, then a fresh authored confirmation received a durable receipt. Report `06c4ff3b-9d41-46bf-b18a-9ba226b60801` was saved at 17:16:43 UTC and observed with completed analysis at 17:16:53 UTC, with officer review still pending. The adapter discarded 993,606 PCM bytes. No microphone, speaker or GPIO was opened, and the installed Pi was unchanged. This verifies the Live tool loop, not physical playback or a person’s confirmation.
+
+## Location prompt, pause and volume update
+
+After the user reported the missing location question, device logs showed cloud preparation taking about 95 seconds before failing. A fresh classifier cold start was confirmed, but does not explain the entire delay. The voice prompt now asks for the missing junction before calling the cloud. The same requested update starts with a spoken question on button press, retains second-press cancellation, waits eight seconds of silence before responding, and lowers speaker output to 20%. The installed file hashes are `a8db96756248444d7fff8cd9262922a264207cc942f33297972d1c766d167144` (`aiy_gemini.py`) and `19085166ed6c78a847da3ecf36208eeb0e1596a7d357c93701e3b4294f3f646f` (`roadlens.py`). All 46 Pi tests passed, and the running process was checked for the 0.2 volume setting.
+
+A real synthetic audio check verified the opening question and measured the eight-second turn pause; see `research/live-audio-eight-second-check.json`. It did not open physical audio or create a report. No website or backend agent code changed.
+
+For rehearsal, the deployed API and classifier were warmed and their runtime idle windows set to 1,200 seconds, the supported maximum. Minimum and buffer containers remain zero, with existing maximum caps (classifier 2, API 3) preserved. This permits scale-to-zero after inactivity and does not guarantee a warm container. Overrides persist until reset or redeployment; source defaults remain 300 seconds. `research/demo-warmup-autoscaler.json` records settings and `research/demo-warmup-prepare.json` records a successful authored preparation in 6.97 seconds, with no draft or report created. Reset each deployed API/Classifier autoscaler with `min_containers=0, buffer_containers=0, scaledown_window=300`.

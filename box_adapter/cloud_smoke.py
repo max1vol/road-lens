@@ -28,7 +28,7 @@ HERE = Path(__file__).resolve().parent
 if not (HERE / 'roadlens.py').exists():
     sys.path.insert(0, str(HERE.parent))
 
-from roadlens import DeviceHTTP, RoadLens, canonical, utc_now
+from roadlens import DeviceHTTP, RoadLens, canonical, speech_words, utc_now
 
 
 REPORT_TURNS = (
@@ -36,6 +36,7 @@ REPORT_TURNS = (
     'Vicarage Terrace at St Matthews Street.',
 )
 CONFIRMATION = 'Yes, please submit it.'
+LOCATION_QUESTION = 'Which junction do you mean?'
 
 
 class SmokeFailure(Exception):
@@ -135,6 +136,41 @@ def completed_tool(box, name, previous_ids):
     return matches[-1]['response'] if matches else None
 
 
+async def live_question(box, ws, receiver, text, expected_question, *, seconds):
+    """Verify the first spoken clarification without waiting for a cloud tool."""
+    previous_ids = set(box.tool_results)
+    audio_before = box.speaker.bytes_played
+    spoken_parts = []
+    original_output = box.roadlens.assistant_output
+
+    def capture_output(text='', *, audio=False):
+        if text:
+            spoken_parts.append(text)
+        original_output(text, audio=audio)
+
+    box.roadlens.assistant_output = capture_output
+    try:
+        box.roadlens.transcript(text)
+        await box.send(ws, {'clientContent': {'turns': [
+            {'role': 'user', 'parts': [{'text': text}]}], 'turnComplete': True}})
+        deadline = asyncio.get_running_loop().time() + seconds
+        while asyncio.get_running_loop().time() < deadline:
+            if receiver.done():
+                receiver.result()
+                raise SmokeFailure('Gemini receiver ended before the spoken location question completed.')
+            if set(box.tool_results) != previous_ids or box.tool_tasks:
+                raise SmokeFailure('The location-free report invoked a tool before asking for its junction.')
+            spoken = [speech_words(''.join(spoken_parts)), speech_words(' '.join(spoken_parts))]
+            if (not box.model_busy and box.speaker.idle.is_set()
+                    and box.speaker.bytes_played > audio_before
+                    and speech_words(expected_question) in spoken):
+                return
+            await asyncio.sleep(0.05)
+        raise SmokeFailure('The exact location question did not finish with model IDLE and returned audio.')
+    finally:
+        box.roadlens.assistant_output = original_output
+
+
 async def live_turn(box, ws, receiver, text, tool_name, *, seconds, require_readback=False):
     previous_ids = set(box.tool_results)
     audio_before = box.speaker.bytes_played
@@ -190,11 +226,10 @@ async def live_smoke(args, http, directory, run):
             await box.open_session(ws)
             receiver = asyncio.create_task(box.receive(ws))
             run['stage'] = 'live_initial_report'
-            first = await live_turn(box, ws, receiver, REPORT_TURNS[0], 'prepare_road_report',
-                                    seconds=args.turn_timeout)
-            if first.get('output', {}).get('kind') != 'needs_clarification':
-                raise SmokeFailure('The location-free report did not request clarification.')
+            await live_question(box, ws, receiver, REPORT_TURNS[0], LOCATION_QUESTION,
+                                seconds=args.turn_timeout)
             run['location_clarification_verified'] = True
+            run['location_clarification_without_tool_verified'] = True
             run['stage'] = 'live_location_readback'
             draft = await live_turn(box, ws, receiver, REPORT_TURNS[1], 'prepare_road_report',
                                    seconds=args.turn_timeout, require_readback=True)

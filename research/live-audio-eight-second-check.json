@@ -1,0 +1,210 @@
+{
+  "synthetic": true,
+  "physical_rehearsal": false,
+  "microphone_opened": false,
+  "speaker_opened": false,
+  "gpio_opened": false,
+  "backend_calls_permitted": false,
+  "report_submitted": false,
+  "input_transcripts_preregistered": false,
+  "authored_speech": "I cannot see past the parked cars when I cross.",
+  "started_at": "2026-09-19T17:34:59.740898+00:00",
+  "model": "gemini-3.8-live-extended-thinking",
+  "thinking_level": "MEDIUM",
+  "requested_silence_duration_ms": 8000,
+  "audio_stream_end_sent": false,
+  "input_pcm_sha256": "8d542799af121729237b5346c6d0ab4b685d2b849cbbeda43374f4a886a0d99a",
+  "input_pcm_seconds": 2.932,
+  "prerecorded_trailing_zero_silence_seconds": 0.00975,
+  "prerecorded_trailing_below_64_silence_seconds": 0.033,
+  "voice_source_sha256": "a8db96756248444d7fff8cd9262922a264207cc942f33297972d1c766d167144",
+  "adapter_source_sha256": "19085166ed6c78a847da3ecf36208eeb0e1596a7d357c93701e3b4294f3f646f",
+  "setup_accepted": true,
+  "opening_event": {
+    "observed_at": "2026-09-19T17:35:00.211660+00:00",
+    "monotonic": 22313.023997424
+  },
+  "opening_verified": true,
+  "resident_turns_after_opening": 0,
+  "stream_started_monotonic": 22316.633337962,
+  "last_audible_threshold_64_input_monotonic": 22319.782628599998,
+  "last_nonzero_input_monotonic": 22319.806733761,
+  "silent_stream_finished": {
+    "observed_at": "2026-09-19T17:35:16.022730+00:00",
+    "monotonic": 22328.834614582
+  },
+  "location_question_verified": true,
+  "seconds_last_nonzero_to_first_output": 8.484359822999977,
+  "seconds_last_audible_to_first_output": 8.508464984002785,
+  "seconds_last_nonzero_to_first_pcm": 8.484397205000278,
+  "eight_second_minimum_verified": true,
+  "outcome": "pass",
+  "actual_input_transcription": [
+    {
+      "text": "I cannot see past the parked cars when I cross.",
+      "finished": false,
+      "phase": "resident_audio",
+      "observed_at": "2026-09-19T17:35:15.479073+00:00",
+      "monotonic": 22328.290933605
+    }
+  ],
+  "actual_output_transcription": [
+    {
+      "text": "What road concern would ",
+      "phase": "opening",
+      "observed_at": "2026-09-19T17:35:00.892879+00:00",
+      "monotonic": 22313.70519035
+    },
+    {
+      "text": "you like to report?",
+      "phase": "opening",
+      "observed_at": "2026-09-19T17:35:01.945515+00:00",
+      "monotonic": 22314.757783205
+    },
+    {
+      "text": "Which junction do ",
+      "phase": "resident_audio",
+      "observed_at": "2026-09-19T17:35:15.479244+00:00",
+      "monotonic": 22328.291093584
+    },
+    {
+      "text": "you mean?",
+      "phase": "resident_audio",
+      "observed_at": "2026-09-19T17:35:16.335288+00:00",
+      "monotonic": 22329.147151888
+    }
+  ],
+  "actual_pcm_events": [
+    {
+      "bytes": 11040,
+      "phase": "opening",
+      "observed_at": "2026-09-19T17:35:00.893111+00:00",
+      "monotonic": 22313.705404618
+    },
+    {
+      "bytes": 7680,
+      "phase": "opening",
+      "observed_at": "2026-09-19T17:35:01.023528+00:00",
+      "monotonic": 22313.835827329
+    },
+    {
+      "bytes": 7680,
+      "phase": "opening",
+      "observed_at": "2026-09-19T17:35:01.183200+00:00",
+      "monotonic": 22313.995491087
+    },
+    {
+      "bytes": 13440,
+      "phase": "opening",
+      "observed_at": "2026-09-19T17:35:01.343693+00:00",
+      "monotonic": 22314.155984432
+    },
+    {
+      "bytes": 7680,
+      "phase": "opening",
+      "observed_at": "2026-09-19T17:35:01.629149+00:00",
+      "monotonic": 22314.441424032
+    },
+    {
+      "bytes": 7680,
+      "phase": "opening",
+      "observed_at": "2026-09-19T17:35:01.802382+00:00",
+      "monotonic": 22314.614652397
+    },
+    {
+      "bytes": 11520,
+      "phase": "opening",
+      "observed_at": "2026-09-19T17:35:01.945641+00:00",
+      "monotonic": 22314.757896189
+    },
+    {
+      "bytes": 9600,
+      "phase": "opening",
+      "observed_at": "2026-09-19T17:35:02.186033+00:00",
+      "monotonic": 22314.998301017
+    },
+    {
+      "bytes": 9600,
+      "phase": "opening",
+      "observed_at": "2026-09-19T17:35:02.386110+00:00",
+      "monotonic": 22315.198364928
+    },
+    {
+      "bytes": 7680,
+      "phase": "opening",
+      "observed_at": "2026-09-19T17:35:02.585398+00:00",
+      "monotonic": 22315.397649328
+    },
+    {
+      "bytes": 13440,
+      "phase": "opening",
+      "observed_at": "2026-09-19T17:35:02.744454+00:00",
+      "monotonic": 22315.556699158
+    },
+    {
+      "bytes": 9600,
+      "phase": "opening",
+      "observed_at": "2026-09-19T17:35:03.023307+00:00",
+      "monotonic": 22315.83554264
+    },
+    {
+      "bytes": 3840,
+      "phase": "opening",
+      "observed_at": "2026-09-19T17:35:03.222476+00:00",
+      "monotonic": 22316.03472099
+    },
+    {
+      "bytes": 1920,
+      "phase": "resident_audio",
+      "observed_at": "2026-09-19T17:35:15.479284+00:00",
+      "monotonic": 22328.291130966
+    },
+    {
+      "bytes": 7680,
+      "phase": "resident_audio",
+      "observed_at": "2026-09-19T17:35:15.479422+00:00",
+      "monotonic": 22328.291270885
+    },
+    {
+      "bytes": 11520,
+      "phase": "resident_audio",
+      "observed_at": "2026-09-19T17:35:15.582018+00:00",
+      "monotonic": 22328.39389457
+    },
+    {
+      "bytes": 9600,
+      "phase": "resident_audio",
+      "observed_at": "2026-09-19T17:35:15.824716+00:00",
+      "monotonic": 22328.636567626
+    },
+    {
+      "bytes": 13440,
+      "phase": "resident_audio",
+      "observed_at": "2026-09-19T17:35:16.026889+00:00",
+      "monotonic": 22328.838732269
+    },
+    {
+      "bytes": 17280,
+      "phase": "resident_audio",
+      "observed_at": "2026-09-19T17:35:16.335584+00:00",
+      "monotonic": 22329.147419362
+    },
+    {
+      "bytes": 15360,
+      "phase": "resident_audio",
+      "observed_at": "2026-09-19T17:35:16.661266+00:00",
+      "monotonic": 22329.473099475
+    },
+    {
+      "bytes": 11520,
+      "phase": "resident_audio",
+      "observed_at": "2026-09-19T17:35:16.980629+00:00",
+      "monotonic": 22329.792450507
+    }
+  ],
+  "tool_calls": [],
+  "output_pcm_bytes_received_and_discarded": 208800,
+  "output_pcm_sha256": "b01aec31d0993d9fbe7c2aff0663b7365b000781c1c028cb17126878509555f7",
+  "elapsed_seconds": 18.007,
+  "finished_at": "2026-09-19T17:35:17.750443+00:00"
+}
