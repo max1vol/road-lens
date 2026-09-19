@@ -1,0 +1,2754 @@
+{
+  "PrepareRequest": {
+    "$defs": {
+      "ResidentTurn": {
+        "additionalProperties": false,
+        "properties": {
+          "turn_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9_.:-]+$",
+            "title": "Turn Id",
+            "type": "string"
+          },
+          "text": {
+            "maxLength": 4000,
+            "minLength": 1,
+            "title": "Text",
+            "type": "string"
+          },
+          "timestamp": {
+            "format": "date-time",
+            "title": "Timestamp",
+            "type": "string"
+          },
+          "role": {
+            "const": "resident",
+            "default": "resident",
+            "title": "Role",
+            "type": "string"
+          }
+        },
+        "required": [
+          "turn_id",
+          "text",
+          "timestamp"
+        ],
+        "title": "ResidentTurn",
+        "type": "object"
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "session_id": {
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[a-zA-Z0-9_.:-]+$",
+        "title": "Session Id",
+        "type": "string"
+      },
+      "turns": {
+        "items": {
+          "$ref": "#/$defs/ResidentTurn"
+        },
+        "maxItems": 30,
+        "minItems": 1,
+        "title": "Turns",
+        "type": "array"
+      }
+    },
+    "required": [
+      "session_id",
+      "turns"
+    ],
+    "title": "PrepareRequest",
+    "type": "object"
+  },
+  "ReadyDraft": {
+    "$defs": {
+      "EvidenceSpan": {
+        "additionalProperties": false,
+        "properties": {
+          "turn_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9_.:-]+$",
+            "title": "Turn Id",
+            "type": "string"
+          },
+          "quote": {
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "Quote",
+            "type": "string"
+          }
+        },
+        "required": [
+          "turn_id",
+          "quote"
+        ],
+        "title": "EvidenceSpan",
+        "type": "object"
+      },
+      "Issue": {
+        "enum": [
+          "visibility_obstruction",
+          "road_surface",
+          "crossing_concern",
+          "access_obstruction",
+          "speeding_concern",
+          "signal_or_lighting",
+          "other_road_concern"
+        ],
+        "title": "Issue",
+        "type": "string"
+      },
+      "ResolvedLocation": {
+        "additionalProperties": false,
+        "properties": {
+          "place_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9_.:-]+$",
+            "title": "Place Id",
+            "type": "string"
+          },
+          "display_name": {
+            "maxLength": 200,
+            "title": "Display Name",
+            "type": "string"
+          },
+          "longitude": {
+            "maximum": 180,
+            "minimum": -180,
+            "title": "Longitude",
+            "type": "number"
+          },
+          "latitude": {
+            "maximum": 90,
+            "minimum": -90,
+            "title": "Latitude",
+            "type": "number"
+          },
+          "easting": {
+            "title": "Easting",
+            "type": "integer"
+          },
+          "northing": {
+            "title": "Northing",
+            "type": "integer"
+          },
+          "coordinate_basis": {
+            "maxLength": 200,
+            "title": "Coordinate Basis",
+            "type": "string"
+          },
+          "resolver_provenance": {
+            "maxLength": 200,
+            "title": "Resolver Provenance",
+            "type": "string"
+          },
+          "ambiguity_status": {
+            "const": "resolved_reference_point",
+            "default": "resolved_reference_point",
+            "title": "Ambiguity Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "place_id",
+          "display_name",
+          "longitude",
+          "latitude",
+          "easting",
+          "northing",
+          "coordinate_basis",
+          "resolver_provenance"
+        ],
+        "title": "ResolvedLocation",
+        "type": "object"
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "kind": {
+        "const": "ready_for_confirmation",
+        "default": "ready_for_confirmation",
+        "title": "Kind",
+        "type": "string"
+      },
+      "issue": {
+        "$ref": "#/$defs/Issue"
+      },
+      "observation": {
+        "description": "Exact resident wording describing the concern; no contact information.",
+        "maxLength": 1000,
+        "minLength": 5,
+        "title": "Observation",
+        "type": "string"
+      },
+      "location": {
+        "$ref": "#/$defs/ResolvedLocation"
+      },
+      "evidence_spans": {
+        "items": {
+          "$ref": "#/$defs/EvidenceSpan"
+        },
+        "maxItems": 10,
+        "minItems": 1,
+        "title": "Evidence Spans",
+        "type": "array"
+      },
+      "readback": {
+        "default": "",
+        "maxLength": 400,
+        "title": "Readback",
+        "type": "string"
+      }
+    },
+    "required": [
+      "issue",
+      "observation",
+      "location",
+      "evidence_spans"
+    ],
+    "title": "ReadyDraft",
+    "type": "object"
+  },
+  "NeedsClarification": {
+    "additionalProperties": false,
+    "properties": {
+      "kind": {
+        "const": "needs_clarification",
+        "default": "needs_clarification",
+        "title": "Kind",
+        "type": "string"
+      },
+      "missing_fields": {
+        "items": {
+          "maxLength": 80,
+          "type": "string"
+        },
+        "maxItems": 5,
+        "minItems": 1,
+        "title": "Missing Fields",
+        "type": "array"
+      },
+      "question": {
+        "maxLength": 240,
+        "minLength": 5,
+        "title": "Question",
+        "type": "string"
+      }
+    },
+    "required": [
+      "missing_fields",
+      "question"
+    ],
+    "title": "NeedsClarification",
+    "type": "object"
+  },
+  "OutOfScope": {
+    "additionalProperties": false,
+    "properties": {
+      "kind": {
+        "const": "out_of_scope",
+        "default": "out_of_scope",
+        "title": "Kind",
+        "type": "string"
+      },
+      "message": {
+        "maxLength": 240,
+        "minLength": 5,
+        "title": "Message",
+        "type": "string"
+      }
+    },
+    "required": [
+      "message"
+    ],
+    "title": "OutOfScope",
+    "type": "object"
+  },
+  "Submission": {
+    "$defs": {
+      "Confirmation": {
+        "additionalProperties": false,
+        "properties": {
+          "resident_turn_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9_.:-]+$",
+            "title": "Resident Turn Id",
+            "type": "string"
+          },
+          "text": {
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Text",
+            "type": "string"
+          },
+          "confirmed_at": {
+            "format": "date-time",
+            "title": "Confirmed At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "resident_turn_id",
+          "text",
+          "confirmed_at"
+        ],
+        "title": "Confirmation",
+        "type": "object"
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "draft_id": {
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[a-zA-Z0-9_.:-]+$",
+        "title": "Draft Id",
+        "type": "string"
+      },
+      "confirmation": {
+        "$ref": "#/$defs/Confirmation"
+      }
+    },
+    "required": [
+      "draft_id",
+      "confirmation"
+    ],
+    "title": "Submission",
+    "type": "object"
+  },
+  "IntakeResponse": {
+    "$defs": {
+      "ClassifierSuggestion": {
+        "additionalProperties": false,
+        "properties": {
+          "model": {
+            "default": "fastino/gliner2.5-base-v1",
+            "title": "Model",
+            "type": "string"
+          },
+          "revision": {
+            "default": "78cea040597df251eedefa9d7ee2a756af39fe64",
+            "title": "Revision",
+            "type": "string"
+          },
+          "issue_label": {
+            "maxLength": 100,
+            "title": "Issue Label",
+            "type": "string"
+          },
+          "entities": {
+            "items": {
+              "$ref": "#/$defs/EntitySpan"
+            },
+            "maxItems": 50,
+            "title": "Entities",
+            "type": "array"
+          },
+          "runtime_seconds": {
+            "minimum": 0,
+            "title": "Runtime Seconds",
+            "type": "number"
+          },
+          "confidence": {
+            "anyOf": [
+              {
+                "maximum": 1,
+                "minimum": 0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Confidence"
+          }
+        },
+        "required": [
+          "issue_label",
+          "runtime_seconds"
+        ],
+        "title": "ClassifierSuggestion",
+        "type": "object"
+      },
+      "EntitySpan": {
+        "additionalProperties": false,
+        "properties": {
+          "text": {
+            "maxLength": 300,
+            "title": "Text",
+            "type": "string"
+          },
+          "start": {
+            "maximum": 4000,
+            "minimum": 0,
+            "title": "Start",
+            "type": "integer"
+          },
+          "end": {
+            "maximum": 4000,
+            "minimum": 0,
+            "title": "End",
+            "type": "integer"
+          },
+          "confidence": {
+            "anyOf": [
+              {
+                "maximum": 1,
+                "minimum": 0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Confidence"
+          }
+        },
+        "required": [
+          "text",
+          "start",
+          "end"
+        ],
+        "title": "EntitySpan",
+        "type": "object"
+      },
+      "EvidenceSpan": {
+        "additionalProperties": false,
+        "properties": {
+          "turn_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9_.:-]+$",
+            "title": "Turn Id",
+            "type": "string"
+          },
+          "quote": {
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "Quote",
+            "type": "string"
+          }
+        },
+        "required": [
+          "turn_id",
+          "quote"
+        ],
+        "title": "EvidenceSpan",
+        "type": "object"
+      },
+      "Issue": {
+        "enum": [
+          "visibility_obstruction",
+          "road_surface",
+          "crossing_concern",
+          "access_obstruction",
+          "speeding_concern",
+          "signal_or_lighting",
+          "other_road_concern"
+        ],
+        "title": "Issue",
+        "type": "string"
+      },
+      "NeedsClarification": {
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "const": "needs_clarification",
+            "default": "needs_clarification",
+            "title": "Kind",
+            "type": "string"
+          },
+          "missing_fields": {
+            "items": {
+              "maxLength": 80,
+              "type": "string"
+            },
+            "maxItems": 5,
+            "minItems": 1,
+            "title": "Missing Fields",
+            "type": "array"
+          },
+          "question": {
+            "maxLength": 240,
+            "minLength": 5,
+            "title": "Question",
+            "type": "string"
+          }
+        },
+        "required": [
+          "missing_fields",
+          "question"
+        ],
+        "title": "NeedsClarification",
+        "type": "object"
+      },
+      "OutOfScope": {
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "const": "out_of_scope",
+            "default": "out_of_scope",
+            "title": "Kind",
+            "type": "string"
+          },
+          "message": {
+            "maxLength": 240,
+            "minLength": 5,
+            "title": "Message",
+            "type": "string"
+          }
+        },
+        "required": [
+          "message"
+        ],
+        "title": "OutOfScope",
+        "type": "object"
+      },
+      "ReadyDraft": {
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "const": "ready_for_confirmation",
+            "default": "ready_for_confirmation",
+            "title": "Kind",
+            "type": "string"
+          },
+          "issue": {
+            "$ref": "#/$defs/Issue"
+          },
+          "observation": {
+            "description": "Exact resident wording describing the concern; no contact information.",
+            "maxLength": 1000,
+            "minLength": 5,
+            "title": "Observation",
+            "type": "string"
+          },
+          "location": {
+            "$ref": "#/$defs/ResolvedLocation"
+          },
+          "evidence_spans": {
+            "items": {
+              "$ref": "#/$defs/EvidenceSpan"
+            },
+            "maxItems": 10,
+            "minItems": 1,
+            "title": "Evidence Spans",
+            "type": "array"
+          },
+          "readback": {
+            "default": "",
+            "maxLength": 400,
+            "title": "Readback",
+            "type": "string"
+          }
+        },
+        "required": [
+          "issue",
+          "observation",
+          "location",
+          "evidence_spans"
+        ],
+        "title": "ReadyDraft",
+        "type": "object"
+      },
+      "ResolvedLocation": {
+        "additionalProperties": false,
+        "properties": {
+          "place_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9_.:-]+$",
+            "title": "Place Id",
+            "type": "string"
+          },
+          "display_name": {
+            "maxLength": 200,
+            "title": "Display Name",
+            "type": "string"
+          },
+          "longitude": {
+            "maximum": 180,
+            "minimum": -180,
+            "title": "Longitude",
+            "type": "number"
+          },
+          "latitude": {
+            "maximum": 90,
+            "minimum": -90,
+            "title": "Latitude",
+            "type": "number"
+          },
+          "easting": {
+            "title": "Easting",
+            "type": "integer"
+          },
+          "northing": {
+            "title": "Northing",
+            "type": "integer"
+          },
+          "coordinate_basis": {
+            "maxLength": 200,
+            "title": "Coordinate Basis",
+            "type": "string"
+          },
+          "resolver_provenance": {
+            "maxLength": 200,
+            "title": "Resolver Provenance",
+            "type": "string"
+          },
+          "ambiguity_status": {
+            "const": "resolved_reference_point",
+            "default": "resolved_reference_point",
+            "title": "Ambiguity Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "place_id",
+          "display_name",
+          "longitude",
+          "latitude",
+          "easting",
+          "northing",
+          "coordinate_basis",
+          "resolver_provenance"
+        ],
+        "title": "ResolvedLocation",
+        "type": "object"
+      },
+      "RunSummary": {
+        "additionalProperties": false,
+        "properties": {
+          "run_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9_.:-]+$",
+            "title": "Run Id",
+            "type": "string"
+          },
+          "model": {
+            "title": "Model",
+            "type": "string"
+          },
+          "model_version": {
+            "title": "Model Version",
+            "type": "string"
+          },
+          "classifier": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/ClassifierSuggestion"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "tools": {
+            "items": {
+              "$ref": "#/$defs/ToolEvent"
+            },
+            "maxItems": 20,
+            "title": "Tools",
+            "type": "array"
+          },
+          "validation_repairs": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 10,
+            "title": "Validation Repairs",
+            "type": "array"
+          },
+          "usage": {
+            "additionalProperties": true,
+            "title": "Usage",
+            "type": "object"
+          },
+          "elapsed_seconds": {
+            "title": "Elapsed Seconds",
+            "type": "number"
+          },
+          "outcome": {
+            "title": "Outcome",
+            "type": "string"
+          },
+          "data_hashes": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Data Hashes",
+            "type": "object"
+          },
+          "prompt_hash": {
+            "title": "Prompt Hash",
+            "type": "string"
+          },
+          "code_commit": {
+            "title": "Code Commit",
+            "type": "string"
+          }
+        },
+        "required": [
+          "run_id",
+          "model",
+          "model_version",
+          "usage",
+          "elapsed_seconds",
+          "outcome",
+          "data_hashes",
+          "prompt_hash",
+          "code_commit"
+        ],
+        "title": "RunSummary",
+        "type": "object"
+      },
+      "ToolEvent": {
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "inputs": {
+            "additionalProperties": true,
+            "title": "Inputs",
+            "type": "object"
+          },
+          "output": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "items": {},
+                "type": "array"
+              }
+            ],
+            "title": "Output"
+          }
+        },
+        "required": [
+          "name",
+          "inputs",
+          "output"
+        ],
+        "title": "ToolEvent",
+        "type": "object"
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "output": {
+        "discriminator": {
+          "mapping": {
+            "needs_clarification": "#/$defs/NeedsClarification",
+            "out_of_scope": "#/$defs/OutOfScope",
+            "ready_for_confirmation": "#/$defs/ReadyDraft"
+          },
+          "propertyName": "kind"
+        },
+        "oneOf": [
+          {
+            "$ref": "#/$defs/ReadyDraft"
+          },
+          {
+            "$ref": "#/$defs/NeedsClarification"
+          },
+          {
+            "$ref": "#/$defs/OutOfScope"
+          }
+        ],
+        "title": "Output"
+      },
+      "run": {
+        "$ref": "#/$defs/RunSummary"
+      }
+    },
+    "required": [
+      "output",
+      "run"
+    ],
+    "title": "IntakeResponse",
+    "type": "object"
+  },
+  "AnalysisResult": {
+    "$defs": {
+      "ClassifierSuggestion": {
+        "additionalProperties": false,
+        "properties": {
+          "model": {
+            "default": "fastino/gliner2.5-base-v1",
+            "title": "Model",
+            "type": "string"
+          },
+          "revision": {
+            "default": "78cea040597df251eedefa9d7ee2a756af39fe64",
+            "title": "Revision",
+            "type": "string"
+          },
+          "issue_label": {
+            "maxLength": 100,
+            "title": "Issue Label",
+            "type": "string"
+          },
+          "entities": {
+            "items": {
+              "$ref": "#/$defs/EntitySpan"
+            },
+            "maxItems": 50,
+            "title": "Entities",
+            "type": "array"
+          },
+          "runtime_seconds": {
+            "minimum": 0,
+            "title": "Runtime Seconds",
+            "type": "number"
+          },
+          "confidence": {
+            "anyOf": [
+              {
+                "maximum": 1,
+                "minimum": 0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Confidence"
+          }
+        },
+        "required": [
+          "issue_label",
+          "runtime_seconds"
+        ],
+        "title": "ClassifierSuggestion",
+        "type": "object"
+      },
+      "CollisionEvidence": {
+        "additionalProperties": false,
+        "properties": {
+          "reference_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9_.:-]+$",
+            "title": "Reference Id",
+            "type": "string"
+          },
+          "location": {
+            "$ref": "#/$defs/ResolvedLocation"
+          },
+          "radius_metres": {
+            "enum": [
+              50,
+              100,
+              250
+            ],
+            "title": "Radius Metres",
+            "type": "integer"
+          },
+          "start": {
+            "format": "date",
+            "title": "Start",
+            "type": "string"
+          },
+          "end": {
+            "format": "date",
+            "title": "End",
+            "type": "string"
+          },
+          "collision_count": {
+            "title": "Collision Count",
+            "type": "integer"
+          },
+          "casualty_total": {
+            "title": "Casualty Total",
+            "type": "integer"
+          },
+          "records": {
+            "items": {
+              "$ref": "#/$defs/CollisionRecord"
+            },
+            "maxItems": 300,
+            "title": "Records",
+            "type": "array"
+          },
+          "note": {
+            "default": "Projected EPSG:27700 radius, not an exact junction boundary. Historical evidence does not establish causation or present conditions.",
+            "title": "Note",
+            "type": "string"
+          }
+        },
+        "required": [
+          "reference_id",
+          "location",
+          "radius_metres",
+          "start",
+          "end",
+          "collision_count",
+          "casualty_total",
+          "records"
+        ],
+        "title": "CollisionEvidence",
+        "type": "object"
+      },
+      "CollisionRecord": {
+        "additionalProperties": false,
+        "properties": {
+          "reference_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9_.:-]+$",
+            "title": "Reference Id",
+            "type": "string"
+          },
+          "collision_id": {
+            "title": "Collision Id",
+            "type": "string"
+          },
+          "date": {
+            "format": "date",
+            "title": "Date",
+            "type": "string"
+          },
+          "latitude": {
+            "title": "Latitude",
+            "type": "number"
+          },
+          "longitude": {
+            "title": "Longitude",
+            "type": "number"
+          },
+          "severity": {
+            "title": "Severity",
+            "type": "string"
+          },
+          "casualty_count": {
+            "minimum": 0,
+            "title": "Casualty Count",
+            "type": "integer"
+          },
+          "location_text": {
+            "title": "Location Text",
+            "type": "string"
+          },
+          "junction_detail": {
+            "title": "Junction Detail",
+            "type": "string"
+          },
+          "crossing": {
+            "title": "Crossing",
+            "type": "string"
+          },
+          "source_id": {
+            "enum": [
+              "dft_stats19_2025_final",
+              "ccc_2017_2026h1_20260907"
+            ],
+            "title": "Source Id",
+            "type": "string"
+          },
+          "provisional": {
+            "title": "Provisional",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "reference_id",
+          "collision_id",
+          "date",
+          "latitude",
+          "longitude",
+          "severity",
+          "casualty_count",
+          "location_text",
+          "junction_detail",
+          "crossing",
+          "source_id",
+          "provisional"
+        ],
+        "title": "CollisionRecord",
+        "type": "object"
+      },
+      "EntitySpan": {
+        "additionalProperties": false,
+        "properties": {
+          "text": {
+            "maxLength": 300,
+            "title": "Text",
+            "type": "string"
+          },
+          "start": {
+            "maximum": 4000,
+            "minimum": 0,
+            "title": "Start",
+            "type": "integer"
+          },
+          "end": {
+            "maximum": 4000,
+            "minimum": 0,
+            "title": "End",
+            "type": "integer"
+          },
+          "confidence": {
+            "anyOf": [
+              {
+                "maximum": 1,
+                "minimum": 0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Confidence"
+          }
+        },
+        "required": [
+          "text",
+          "start",
+          "end"
+        ],
+        "title": "EntitySpan",
+        "type": "object"
+      },
+      "EvidenceAnswer": {
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "const": "evidence_answer",
+            "default": "evidence_answer",
+            "title": "Kind",
+            "type": "string"
+          },
+          "metric_refs": {
+            "items": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[a-zA-Z0-9_.:-]+$",
+              "type": "string"
+            },
+            "maxItems": 10,
+            "title": "Metric Refs",
+            "type": "array"
+          },
+          "record_refs": {
+            "items": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[a-zA-Z0-9_.:-]+$",
+              "type": "string"
+            },
+            "maxItems": 20,
+            "title": "Record Refs",
+            "type": "array"
+          },
+          "limitations": {
+            "items": {
+              "enum": [
+                "no_causal_evidence",
+                "no_exposure_denominator",
+                "current_imagery_not_supplied",
+                "overlapping_sources",
+                "historic_conditions",
+                "unverified_resident_observation"
+              ],
+              "type": "string"
+            },
+            "maxItems": 6,
+            "title": "Limitations",
+            "type": "array"
+          },
+          "inspection_checks": {
+            "items": {
+              "enum": [
+                "check_current_sightlines",
+                "observe_crossing_access",
+                "check_surface_condition",
+                "check_signal_or_lighting",
+                "measure_speeds_and_exposure",
+                "verify_location_on_site"
+              ],
+              "type": "string"
+            },
+            "maxItems": 6,
+            "title": "Inspection Checks",
+            "type": "array"
+          }
+        },
+        "title": "EvidenceAnswer",
+        "type": "object"
+      },
+      "EvidenceBundle": {
+        "additionalProperties": false,
+        "properties": {
+          "metrics": {
+            "items": {
+              "$ref": "#/$defs/MetricResult"
+            },
+            "maxItems": 10,
+            "title": "Metrics",
+            "type": "array"
+          },
+          "records": {
+            "items": {
+              "$ref": "#/$defs/CollisionRecord"
+            },
+            "maxItems": 300,
+            "title": "Records",
+            "type": "array"
+          },
+          "nearby": {
+            "items": {
+              "$ref": "#/$defs/CollisionEvidence"
+            },
+            "maxItems": 5,
+            "title": "Nearby",
+            "type": "array"
+          },
+          "sources": {
+            "items": {
+              "$ref": "#/$defs/SourceNotes"
+            },
+            "maxItems": 2,
+            "title": "Sources",
+            "type": "array"
+          },
+          "unknowns": {
+            "items": {
+              "enum": [
+                "no_causal_evidence",
+                "no_exposure_denominator",
+                "current_imagery_not_supplied",
+                "overlapping_sources",
+                "historic_conditions",
+                "unverified_resident_observation"
+              ],
+              "type": "string"
+            },
+            "maxItems": 6,
+            "title": "Unknowns",
+            "type": "array"
+          }
+        },
+        "required": [
+          "sources"
+        ],
+        "title": "EvidenceBundle",
+        "type": "object"
+      },
+      "EvidenceQuery": {
+        "additionalProperties": false,
+        "properties": {
+          "source_id": {
+            "default": "dft_stats19_2025_final",
+            "enum": [
+              "dft_stats19_2025_final",
+              "ccc_2017_2026h1_20260907"
+            ],
+            "title": "Source Id",
+            "type": "string"
+          },
+          "geography": {
+            "const": "E07000008",
+            "default": "E07000008",
+            "title": "Geography",
+            "type": "string"
+          },
+          "start": {
+            "default": "2025-01-01",
+            "format": "date",
+            "title": "Start",
+            "type": "string"
+          },
+          "end": {
+            "default": "2025-12-31",
+            "format": "date",
+            "title": "End",
+            "type": "string"
+          },
+          "unit": {
+            "default": "people",
+            "enum": [
+              "people",
+              "collisions",
+              "people with known age",
+              "people in that collision"
+            ],
+            "title": "Unit",
+            "type": "string"
+          },
+          "road_user": {
+            "default": "all",
+            "enum": [
+              "all",
+              "cyclist",
+              "pedestrian"
+            ],
+            "title": "Road User",
+            "type": "string"
+          },
+          "severity": {
+            "default": "all",
+            "enum": [
+              "all",
+              "serious",
+              "slight"
+            ],
+            "title": "Severity",
+            "type": "string"
+          },
+          "age": {
+            "default": "all",
+            "enum": [
+              "all",
+              "under16",
+              "unknown"
+            ],
+            "title": "Age",
+            "type": "string"
+          },
+          "collision_id": {
+            "anyOf": [
+              {
+                "maxLength": 40,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Collision Id"
+          },
+          "place_id": {
+            "anyOf": [
+              {
+                "maxLength": 128,
+                "minLength": 1,
+                "pattern": "^[a-zA-Z0-9_.:-]+$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Place Id"
+          },
+          "radius_metres": {
+            "default": 100,
+            "enum": [
+              50,
+              100,
+              250
+            ],
+            "title": "Radius Metres",
+            "type": "integer"
+          }
+        },
+        "title": "EvidenceQuery",
+        "type": "object"
+      },
+      "InspectionBrief": {
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "const": "inspection_brief",
+            "default": "inspection_brief",
+            "title": "Kind",
+            "type": "string"
+          },
+          "metric_refs": {
+            "items": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[a-zA-Z0-9_.:-]+$",
+              "type": "string"
+            },
+            "maxItems": 10,
+            "title": "Metric Refs",
+            "type": "array"
+          },
+          "record_refs": {
+            "items": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[a-zA-Z0-9_.:-]+$",
+              "type": "string"
+            },
+            "maxItems": 20,
+            "title": "Record Refs",
+            "type": "array"
+          },
+          "limitations": {
+            "items": {
+              "enum": [
+                "no_causal_evidence",
+                "no_exposure_denominator",
+                "current_imagery_not_supplied",
+                "overlapping_sources",
+                "historic_conditions",
+                "unverified_resident_observation"
+              ],
+              "type": "string"
+            },
+            "maxItems": 6,
+            "title": "Limitations",
+            "type": "array"
+          },
+          "inspection_checks": {
+            "items": {
+              "enum": [
+                "check_current_sightlines",
+                "observe_crossing_access",
+                "check_surface_condition",
+                "check_signal_or_lighting",
+                "measure_speeds_and_exposure",
+                "verify_location_on_site"
+              ],
+              "type": "string"
+            },
+            "maxItems": 6,
+            "title": "Inspection Checks",
+            "type": "array"
+          },
+          "resident_concern": {
+            "maxLength": 1000,
+            "title": "Resident Concern",
+            "type": "string"
+          }
+        },
+        "required": [
+          "resident_concern"
+        ],
+        "title": "InspectionBrief",
+        "type": "object"
+      },
+      "MetricResult": {
+        "additionalProperties": false,
+        "properties": {
+          "reference_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9_.:-]+$",
+            "title": "Reference Id",
+            "type": "string"
+          },
+          "value": {
+            "minimum": 0,
+            "title": "Value",
+            "type": "integer"
+          },
+          "unit": {
+            "title": "Unit",
+            "type": "string"
+          },
+          "period_start": {
+            "format": "date",
+            "title": "Period Start",
+            "type": "string"
+          },
+          "period_end": {
+            "format": "date",
+            "title": "Period End",
+            "type": "string"
+          },
+          "geography": {
+            "default": "Cambridge district (E07000008)",
+            "title": "Geography",
+            "type": "string"
+          },
+          "source_id": {
+            "enum": [
+              "dft_stats19_2025_final",
+              "ccc_2017_2026h1_20260907"
+            ],
+            "title": "Source Id",
+            "type": "string"
+          },
+          "provisional": {
+            "title": "Provisional",
+            "type": "boolean"
+          },
+          "query_hash": {
+            "title": "Query Hash",
+            "type": "string"
+          },
+          "row_ids": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 5000,
+            "title": "Row Ids",
+            "type": "array"
+          },
+          "query": {
+            "$ref": "#/$defs/EvidenceQuery"
+          }
+        },
+        "required": [
+          "reference_id",
+          "value",
+          "unit",
+          "period_start",
+          "period_end",
+          "source_id",
+          "provisional",
+          "query_hash",
+          "row_ids",
+          "query"
+        ],
+        "title": "MetricResult",
+        "type": "object"
+      },
+      "NeedsClarification": {
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "const": "needs_clarification",
+            "default": "needs_clarification",
+            "title": "Kind",
+            "type": "string"
+          },
+          "missing_fields": {
+            "items": {
+              "maxLength": 80,
+              "type": "string"
+            },
+            "maxItems": 5,
+            "minItems": 1,
+            "title": "Missing Fields",
+            "type": "array"
+          },
+          "question": {
+            "maxLength": 240,
+            "minLength": 5,
+            "title": "Question",
+            "type": "string"
+          }
+        },
+        "required": [
+          "missing_fields",
+          "question"
+        ],
+        "title": "NeedsClarification",
+        "type": "object"
+      },
+      "ResolvedLocation": {
+        "additionalProperties": false,
+        "properties": {
+          "place_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9_.:-]+$",
+            "title": "Place Id",
+            "type": "string"
+          },
+          "display_name": {
+            "maxLength": 200,
+            "title": "Display Name",
+            "type": "string"
+          },
+          "longitude": {
+            "maximum": 180,
+            "minimum": -180,
+            "title": "Longitude",
+            "type": "number"
+          },
+          "latitude": {
+            "maximum": 90,
+            "minimum": -90,
+            "title": "Latitude",
+            "type": "number"
+          },
+          "easting": {
+            "title": "Easting",
+            "type": "integer"
+          },
+          "northing": {
+            "title": "Northing",
+            "type": "integer"
+          },
+          "coordinate_basis": {
+            "maxLength": 200,
+            "title": "Coordinate Basis",
+            "type": "string"
+          },
+          "resolver_provenance": {
+            "maxLength": 200,
+            "title": "Resolver Provenance",
+            "type": "string"
+          },
+          "ambiguity_status": {
+            "const": "resolved_reference_point",
+            "default": "resolved_reference_point",
+            "title": "Ambiguity Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "place_id",
+          "display_name",
+          "longitude",
+          "latitude",
+          "easting",
+          "northing",
+          "coordinate_basis",
+          "resolver_provenance"
+        ],
+        "title": "ResolvedLocation",
+        "type": "object"
+      },
+      "RunSummary": {
+        "additionalProperties": false,
+        "properties": {
+          "run_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9_.:-]+$",
+            "title": "Run Id",
+            "type": "string"
+          },
+          "model": {
+            "title": "Model",
+            "type": "string"
+          },
+          "model_version": {
+            "title": "Model Version",
+            "type": "string"
+          },
+          "classifier": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/ClassifierSuggestion"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "tools": {
+            "items": {
+              "$ref": "#/$defs/ToolEvent"
+            },
+            "maxItems": 20,
+            "title": "Tools",
+            "type": "array"
+          },
+          "validation_repairs": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 10,
+            "title": "Validation Repairs",
+            "type": "array"
+          },
+          "usage": {
+            "additionalProperties": true,
+            "title": "Usage",
+            "type": "object"
+          },
+          "elapsed_seconds": {
+            "title": "Elapsed Seconds",
+            "type": "number"
+          },
+          "outcome": {
+            "title": "Outcome",
+            "type": "string"
+          },
+          "data_hashes": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Data Hashes",
+            "type": "object"
+          },
+          "prompt_hash": {
+            "title": "Prompt Hash",
+            "type": "string"
+          },
+          "code_commit": {
+            "title": "Code Commit",
+            "type": "string"
+          }
+        },
+        "required": [
+          "run_id",
+          "model",
+          "model_version",
+          "usage",
+          "elapsed_seconds",
+          "outcome",
+          "data_hashes",
+          "prompt_hash",
+          "code_commit"
+        ],
+        "title": "RunSummary",
+        "type": "object"
+      },
+      "SourceNotes": {
+        "additionalProperties": false,
+        "properties": {
+          "source_id": {
+            "enum": [
+              "dft_stats19_2025_final",
+              "ccc_2017_2026h1_20260907"
+            ],
+            "title": "Source Id",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "url": {
+            "title": "Url",
+            "type": "string"
+          },
+          "period": {
+            "title": "Period",
+            "type": "string"
+          },
+          "geography": {
+            "default": "Cambridge district (E07000008)",
+            "title": "Geography",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "national final",
+              "local provisional snapshot"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "caution": {
+            "title": "Caution",
+            "type": "string"
+          }
+        },
+        "required": [
+          "source_id",
+          "title",
+          "url",
+          "period",
+          "status",
+          "caution"
+        ],
+        "title": "SourceNotes",
+        "type": "object"
+      },
+      "ToolEvent": {
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "inputs": {
+            "additionalProperties": true,
+            "title": "Inputs",
+            "type": "object"
+          },
+          "output": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "items": {},
+                "type": "array"
+              }
+            ],
+            "title": "Output"
+          }
+        },
+        "required": [
+          "name",
+          "inputs",
+          "output"
+        ],
+        "title": "ToolEvent",
+        "type": "object"
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "output": {
+        "discriminator": {
+          "mapping": {
+            "evidence_answer": "#/$defs/EvidenceAnswer",
+            "inspection_brief": "#/$defs/InspectionBrief",
+            "needs_clarification": "#/$defs/NeedsClarification"
+          },
+          "propertyName": "kind"
+        },
+        "oneOf": [
+          {
+            "$ref": "#/$defs/EvidenceAnswer"
+          },
+          {
+            "$ref": "#/$defs/InspectionBrief"
+          },
+          {
+            "$ref": "#/$defs/NeedsClarification"
+          }
+        ],
+        "title": "Output"
+      },
+      "evidence": {
+        "$ref": "#/$defs/EvidenceBundle"
+      },
+      "run": {
+        "$ref": "#/$defs/RunSummary"
+      }
+    },
+    "required": [
+      "output",
+      "evidence",
+      "run"
+    ],
+    "title": "AnalysisResult",
+    "type": "object"
+  },
+  "OfficerQuestion": {
+    "additionalProperties": false,
+    "properties": {
+      "question": {
+        "maxLength": 2000,
+        "minLength": 3,
+        "title": "Question",
+        "type": "string"
+      },
+      "report_id": {
+        "anyOf": [
+          {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9_.:-]+$",
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Report Id"
+      }
+    },
+    "required": [
+      "question"
+    ],
+    "title": "OfficerQuestion",
+    "type": "object"
+  },
+  "JobResult": {
+    "$defs": {
+      "AnalysisResult": {
+        "additionalProperties": false,
+        "properties": {
+          "output": {
+            "discriminator": {
+              "mapping": {
+                "evidence_answer": "#/$defs/EvidenceAnswer",
+                "inspection_brief": "#/$defs/InspectionBrief",
+                "needs_clarification": "#/$defs/NeedsClarification"
+              },
+              "propertyName": "kind"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/$defs/EvidenceAnswer"
+              },
+              {
+                "$ref": "#/$defs/InspectionBrief"
+              },
+              {
+                "$ref": "#/$defs/NeedsClarification"
+              }
+            ],
+            "title": "Output"
+          },
+          "evidence": {
+            "$ref": "#/$defs/EvidenceBundle"
+          },
+          "run": {
+            "$ref": "#/$defs/RunSummary"
+          }
+        },
+        "required": [
+          "output",
+          "evidence",
+          "run"
+        ],
+        "title": "AnalysisResult",
+        "type": "object"
+      },
+      "ClassifierSuggestion": {
+        "additionalProperties": false,
+        "properties": {
+          "model": {
+            "default": "fastino/gliner2.5-base-v1",
+            "title": "Model",
+            "type": "string"
+          },
+          "revision": {
+            "default": "78cea040597df251eedefa9d7ee2a756af39fe64",
+            "title": "Revision",
+            "type": "string"
+          },
+          "issue_label": {
+            "maxLength": 100,
+            "title": "Issue Label",
+            "type": "string"
+          },
+          "entities": {
+            "items": {
+              "$ref": "#/$defs/EntitySpan"
+            },
+            "maxItems": 50,
+            "title": "Entities",
+            "type": "array"
+          },
+          "runtime_seconds": {
+            "minimum": 0,
+            "title": "Runtime Seconds",
+            "type": "number"
+          },
+          "confidence": {
+            "anyOf": [
+              {
+                "maximum": 1,
+                "minimum": 0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Confidence"
+          }
+        },
+        "required": [
+          "issue_label",
+          "runtime_seconds"
+        ],
+        "title": "ClassifierSuggestion",
+        "type": "object"
+      },
+      "CollisionEvidence": {
+        "additionalProperties": false,
+        "properties": {
+          "reference_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9_.:-]+$",
+            "title": "Reference Id",
+            "type": "string"
+          },
+          "location": {
+            "$ref": "#/$defs/ResolvedLocation"
+          },
+          "radius_metres": {
+            "enum": [
+              50,
+              100,
+              250
+            ],
+            "title": "Radius Metres",
+            "type": "integer"
+          },
+          "start": {
+            "format": "date",
+            "title": "Start",
+            "type": "string"
+          },
+          "end": {
+            "format": "date",
+            "title": "End",
+            "type": "string"
+          },
+          "collision_count": {
+            "title": "Collision Count",
+            "type": "integer"
+          },
+          "casualty_total": {
+            "title": "Casualty Total",
+            "type": "integer"
+          },
+          "records": {
+            "items": {
+              "$ref": "#/$defs/CollisionRecord"
+            },
+            "maxItems": 300,
+            "title": "Records",
+            "type": "array"
+          },
+          "note": {
+            "default": "Projected EPSG:27700 radius, not an exact junction boundary. Historical evidence does not establish causation or present conditions.",
+            "title": "Note",
+            "type": "string"
+          }
+        },
+        "required": [
+          "reference_id",
+          "location",
+          "radius_metres",
+          "start",
+          "end",
+          "collision_count",
+          "casualty_total",
+          "records"
+        ],
+        "title": "CollisionEvidence",
+        "type": "object"
+      },
+      "CollisionRecord": {
+        "additionalProperties": false,
+        "properties": {
+          "reference_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9_.:-]+$",
+            "title": "Reference Id",
+            "type": "string"
+          },
+          "collision_id": {
+            "title": "Collision Id",
+            "type": "string"
+          },
+          "date": {
+            "format": "date",
+            "title": "Date",
+            "type": "string"
+          },
+          "latitude": {
+            "title": "Latitude",
+            "type": "number"
+          },
+          "longitude": {
+            "title": "Longitude",
+            "type": "number"
+          },
+          "severity": {
+            "title": "Severity",
+            "type": "string"
+          },
+          "casualty_count": {
+            "minimum": 0,
+            "title": "Casualty Count",
+            "type": "integer"
+          },
+          "location_text": {
+            "title": "Location Text",
+            "type": "string"
+          },
+          "junction_detail": {
+            "title": "Junction Detail",
+            "type": "string"
+          },
+          "crossing": {
+            "title": "Crossing",
+            "type": "string"
+          },
+          "source_id": {
+            "enum": [
+              "dft_stats19_2025_final",
+              "ccc_2017_2026h1_20260907"
+            ],
+            "title": "Source Id",
+            "type": "string"
+          },
+          "provisional": {
+            "title": "Provisional",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "reference_id",
+          "collision_id",
+          "date",
+          "latitude",
+          "longitude",
+          "severity",
+          "casualty_count",
+          "location_text",
+          "junction_detail",
+          "crossing",
+          "source_id",
+          "provisional"
+        ],
+        "title": "CollisionRecord",
+        "type": "object"
+      },
+      "EntitySpan": {
+        "additionalProperties": false,
+        "properties": {
+          "text": {
+            "maxLength": 300,
+            "title": "Text",
+            "type": "string"
+          },
+          "start": {
+            "maximum": 4000,
+            "minimum": 0,
+            "title": "Start",
+            "type": "integer"
+          },
+          "end": {
+            "maximum": 4000,
+            "minimum": 0,
+            "title": "End",
+            "type": "integer"
+          },
+          "confidence": {
+            "anyOf": [
+              {
+                "maximum": 1,
+                "minimum": 0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Confidence"
+          }
+        },
+        "required": [
+          "text",
+          "start",
+          "end"
+        ],
+        "title": "EntitySpan",
+        "type": "object"
+      },
+      "EvidenceAnswer": {
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "const": "evidence_answer",
+            "default": "evidence_answer",
+            "title": "Kind",
+            "type": "string"
+          },
+          "metric_refs": {
+            "items": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[a-zA-Z0-9_.:-]+$",
+              "type": "string"
+            },
+            "maxItems": 10,
+            "title": "Metric Refs",
+            "type": "array"
+          },
+          "record_refs": {
+            "items": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[a-zA-Z0-9_.:-]+$",
+              "type": "string"
+            },
+            "maxItems": 20,
+            "title": "Record Refs",
+            "type": "array"
+          },
+          "limitations": {
+            "items": {
+              "enum": [
+                "no_causal_evidence",
+                "no_exposure_denominator",
+                "current_imagery_not_supplied",
+                "overlapping_sources",
+                "historic_conditions",
+                "unverified_resident_observation"
+              ],
+              "type": "string"
+            },
+            "maxItems": 6,
+            "title": "Limitations",
+            "type": "array"
+          },
+          "inspection_checks": {
+            "items": {
+              "enum": [
+                "check_current_sightlines",
+                "observe_crossing_access",
+                "check_surface_condition",
+                "check_signal_or_lighting",
+                "measure_speeds_and_exposure",
+                "verify_location_on_site"
+              ],
+              "type": "string"
+            },
+            "maxItems": 6,
+            "title": "Inspection Checks",
+            "type": "array"
+          }
+        },
+        "title": "EvidenceAnswer",
+        "type": "object"
+      },
+      "EvidenceBundle": {
+        "additionalProperties": false,
+        "properties": {
+          "metrics": {
+            "items": {
+              "$ref": "#/$defs/MetricResult"
+            },
+            "maxItems": 10,
+            "title": "Metrics",
+            "type": "array"
+          },
+          "records": {
+            "items": {
+              "$ref": "#/$defs/CollisionRecord"
+            },
+            "maxItems": 300,
+            "title": "Records",
+            "type": "array"
+          },
+          "nearby": {
+            "items": {
+              "$ref": "#/$defs/CollisionEvidence"
+            },
+            "maxItems": 5,
+            "title": "Nearby",
+            "type": "array"
+          },
+          "sources": {
+            "items": {
+              "$ref": "#/$defs/SourceNotes"
+            },
+            "maxItems": 2,
+            "title": "Sources",
+            "type": "array"
+          },
+          "unknowns": {
+            "items": {
+              "enum": [
+                "no_causal_evidence",
+                "no_exposure_denominator",
+                "current_imagery_not_supplied",
+                "overlapping_sources",
+                "historic_conditions",
+                "unverified_resident_observation"
+              ],
+              "type": "string"
+            },
+            "maxItems": 6,
+            "title": "Unknowns",
+            "type": "array"
+          }
+        },
+        "required": [
+          "sources"
+        ],
+        "title": "EvidenceBundle",
+        "type": "object"
+      },
+      "EvidenceQuery": {
+        "additionalProperties": false,
+        "properties": {
+          "source_id": {
+            "default": "dft_stats19_2025_final",
+            "enum": [
+              "dft_stats19_2025_final",
+              "ccc_2017_2026h1_20260907"
+            ],
+            "title": "Source Id",
+            "type": "string"
+          },
+          "geography": {
+            "const": "E07000008",
+            "default": "E07000008",
+            "title": "Geography",
+            "type": "string"
+          },
+          "start": {
+            "default": "2025-01-01",
+            "format": "date",
+            "title": "Start",
+            "type": "string"
+          },
+          "end": {
+            "default": "2025-12-31",
+            "format": "date",
+            "title": "End",
+            "type": "string"
+          },
+          "unit": {
+            "default": "people",
+            "enum": [
+              "people",
+              "collisions",
+              "people with known age",
+              "people in that collision"
+            ],
+            "title": "Unit",
+            "type": "string"
+          },
+          "road_user": {
+            "default": "all",
+            "enum": [
+              "all",
+              "cyclist",
+              "pedestrian"
+            ],
+            "title": "Road User",
+            "type": "string"
+          },
+          "severity": {
+            "default": "all",
+            "enum": [
+              "all",
+              "serious",
+              "slight"
+            ],
+            "title": "Severity",
+            "type": "string"
+          },
+          "age": {
+            "default": "all",
+            "enum": [
+              "all",
+              "under16",
+              "unknown"
+            ],
+            "title": "Age",
+            "type": "string"
+          },
+          "collision_id": {
+            "anyOf": [
+              {
+                "maxLength": 40,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Collision Id"
+          },
+          "place_id": {
+            "anyOf": [
+              {
+                "maxLength": 128,
+                "minLength": 1,
+                "pattern": "^[a-zA-Z0-9_.:-]+$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Place Id"
+          },
+          "radius_metres": {
+            "default": 100,
+            "enum": [
+              50,
+              100,
+              250
+            ],
+            "title": "Radius Metres",
+            "type": "integer"
+          }
+        },
+        "title": "EvidenceQuery",
+        "type": "object"
+      },
+      "InspectionBrief": {
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "const": "inspection_brief",
+            "default": "inspection_brief",
+            "title": "Kind",
+            "type": "string"
+          },
+          "metric_refs": {
+            "items": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[a-zA-Z0-9_.:-]+$",
+              "type": "string"
+            },
+            "maxItems": 10,
+            "title": "Metric Refs",
+            "type": "array"
+          },
+          "record_refs": {
+            "items": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[a-zA-Z0-9_.:-]+$",
+              "type": "string"
+            },
+            "maxItems": 20,
+            "title": "Record Refs",
+            "type": "array"
+          },
+          "limitations": {
+            "items": {
+              "enum": [
+                "no_causal_evidence",
+                "no_exposure_denominator",
+                "current_imagery_not_supplied",
+                "overlapping_sources",
+                "historic_conditions",
+                "unverified_resident_observation"
+              ],
+              "type": "string"
+            },
+            "maxItems": 6,
+            "title": "Limitations",
+            "type": "array"
+          },
+          "inspection_checks": {
+            "items": {
+              "enum": [
+                "check_current_sightlines",
+                "observe_crossing_access",
+                "check_surface_condition",
+                "check_signal_or_lighting",
+                "measure_speeds_and_exposure",
+                "verify_location_on_site"
+              ],
+              "type": "string"
+            },
+            "maxItems": 6,
+            "title": "Inspection Checks",
+            "type": "array"
+          },
+          "resident_concern": {
+            "maxLength": 1000,
+            "title": "Resident Concern",
+            "type": "string"
+          }
+        },
+        "required": [
+          "resident_concern"
+        ],
+        "title": "InspectionBrief",
+        "type": "object"
+      },
+      "MetricResult": {
+        "additionalProperties": false,
+        "properties": {
+          "reference_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9_.:-]+$",
+            "title": "Reference Id",
+            "type": "string"
+          },
+          "value": {
+            "minimum": 0,
+            "title": "Value",
+            "type": "integer"
+          },
+          "unit": {
+            "title": "Unit",
+            "type": "string"
+          },
+          "period_start": {
+            "format": "date",
+            "title": "Period Start",
+            "type": "string"
+          },
+          "period_end": {
+            "format": "date",
+            "title": "Period End",
+            "type": "string"
+          },
+          "geography": {
+            "default": "Cambridge district (E07000008)",
+            "title": "Geography",
+            "type": "string"
+          },
+          "source_id": {
+            "enum": [
+              "dft_stats19_2025_final",
+              "ccc_2017_2026h1_20260907"
+            ],
+            "title": "Source Id",
+            "type": "string"
+          },
+          "provisional": {
+            "title": "Provisional",
+            "type": "boolean"
+          },
+          "query_hash": {
+            "title": "Query Hash",
+            "type": "string"
+          },
+          "row_ids": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 5000,
+            "title": "Row Ids",
+            "type": "array"
+          },
+          "query": {
+            "$ref": "#/$defs/EvidenceQuery"
+          }
+        },
+        "required": [
+          "reference_id",
+          "value",
+          "unit",
+          "period_start",
+          "period_end",
+          "source_id",
+          "provisional",
+          "query_hash",
+          "row_ids",
+          "query"
+        ],
+        "title": "MetricResult",
+        "type": "object"
+      },
+      "NeedsClarification": {
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "const": "needs_clarification",
+            "default": "needs_clarification",
+            "title": "Kind",
+            "type": "string"
+          },
+          "missing_fields": {
+            "items": {
+              "maxLength": 80,
+              "type": "string"
+            },
+            "maxItems": 5,
+            "minItems": 1,
+            "title": "Missing Fields",
+            "type": "array"
+          },
+          "question": {
+            "maxLength": 240,
+            "minLength": 5,
+            "title": "Question",
+            "type": "string"
+          }
+        },
+        "required": [
+          "missing_fields",
+          "question"
+        ],
+        "title": "NeedsClarification",
+        "type": "object"
+      },
+      "ResolvedLocation": {
+        "additionalProperties": false,
+        "properties": {
+          "place_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9_.:-]+$",
+            "title": "Place Id",
+            "type": "string"
+          },
+          "display_name": {
+            "maxLength": 200,
+            "title": "Display Name",
+            "type": "string"
+          },
+          "longitude": {
+            "maximum": 180,
+            "minimum": -180,
+            "title": "Longitude",
+            "type": "number"
+          },
+          "latitude": {
+            "maximum": 90,
+            "minimum": -90,
+            "title": "Latitude",
+            "type": "number"
+          },
+          "easting": {
+            "title": "Easting",
+            "type": "integer"
+          },
+          "northing": {
+            "title": "Northing",
+            "type": "integer"
+          },
+          "coordinate_basis": {
+            "maxLength": 200,
+            "title": "Coordinate Basis",
+            "type": "string"
+          },
+          "resolver_provenance": {
+            "maxLength": 200,
+            "title": "Resolver Provenance",
+            "type": "string"
+          },
+          "ambiguity_status": {
+            "const": "resolved_reference_point",
+            "default": "resolved_reference_point",
+            "title": "Ambiguity Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "place_id",
+          "display_name",
+          "longitude",
+          "latitude",
+          "easting",
+          "northing",
+          "coordinate_basis",
+          "resolver_provenance"
+        ],
+        "title": "ResolvedLocation",
+        "type": "object"
+      },
+      "RunSummary": {
+        "additionalProperties": false,
+        "properties": {
+          "run_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9_.:-]+$",
+            "title": "Run Id",
+            "type": "string"
+          },
+          "model": {
+            "title": "Model",
+            "type": "string"
+          },
+          "model_version": {
+            "title": "Model Version",
+            "type": "string"
+          },
+          "classifier": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/ClassifierSuggestion"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "tools": {
+            "items": {
+              "$ref": "#/$defs/ToolEvent"
+            },
+            "maxItems": 20,
+            "title": "Tools",
+            "type": "array"
+          },
+          "validation_repairs": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 10,
+            "title": "Validation Repairs",
+            "type": "array"
+          },
+          "usage": {
+            "additionalProperties": true,
+            "title": "Usage",
+            "type": "object"
+          },
+          "elapsed_seconds": {
+            "title": "Elapsed Seconds",
+            "type": "number"
+          },
+          "outcome": {
+            "title": "Outcome",
+            "type": "string"
+          },
+          "data_hashes": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Data Hashes",
+            "type": "object"
+          },
+          "prompt_hash": {
+            "title": "Prompt Hash",
+            "type": "string"
+          },
+          "code_commit": {
+            "title": "Code Commit",
+            "type": "string"
+          }
+        },
+        "required": [
+          "run_id",
+          "model",
+          "model_version",
+          "usage",
+          "elapsed_seconds",
+          "outcome",
+          "data_hashes",
+          "prompt_hash",
+          "code_commit"
+        ],
+        "title": "RunSummary",
+        "type": "object"
+      },
+      "SourceNotes": {
+        "additionalProperties": false,
+        "properties": {
+          "source_id": {
+            "enum": [
+              "dft_stats19_2025_final",
+              "ccc_2017_2026h1_20260907"
+            ],
+            "title": "Source Id",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "url": {
+            "title": "Url",
+            "type": "string"
+          },
+          "period": {
+            "title": "Period",
+            "type": "string"
+          },
+          "geography": {
+            "default": "Cambridge district (E07000008)",
+            "title": "Geography",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "national final",
+              "local provisional snapshot"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "caution": {
+            "title": "Caution",
+            "type": "string"
+          }
+        },
+        "required": [
+          "source_id",
+          "title",
+          "url",
+          "period",
+          "status",
+          "caution"
+        ],
+        "title": "SourceNotes",
+        "type": "object"
+      },
+      "ToolEvent": {
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "inputs": {
+            "additionalProperties": true,
+            "title": "Inputs",
+            "type": "object"
+          },
+          "output": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "items": {},
+                "type": "array"
+              }
+            ],
+            "title": "Output"
+          }
+        },
+        "required": [
+          "name",
+          "inputs",
+          "output"
+        ],
+        "title": "ToolEvent",
+        "type": "object"
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "version": {
+        "const": 1,
+        "default": 1,
+        "title": "Version",
+        "type": "integer"
+      },
+      "lease_token": {
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[a-zA-Z0-9_.:-]+$",
+        "title": "Lease Token",
+        "type": "string"
+      },
+      "result": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/AnalysisResult"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null
+      },
+      "error": {
+        "anyOf": [
+          {
+            "const": "analysis_unavailable",
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Error"
+      }
+    },
+    "required": [
+      "lease_token"
+    ],
+    "title": "JobResult",
+    "type": "object"
+  }
+}

@@ -1,0 +1,17 @@
+[Unit]
+Description=RoadLens with Gemini Live and Pydantic AI on Google AIY Voice HAT
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+WorkingDirectory=%h/aiy-gemini-live
+ExecStart=%h/aiy-gemini-live/.venv-roadlens/bin/python %h/aiy-gemini-live/aiy_gemini.py --roadlens
+Environment=PYTHONUNBUFFERED=1
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=10
+NoNewPrivileges=true
+UMask=0077
+
+[Install]
+WantedBy=default.target

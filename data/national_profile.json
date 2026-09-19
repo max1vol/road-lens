@@ -1,0 +1,489 @@
+{
+  "national_collisions": 101525,
+  "national_casualties": 127883,
+  "collision_key_duplicates": 0,
+  "casualty_key_duplicates": 0,
+  "national_orphan_casualties": 0,
+  "cambridge_collisions": 215,
+  "cambridge_casualties": 249,
+  "cambridge_dates": [
+    "2025-01-06 00:00:00",
+    "2025-12-22 00:00:00"
+  ],
+  "cambridge_collision_severity": {
+    "3": 163,
+    "2": 52
+  },
+  "cambridge_casualty_severity": {
+    "3": 194,
+    "2": 55
+  },
+  "cambridge_casualty_modes": {
+    "1": 121,
+    "9": 58,
+    "0": 32,
+    "-1": 13,
+    "3": 13,
+    "8": 4,
+    "19": 3,
+    "5": 3,
+    "90": 1,
+    "97": 1
+  },
+  "cambridge_children_under16": 15,
+  "cambridge_child_modes": {
+    "1": 7,
+    "0": 4,
+    "9": 2,
+    "-1": 1,
+    "90": 1
+  },
+  "cambridge_child_severity": {
+    "3": 10,
+    "2": 5
+  },
+  "casualty_sum_matches": true,
+  "collision_profile": {
+    "collision_index": {
+      "empty": 0,
+      "minus1": 0,
+      "distinct": 215
+    },
+    "collision_year": {
+      "empty": 0,
+      "minus1": 0,
+      "distinct": 1
+    },
+    "collision_ref_no": {
+      "empty": 0,
+      "minus1": 0,
+      "distinct": 215
+    },
+    "location_easting_osgr": {
+      "empty": 0,
+      "minus1": 0,
+      "distinct": 210
+    },
+    "location_northing_osgr": {
+      "empty": 0,
+      "minus1": 0,
+      "distinct": 207
+    },
+    "longitude": {
+      "empty": 0,
+      "minus1": 0,
+      "distinct": 210
+    },
+    "latitude": {
+      "empty": 0,
+      "minus1": 0,
+      "distinct": 207
+    },
+    "police_force": {
+      "empty": 0,
+      "minus1": 0,
+      "distinct": 1
+    },
+    "collision_severity": {
+      "empty": 0,
+      "minus1": 0,
+      "distinct": 2
+    },
+    "number_of_vehicles": {
+      "empty": 0,
+      "minus1": 0,
+      "distinct": 6
+    },
+    "number_of_casualties": {
+      "empty": 0,
+      "minus1": 0,
+      "distinct": 6
+    },
+    "date": {
+      "empty": 0,
+      "minus1": 0,
+      "distinct": 164
+    },
+    "day_of_week": {
+      "empty": 0,
+      "minus1": 0,
+      "distinct": 7
+    },
+    "time": {
+      "empty": 0,
+      "minus1": 0,
+      "distinct": 181
+    },
+    "local_authority_district": {
+      "empty": 0,
+      "minus1": 215,
+      "distinct": 1
+    },
+    "local_authority_ons_district": {
+      "empty": 0,
+      "minus1": 0,
+      "distinct": 1
+    },
+    "local_authority_highway": {
+      "empty": 0,
+      "minus1": 0,
+      "distinct": 1
+    },
+    "local_authority_highway_current": {
+      "empty": 0,
+      "minus1": 0,
+      "distinct": 1
+    },
+    "first_road_class": {
+      "empty": 0,
+      "minus1": 0,
+      "distinct": 4
+    },
+    "first_road_number": {
+      "empty": 0,
+      "minus1": 0,
+      "distinct": 10
+    },
+    "road_type": {
+      "empty": 0,
+      "minus1": 0,
+      "distinct": 4
+    },
+    "speed_limit": {
+      "empty": 0,
+      "minus1": 0,
+      "distinct": 5
+    },
+    "junction_detail_historic": {
+      "empty": 0,
+      "minus1": 215,
+      "distinct": 1
+    },
+    "junction_detail": {
+      "empty": 0,
+      "minus1": 30,
+      "distinct": 6
+    },
+    "junction_control": {
+      "empty": 0,
+      "minus1": 85,
+      "distinct": 6
+    },
+    "second_road_class": {
+      "empty": 0,
+      "minus1": 0,
+      "distinct": 4
+    },
+    "second_road_number": {
+      "empty": 0,
+      "minus1": 19,
+      "distinct": 9
+    },
+    "pedestrian_crossing_human_control_historic": {
+      "empty": 0,
+      "minus1": 215,
+      "distinct": 1
+    },
+    "pedestrian_crossing_physical_facilities_historic": {
+      "empty": 0,
+      "minus1": 215,
+      "distinct": 1
+    },
+    "pedestrian_crossing": {
+      "empty": 0,
+      "minus1": 28,
+      "distinct": 6
+    },
+    "light_conditions": {
+      "empty": 0,
+      "minus1": 0,
+      "distinct": 4
+    },
+    "weather_conditions": {
+      "empty": 0,
+      "minus1": 0,
+      "distinct": 7
+    },
+    "road_surface_conditions": {
+      "empty": 0,
+      "minus1": 7,
+      "distinct": 4
+    },
+    "special_conditions_at_site": {
+      "empty": 0,
+      "minus1": 215,
+      "distinct": 1
+    },
+    "carriageway_hazards_historic": {
+      "empty": 0,
+      "minus1": 215,
+      "distinct": 1
+    },
+    "carriageway_hazards": {
+      "empty": 0,
+      "minus1": 22,
+      "distinct": 4
+    },
+    "urban_or_rural_area": {
+      "empty": 0,
+      "minus1": 0,
+      "distinct": 2
+    },
+    "did_police_officer_attend_scene_of_accident": {
+      "empty": 0,
+      "minus1": 0,
+      "distinct": 3
+    },
+    "trunk_road_flag": {
+      "empty": 0,
+      "minus1": 0,
+      "distinct": 2
+    },
+    "lsoa_of_accident_location": {
+      "empty": 0,
+      "minus1": 0,
+      "distinct": 61
+    },
+    "enhanced_severity_collision": {
+      "empty": 0,
+      "minus1": 0,
+      "distinct": 4
+    },
+    "collision_injury_based": {
+      "empty": 0,
+      "minus1": 0,
+      "distinct": 1
+    },
+    "collision_adjusted_severity_serious": {
+      "empty": 0,
+      "minus1": 0,
+      "distinct": 2
+    },
+    "collision_adjusted_severity_slight": {
+      "empty": 0,
+      "minus1": 0,
+      "distinct": 2
+    }
+  },
+  "casualty_profile": {
+    "collision_index": {
+      "empty": 0,
+      "minus1": 0,
+      "distinct": 215
+    },
+    "collision_year": {
+      "empty": 0,
+      "minus1": 0,
+      "distinct": 1
+    },
+    "collision_ref_no": {
+      "empty": 0,
+      "minus1": 0,
+      "distinct": 215
+    },
+    "vehicle_reference": {
+      "empty": 0,
+      "minus1": 0,
+      "distinct": 6
+    },
+    "casualty_reference": {
+      "empty": 0,
+      "minus1": 0,
+      "distinct": 6
+    },
+    "casualty_class": {
+      "empty": 0,
+      "minus1": 0,
+      "distinct": 3
+    },
+    "sex_of_casualty": {
+      "empty": 0,
+      "minus1": 4,
+      "distinct": 3
+    },
+    "age_of_casualty": {
+      "empty": 0,
+      "minus1": 9,
+      "distinct": 67
+    },
+    "age_band_of_casualty": {
+      "empty": 0,
+      "minus1": 9,
+      "distinct": 11
+    },
+    "casualty_severity": {
+      "empty": 0,
+      "minus1": 0,
+      "distinct": 2
+    },
+    "pedestrian_location": {
+      "empty": 0,
+      "minus1": 0,
+      "distinct": 8
+    },
+    "pedestrian_movement": {
+      "empty": 0,
+      "minus1": 0,
+      "distinct": 7
+    },
+    "car_passenger": {
+      "empty": 0,
+      "minus1": 1,
+      "distinct": 4
+    },
+    "bus_or_coach_passenger": {
+      "empty": 0,
+      "minus1": 0,
+      "distinct": 1
+    },
+    "pedestrian_road_maintenance_worker": {
+      "empty": 0,
+      "minus1": 32,
+      "distinct": 2
+    },
+    "casualty_type": {
+      "empty": 0,
+      "minus1": 13,
+      "distinct": 10
+    },
+    "casualty_imd_decile": {
+      "empty": 0,
+      "minus1": 13,
+      "distinct": 11
+    },
+    "lsoa_of_casualty": {
+      "empty": 0,
+      "minus1": 13,
+      "distinct": 135
+    },
+    "enhanced_casualty_severity": {
+      "empty": 0,
+      "minus1": 0,
+      "distinct": 4
+    },
+    "casualty_injury_based": {
+      "empty": 0,
+      "minus1": 0,
+      "distinct": 1
+    },
+    "casualty_adjusted_severity_serious": {
+      "empty": 0,
+      "minus1": 0,
+      "distinct": 2
+    },
+    "casualty_adjusted_severity_slight": {
+      "empty": 0,
+      "minus1": 0,
+      "distinct": 2
+    },
+    "casualty_distance_banding": {
+      "empty": 0,
+      "minus1": 13,
+      "distinct": 6
+    }
+  },
+  "cambridge_bounds": {
+    "longitude": [
+      0.0771,
+      0.17811
+    ],
+    "latitude": [
+      52.16,
+      52.23378
+    ]
+  },
+  "sample_collisions": [
+    {
+      "collision_index": "2025351558039",
+      "collision_year": "2025",
+      "collision_ref_no": "351558039",
+      "location_easting_osgr": "548065",
+      "location_northing_osgr": "254898",
+      "longitude": "0.16377",
+      "latitude": "52.17248",
+      "police_force": "35",
+      "collision_severity": "3",
+      "number_of_vehicles": "1",
+      "number_of_casualties": "1",
+      "date": "01/02/2025",
+      "day_of_week": "7",
+      "time": "11:36",
+      "local_authority_district": "-1",
+      "local_authority_ons_district": "E07000008",
+      "local_authority_highway": "E10000003",
+      "local_authority_highway_current": "E10000003",
+      "first_road_class": "6",
+      "first_road_number": "0",
+      "road_type": "6",
+      "speed_limit": "60",
+      "junction_detail_historic": "-1",
+      "junction_detail": "13",
+      "junction_control": "4",
+      "second_road_class": "6",
+      "second_road_number": "0",
+      "pedestrian_crossing_human_control_historic": "-1",
+      "pedestrian_crossing_physical_facilities_historic": "-1",
+      "pedestrian_crossing": "0",
+      "light_conditions": "1",
+      "weather_conditions": "1",
+      "road_surface_conditions": "2",
+      "special_conditions_at_site": "-1",
+      "carriageway_hazards_historic": "-1",
+      "carriageway_hazards": "0",
+      "urban_or_rural_area": "2",
+      "did_police_officer_attend_scene_of_accident": "1",
+      "trunk_road_flag": "2",
+      "lsoa_of_accident_location": "E01017995",
+      "enhanced_severity_collision": "3",
+      "collision_injury_based": "1",
+      "collision_adjusted_severity_serious": "0",
+      "collision_adjusted_severity_slight": "1"
+    },
+    {
+      "collision_index": "2025351572750",
+      "collision_year": "2025",
+      "collision_ref_no": "351572750",
+      "location_easting_osgr": "546263",
+      "location_northing_osgr": "256336",
+      "longitude": "0.13806",
+      "latitude": "52.18588",
+      "police_force": "35",
+      "collision_severity": "2",
+      "number_of_vehicles": "2",
+      "number_of_casualties": "1",
+      "date": "01/04/2025",
+      "day_of_week": "3",
+      "time": "08:20",
+      "local_authority_district": "-1",
+      "local_authority_ons_district": "E07000008",
+      "local_authority_highway": "E10000003",
+      "local_authority_highway_current": "E10000003",
+      "first_road_class": "3",
+      "first_road_number": "1307",
+      "road_type": "6",
+      "speed_limit": "20",
+      "junction_detail_historic": "-1",
+      "junction_detail": "13",
+      "junction_control": "4",
+      "second_road_class": "6",
+      "second_road_number": "0",
+      "pedestrian_crossing_human_control_historic": "-1",
+      "pedestrian_crossing_physical_facilities_historic": "-1",
+      "pedestrian_crossing": "14",
+      "light_conditions": "1",
+      "weather_conditions": "1",
+      "road_surface_conditions": "1",
+      "special_conditions_at_site": "-1",
+      "carriageway_hazards_historic": "-1",
+      "carriageway_hazards": "0",
+      "urban_or_rural_area": "1",
+      "did_police_officer_attend_scene_of_accident": "3",
+      "trunk_road_flag": "2",
+      "lsoa_of_accident_location": "E01017996",
+      "enhanced_severity_collision": "7",
+      "collision_injury_based": "1",
+      "collision_adjusted_severity_serious": "1",
+      "collision_adjusted_severity_slight": "0"
+    }
+  ]
+}

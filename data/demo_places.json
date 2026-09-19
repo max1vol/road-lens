@@ -1,0 +1,87 @@
+[
+  {
+    "place_id": "vicarage-st-matthews",
+    "name": "Vicarage Terrace / St Matthews Street",
+    "aliases": [
+      "Vicarage Terrace at St Matthews Street",
+      "Vicarage Terrace and Saint Matthew's Street"
+    ],
+    "longitude": 0.1377636787698084,
+    "latitude": 52.20534491089373,
+    "easting": 546179,
+    "northing": 258500,
+    "coordinate_basis": "historic collision reference point, approximate junction location",
+    "coordinate_source": "ccc_2017_2026h1_20260907:1737997",
+    "source_record": {
+      "local_ref": "1737997",
+      "location_text": "VICARAGE TERRACE AT JUNCTION WITH ST MATTHEWS STREET",
+      "date": "2026-04-13",
+      "easting": 546179,
+      "northing": 258500,
+      "longitude": 0.1377636787698084,
+      "latitude": 52.20534491089373,
+      "severity": "Serious",
+      "casualty_count": 2,
+      "junction_detail": "T or staggered junction",
+      "crossing": "No physical crossing facility within 50m",
+      "provisional": 1,
+      "source_id": "ccc_2017_2026h1_20260907"
+    }
+  },
+  {
+    "place_id": "sturton-new",
+    "name": "Sturton Street / New Street",
+    "aliases": [
+      "Sturton Street at New Street"
+    ],
+    "longitude": 0.1387630717217925,
+    "latitude": 52.20726006264166,
+    "easting": 546241,
+    "northing": 258715,
+    "coordinate_basis": "historic collision reference point, approximate junction location",
+    "coordinate_source": "ccc_2017_2026h1_20260907:1709483",
+    "source_record": {
+      "local_ref": "1709483",
+      "location_text": "STURTON STREET NEAR JUNCTION WITH NEW STREET, CAMBRIDGE, CAMBRIDGESHIRE",
+      "date": "2026-02-15",
+      "easting": 546241,
+      "northing": 258715,
+      "longitude": 0.1387630717217925,
+      "latitude": 52.20726006264166,
+      "severity": "Slight",
+      "casualty_count": 1,
+      "junction_detail": "",
+      "crossing": "Unknown (self-reported only)",
+      "provisional": 1,
+      "source_id": "ccc_2017_2026h1_20260907"
+    }
+  },
+  {
+    "place_id": "york-new",
+    "name": "York Street / New Street",
+    "aliases": [
+      "York Street at New Street"
+    ],
+    "longitude": 0.13983922664825893,
+    "latitude": 52.20742038727183,
+    "easting": 546314,
+    "northing": 258735,
+    "coordinate_basis": "historic collision reference point, approximate junction location",
+    "coordinate_source": "ccc_2017_2026h1_20260907:1185039",
+    "source_record": {
+      "local_ref": "1185039",
+      "location_text": "YORK STREET NEAR JUNCTION WITH NEW STREET, CAMBRIDGE, CAMBRIDGESHIRE",
+      "date": "2022-06-05",
+      "easting": 546314,
+      "northing": 258735,
+      "longitude": 0.13983922664825893,
+      "latitude": 52.20742038727183,
+      "severity": "Slight",
+      "casualty_count": 2,
+      "junction_detail": "Mini roundabout (no longer used)",
+      "crossing": "No physical crossing facility within 50m",
+      "provisional": 0,
+      "source_id": "ccc_2017_2026h1_20260907"
+    }
+  }
+]

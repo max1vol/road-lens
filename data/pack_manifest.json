@@ -1,0 +1,112 @@
+[
+  {
+    "file": "Cambridge_Data_Check.ipynb",
+    "bytes": 7967,
+    "sha256": "41fc524843f1d3e44315406f24fc46a2f1ddbeaa5f035e893636a8e47157f39d"
+  },
+  {
+    "file": "README.md",
+    "bytes": 6043,
+    "sha256": "e19a67beb6c3c37f25399895017309a1272e768c24a91f012b0dc13fa9eda937"
+  },
+  {
+    "file": "cambridgeshire_local.xlsx",
+    "bytes": 5953424,
+    "sha256": "675c8931d593c75b1bd47a67b4ee6698a9f301cbc7a9e18f2cc2c7daa508ecc7"
+  },
+  {
+    "file": "checks.py",
+    "bytes": 3420,
+    "sha256": "f501f73b16fbf1ce3bc3007186d9b74c37c539a9a460cfed622f37b6bf606f6a"
+  },
+  {
+    "file": "checks_results.json",
+    "bytes": 1608,
+    "sha256": "5b8ee8762abe50bed2e0cbad8f6058454104ea64ee4334ef1715b4b708bbbdf5"
+  },
+  {
+    "file": "data_guide_2025.xlsx",
+    "bytes": 81378,
+    "sha256": "5ee0d473e212ed50b2723ae52feeda86487861ed6a5a627b900f7b93c9bbf6b6"
+  },
+  {
+    "file": "downloads.json",
+    "bytes": 3041,
+    "sha256": "8c7637fd9d9c795255c9ed079671c9851075c63300aba1cefa400f03fe7efc50"
+  },
+  {
+    "file": "field_inventory.csv",
+    "bytes": 24889,
+    "sha256": "9f52fbaa719f8b130caa77e66d77118ebb8c0151808856c9bf12d064192e9e0b"
+  },
+  {
+    "file": "local_cambridge_casualties_2017_2026H1.csv",
+    "bytes": 411385,
+    "sha256": "2287ae6b06cdc7510e4f2696034f362b7cd3eacc32dac63597a121dc764cb41d"
+  },
+  {
+    "file": "local_cambridge_collisions_2017_2026H1.csv",
+    "bytes": 902397,
+    "sha256": "93e6aa55f9cb998b8b024cc7b781b25cf779008887f1bc7eb188d1f1d99498a5"
+  },
+  {
+    "file": "local_cambridge_vehicles_2017_2026H1.csv",
+    "bytes": 1654496,
+    "sha256": "23474716231f71b3a796c5e3c94e0efea9168ef7a89748f58f729e46216eb37d"
+  },
+  {
+    "file": "local_profile.json",
+    "bytes": 6333,
+    "sha256": "d1c7e8557e41046cb48892aa94df07ac6f26916c2eac5b2bf8381e3fd25bc380"
+  },
+  {
+    "file": "national_cambridge_casualties_2021_2025.csv",
+    "bytes": 111946,
+    "sha256": "d0702ecaaec3ef9b0f4f5976297bb4a92d446b75dce01a9eaf33daf167f12eb9"
+  },
+  {
+    "file": "national_cambridge_casualties_2025.csv",
+    "bytes": 20955,
+    "sha256": "f05f6426836067d4d919de42910dc3ac532ea0512efe8ea4bff831e396e6155d"
+  },
+  {
+    "file": "national_cambridge_casualtys_2025_decoded.csv",
+    "bytes": 26324,
+    "sha256": "b207222429ae4099cee22f82f9c0c81b5163e6ba921499d9e04f289b700d8f15"
+  },
+  {
+    "file": "national_cambridge_collisions_2021_2025.csv",
+    "bytes": 234405,
+    "sha256": "0160fab7bf4134a949f4d8e28da8e7818b1fcdfd9ffa9d54465441d7b9a35f94"
+  },
+  {
+    "file": "national_cambridge_collisions_2025.csv",
+    "bytes": 43666,
+    "sha256": "ab5d4fabe4162563261aeeb3c85274eb32e662c1d1c7c81ba74eb467bc1a7ce2"
+  },
+  {
+    "file": "national_cambridge_collisions_2025_decoded.csv",
+    "bytes": 66603,
+    "sha256": "d21b6c90ca33f3ceb8fcec0e2f5018c64b43f94cf222d1004846ac797e105acf"
+  },
+  {
+    "file": "national_cambridge_vehicles_2025.csv",
+    "bytes": 46957,
+    "sha256": "221ad0dd3318b529871e916c4df5255c6e3cbe0c82820dbdc867666862d1784a"
+  },
+  {
+    "file": "national_cambridge_vehicles_2025_decoded.csv",
+    "bytes": 63248,
+    "sha256": "476966e521b55ddb609d42e6e9b16d985a504c52f380654213dec4fc5a92f5c1"
+  },
+  {
+    "file": "national_profile.json",
+    "bytes": 10766,
+    "sha256": "b2f12d1efbd87c8475bdff22c8bb94c214aaed0b9638b085fad97e2f02d7726f"
+  },
+  {
+    "file": "source_comparison.json",
+    "bytes": 1082,
+    "sha256": "dbd4dfeed9d5178490374849d0ffc2396f72cf56fa62d37be2719cf8176ab8dd"
+  }
+]

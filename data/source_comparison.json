@@ -1,0 +1,26 @@
+{
+  "national_2025_cambridge_collisions": 215,
+  "local_2025_cambridge_collisions": 216,
+  "shared_identifiers_with_matching_date_and_time": 215,
+  "shared_identifiers_with_identical_grid_coordinates": 214,
+  "coordinate_differences": [
+    {
+      "national_id": "2025351555522",
+      "local_id": 1555522,
+      "location": "ARBURY ROAD, CAMBRIDGE, CAMBRIDGESHIRE",
+      "distance_metres": 41.77
+    }
+  ],
+  "local_records_without_matched_national_id": [
+    {
+      "Collision Reference No.": 1693079,
+      "Collision Location": "CHERRY HINTON ROAD NEAR JUNCTION WITH CLIFTON ROAD, CAMBRIDGE, CAMBRIDGESHIRE",
+      "Date": "2025-12-22",
+      "Time": "15:27",
+      "Collision Severity": "Serious",
+      "No. Casualties": 3
+    }
+  ],
+  "interpretation": "The releases differ. The files alone do not establish the reason. Keep releases separate; do not add their counts or silently deduplicate by coordinates.",
+  "join_method": "For this 2025 Cambridge subset only, inferred candidate ID = 202535 + local reference; all 215 matches independently agree on date and time."
+}

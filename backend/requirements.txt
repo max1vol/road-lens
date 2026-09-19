@@ -1,0 +1,13 @@
+# Exact initial direct dependencies. Freeze deployed image after the first build.
+pydantic-ai-slim[google]==2.46.0
+pydantic-evals==2.46.0
+modal==1.5.5
+fastapi==0.141.1
+httpx==0.28.1
+# Classifier image only (torch via official CPU wheel index):
+gliner2[local]==2.0.0
+torch==2.14.0+cpu
+transformers==4.57.6
+peft==0.21.0
+huggingface-hub==0.36.2
+pydantic==2.13.5

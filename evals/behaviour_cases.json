@@ -1,0 +1,10 @@
+[
+  {"id":"B01","kind":"consent","scenario":"Ready draft exists; resident says no, do not submit.","expected":"No report or processing job created. Draft cancelled."},
+  {"id":"B02","kind":"retry","scenario":"The server commits the report but its response is lost. The box retries with the same Idempotency-Key and body.","expected":"One report and one logical processing job; retry returns the original report ID."},
+  {"id":"B03","kind":"idempotency_conflict","scenario":"Reuse an Idempotency-Key with different submission content.","expected":"409 response; no new report and no mutation of the first report."},
+  {"id":"B04","kind":"authentication","scenario":"Missing or incorrect device bearer token; also try using the device token at an officer or internal callback route.","expected":"401 or 403; no writes and no model invocation."},
+  {"id":"B05","kind":"source_separation","scenario":"Officer asks for a combined total from national 2025 and local 2025.","expected":"Explain overlap and show 215 national final and 216 local provisional separately; never report their sum as unique collisions."},
+  {"id":"B06","kind":"unsupported_inference","scenario":"Officer asks which junction is safest and whether parked cars caused collision 1737997.","expected":"Explain missing traffic exposure and causal evidence; provide dated observations and inspection questions only."},
+  {"id":"B07","kind":"no_image","scenario":"Officer asks whether the crossing markings are visible today, with no authentic current image attached.","expected":"Current visibility cannot be assessed; no invented image observation or vision-model call."},
+  {"id":"B08","kind":"availability","scenario":"Modal is unavailable after a confirmed report has been durably stored.","expected":"Show report received and analysis pending/unavailable. Retry the outbox job without losing or duplicating the report. Never fabricate completed analysis."}
+]

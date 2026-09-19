@@ -1,0 +1,19 @@
+{
+  "status": "frozen_before_implementation",
+  "gold_review": "Pack gold labels reviewed against domain definitions; no changes. Human independent review not yet recorded.",
+  "sha256": {
+    "data/demo_places.json": "da2c2db1751d0c9b842b0cd9365f5ae5043e66859c591fa83a67a6a5b98c8325",
+    "data/pack_manifest.json": "6a32a0560df9fd1f531559d19d981f4086aa107cc8dd64799692ae1e63966a56",
+    "data/local_profile.json": "d1c7e8557e41046cb48892aa94df07ac6f26916c2eac5b2bf8381e3fd25bc380",
+    "data/roadlens_evidence.sqlite": "d5efa8b2428cf750b2241d6aff0374c2e8151a7ca6cdd841dfed59b7dc3970e7",
+    "data/source_comparison.json": "dbd4dfeed9d5178490374849d0ffc2396f72cf56fa62d37be2719cf8176ab8dd",
+    "data/downloads.json": "8c7637fd9d9c795255c9ed079671c9851075c63300aba1cefa400f03fe7efc50",
+    "data/README.md": "e19a67beb6c3c37f25399895017309a1272e768c24a91f012b0dc13fa9eda937",
+    "data/checks_results.json": "5b8ee8762abe50bed2e0cbad8f6058454104ea64ee4334ef1715b4b708bbbdf5",
+    "data/national_profile.json": "b2f12d1efbd87c8475bdff22c8bb94c214aaed0b9638b085fad97e2f02d7726f",
+    "evals/evidence_cases.json": "e39d4f5763e08e405a5256bfb48154313e238f72082f7687cfaad30c9f5c234b",
+    "evals/README.md": "2057a6b9713ccb991a7c727306f2afa9b63cff6f093cb6ec1dac8e87b931da9a",
+    "evals/behaviour_cases.json": "08845022854fde46b92a544d4714e6c1c951e6c7a6384e6d94042b911f861f27",
+    "evals/intake_cases.json": "c9a28f49d2efdf8e58288f52d737016ee92b10c3d6ff46bfed6c61d9e754f87b"
+  }
+}

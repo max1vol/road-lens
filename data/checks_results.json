@@ -1,0 +1,64 @@
+{
+  "local_cambridge_2017_2026H1": {
+    "collisions": 2430,
+    "vehicles": 4622,
+    "casualties": 2741,
+    "duplicate_collisions": 0,
+    "duplicate_vehicles": 0,
+    "duplicate_casualties": 0,
+    "orphan_vehicles": 0,
+    "orphan_casualties": 0,
+    "collisions_with_wrong_vehicle_count": 0,
+    "collisions_with_wrong_casualty_count": 0,
+    "coverage": [
+      "2017-01-03",
+      "2026-06-30"
+    ],
+    "collisions_by_year": {
+      "2017": 326,
+      "2018": 298,
+      "2019": 322,
+      "2020": 193,
+      "2021": 243,
+      "2022": 264,
+      "2023": 236,
+      "2024": 218,
+      "2025": 216,
+      "2026": 114
+    },
+    "missing_casualty_ages": 96,
+    "collisions_missing_location_date_time_severity_or_speed": 0
+  },
+  "national_cambridge_2025": {
+    "collisions": 215,
+    "vehicles": 416,
+    "casualties": 249,
+    "duplicate_collisions": 0,
+    "duplicate_vehicles": 0,
+    "duplicate_casualties": 0,
+    "orphan_vehicles": 0,
+    "orphan_casualties": 0,
+    "collisions_with_wrong_vehicle_count": 0,
+    "collisions_with_wrong_casualty_count": 0,
+    "cyclist_casualties": 121,
+    "pedestrian_casualties": 32,
+    "known_under16_casualties": 15,
+    "unknown_casualty_ages": 9,
+    "unknown_crossing_type_collisions": 28,
+    "unknown_journey_purpose_vehicles": 243,
+    "serious_casualties": 55,
+    "fatal_casualties": 0
+  },
+  "national_cambridge_2021_2025": {
+    "collisions": 1187,
+    "casualties": 1348,
+    "known_under16_casualties": 81,
+    "collisions_by_year": {
+      "2021": 251,
+      "2022": 271,
+      "2023": 235,
+      "2024": 215,
+      "2025": 215
+    }
+  }
+}

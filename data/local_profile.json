@@ -1,0 +1,219 @@
+{
+  "local_shapes": {
+    "Crashes": [
+      10649,
+      29
+    ],
+    "Vehicles": [
+      20132,
+      23
+    ],
+    "Casualties": [
+      14579,
+      16
+    ]
+  },
+  "local_date_range": [
+    "2017-01-01 00:00:00",
+    "2026-06-30 00:00:00"
+  ],
+  "cambridge_count": 2430,
+  "cambridge_by_year": {
+    "2017": 326,
+    "2018": 298,
+    "2019": 322,
+    "2020": 193,
+    "2021": 243,
+    "2022": 264,
+    "2023": 236,
+    "2024": 218,
+    "2025": 216,
+    "2026": 114
+  },
+  "cambridge_casualties": 2741,
+  "cambridge_vehicles": 4622,
+  "collision_duplicates": 0,
+  "vehicle_duplicates": 0,
+  "casualty_duplicates": 0,
+  "orphan_vehicle_rows": 0,
+  "orphan_casualty_rows": 0,
+  "count_sums": {
+    "casualty_sheet": 14579,
+    "crash_casualty_sum": 14579,
+    "vehicle_sheet": 20132,
+    "crash_vehicle_sum": 20132
+  },
+  "cambridge_crash_missing": {
+    "Collision Reference No.": 0,
+    "Collision Location": 0,
+    "Local Authority (assigned by police)": 0,
+    "Reporting Police Force": 1,
+    "Geographic Police Force": 1881,
+    "Easting": 0,
+    "Northing": 0,
+    "Collision Severity": 0,
+    "Collision Severity (Detailed)": 633,
+    "No. Vehicles": 0,
+    "No. Casualties": 0,
+    "Date": 0,
+    "Day": 0,
+    "Time": 0,
+    "First Road Class": 1,
+    "First Road Number": 1090,
+    "Second Road Class": 817,
+    "Second Road Number": 1877,
+    "Road Type": 0,
+    "Speed Limit": 0,
+    "Junction Detail": 104,
+    "Junction Control": 824,
+    "Pedestrian Crossing": 0,
+    "Weather": 0,
+    "Road Conditions": 107,
+    "Lighting Conditions": 0,
+    "Conditions or Carriageway Hazards": 2282,
+    "Did a police officer attend the scene?": 0,
+    "Types of turn being made": 0
+  },
+  "cambridge_casualty_missing": {
+    "Collision Reference No.": 0,
+    "Casualty reference no.": 0,
+    "Vehicle reference no": 0,
+    "Casualty Vehicle group": 0,
+    "Casualty sex": 4,
+    "Casualty age": 96,
+    "Casualty type": 0,
+    "Casualty Severity": 0,
+    "Casualty Severity (Detailed)": 709,
+    "Helmet worn": 31,
+    "Admitted to hospital": 2112,
+    "Vehicle passenger": 14,
+    "Bus/coach passenger?": 1,
+    "Seat belt used?": 60,
+    "Pedestrian location": 2425,
+    "Pedestrian movement": 2425
+  },
+  "cambridge_2026H1": [
+    {
+      "Collision Reference No.": "1695121",
+      "Collision Location": "VICTORIA AVENUE, AT FOUR LAMPS ROUNDABOUT JUNCTION WITH JESUS LANE, CAMBRIDGE, CAMBRIDGESHIRE",
+      "Date": "2026-01-08",
+      "Time": "14:57",
+      "Collision Severity": "Slight",
+      "No. Casualties": "1"
+    },
+    {
+      "Collision Reference No.": "1693569",
+      "Collision Location": "FOUR LAMPS ROUNDABOUT, JUNCTION WITH VICTORIA AVENUE, CAMBRIDGE, CAMBRIDGESHIRE",
+      "Date": "2026-01-09",
+      "Time": "08:05",
+      "Collision Severity": "Slight",
+      "No. Casualties": "1"
+    },
+    {
+      "Collision Reference No.": "1693788",
+      "Collision Location": "TRAVELLING INTO CAMBRIDGE SOUTH OF TRUMPINGTON ROAD PARK & RIDE, HAUXTON ROAD",
+      "Date": "2026-01-09",
+      "Time": "13:26",
+      "Collision Severity": "Slight",
+      "No. Casualties": "1"
+    }
+  ],
+  "school_area_location_mentions": [
+    {
+      "Collision Reference No.": "915802",
+      "Collision Location": "EAST ROAD (A603) AT JUNCTION WITH ST MATTHEW'S STREET.",
+      "Date": "2019-11-24",
+      "Time": "15:46",
+      "Collision Severity": "Serious",
+      "No. Casualties": "1"
+    },
+    {
+      "Collision Reference No.": "960952",
+      "Collision Location": "ST MATTHEWS GARDENS",
+      "Date": "2020-06-29",
+      "Time": "12:20",
+      "Collision Severity": "Slight",
+      "No. Casualties": "1"
+    },
+    {
+      "Collision Reference No.": "965549",
+      "Collision Location": "EAST ROAD (A603)  NEAR JUNCTION WITH ST MATTHEWS STREET",
+      "Date": "2020-07-18",
+      "Time": "10:40",
+      "Collision Severity": "Slight",
+      "No. Casualties": "2"
+    },
+    {
+      "Collision Reference No.": "994192",
+      "Collision Location": "EAST ROAD (A603)  NEAR JUNCTION WITH ST MATTHEWS STREET",
+      "Date": "2020-10-28",
+      "Time": "15:45",
+      "Collision Severity": "Slight",
+      "No. Casualties": "1"
+    },
+    {
+      "Collision Reference No.": "1182073",
+      "Collision Location": "NEW STREET AT JUNCTION WITH OCCUPATION ROAD",
+      "Date": "2022-05-03",
+      "Time": "13:50",
+      "Collision Severity": "Slight",
+      "No. Casualties": "1"
+    },
+    {
+      "Collision Reference No.": "1185039",
+      "Collision Location": "YORK STREET NEAR JUNCTION WITH NEW STREET, CAMBRIDGE, CAMBRIDGESHIRE",
+      "Date": "2022-06-05",
+      "Time": "11:00",
+      "Collision Severity": "Slight",
+      "No. Casualties": "2"
+    },
+    {
+      "Collision Reference No.": "1251249",
+      "Collision Location": "NORFOLK STREET AT JUNCTION WITH ST MATTHEWS STREET, CAMBRIDGE, CAMBRIDGESHIRE",
+      "Date": "2022-12-02",
+      "Time": "17:40",
+      "Collision Severity": "Slight",
+      "No. Casualties": "1"
+    },
+    {
+      "Collision Reference No.": "1424470",
+      "Collision Location": "EAST ROAD (A603) NEAR JUNCTION WITH ST MATTHEWS STREET, CAMBRIDGE, CAMBRIDGESHIRE",
+      "Date": "2024-03-06",
+      "Time": "00:15",
+      "Collision Severity": "Slight",
+      "No. Casualties": "3"
+    },
+    {
+      "Collision Reference No.": "1421056",
+      "Collision Location": "NEW STREET AT JUNCTION WITH OCCUPATION ROAD, CAMBRIDGE, CAMBRIDGESHIRE",
+      "Date": "2024-03-12",
+      "Time": "12:30",
+      "Collision Severity": "Slight",
+      "No. Casualties": "1"
+    },
+    {
+      "Collision Reference No.": "1674094",
+      "Collision Location": "NEW STREET NEAR JUNCTION WITH ABBEY STREET, CAMBRIDGE, CAMBRIDGESHIRE",
+      "Date": "2025-11-26",
+      "Time": "09:54",
+      "Collision Severity": "Slight",
+      "No. Casualties": "1"
+    },
+    {
+      "Collision Reference No.": "1709483",
+      "Collision Location": "STURTON STREET NEAR JUNCTION WITH NEW STREET, CAMBRIDGE, CAMBRIDGESHIRE",
+      "Date": "2026-02-15",
+      "Time": "11:45",
+      "Collision Severity": "Slight",
+      "No. Casualties": "1"
+    },
+    {
+      "Collision Reference No.": "1737997",
+      "Collision Location": "VICARAGE TERRACE AT JUNCTION WITH ST MATTHEWS STREET",
+      "Date": "2026-04-13",
+      "Time": "17:00",
+      "Collision Severity": "Serious",
+      "No. Casualties": "2"
+    }
+  ]
+}

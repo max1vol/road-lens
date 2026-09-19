@@ -1,0 +1,85 @@
+{
+  "scope": "Isolated local D1 and actual production API routes; failure callbacks simulated; not physical hardware or actual Modal outage",
+  "cases": [
+    {
+      "case_id": "B01",
+      "checks": {
+        "cancel_acknowledged": true,
+        "draft_cancelled": true,
+        "decline_rejected": true,
+        "no_report_or_job": true
+      },
+      "passed": true,
+      "evidence": {}
+    },
+    {
+      "case_id": "B02",
+      "checks": {
+        "initial_commit_201": true,
+        "retry_200": true,
+        "same_report_id": true,
+        "retry_after_expiry_returns_receipt": true,
+        "consumed_draft_new_key_rejected": true,
+        "one_report_job_receipt": true
+      },
+      "passed": true,
+      "evidence": {
+        "report_id": "f8ef6538-73ba-48a9-98f6-8917eb92637b"
+      }
+    },
+    {
+      "case_id": "B03",
+      "checks": {
+        "conflict_409": true,
+        "no_second_write": true,
+        "original_receipt_unchanged": true
+      },
+      "passed": true,
+      "evidence": {}
+    },
+    {
+      "case_id": "B04",
+      "checks": {
+        "all_denied_401_or_403": true,
+        "no_writes": true,
+        "no_model_invocation": true
+      },
+      "passed": true,
+      "evidence": {
+        "statuses": [
+          401,
+          401,
+          401,
+          401,
+          401,
+          401,
+          401
+        ],
+        "model_counter_measured": true
+      }
+    },
+    {
+      "case_id": "B08",
+      "checks": {
+        "duplicate_worker_cannot_claim": true,
+        "same_job_recovered": true,
+        "new_lease_token": true,
+        "expired_lease_result_rejected": true,
+        "transient_failure_queued": true,
+        "three_attempts_bounded": true,
+        "durable_received_report_visible": true,
+        "officer_review_unchanged": true,
+        "analysis_not_fabricated": true,
+        "no_duplicates": true
+      },
+      "passed": true,
+      "evidence": {
+        "report_id": "f8ef6538-73ba-48a9-98f6-8917eb92637b",
+        "job_id": "ee03bc4b-861d-4173-b26f-2827b7504b3c",
+        "method": "Failure callback and expiry simulation on real Site routes; not an actual Modal outage"
+      }
+    }
+  ],
+  "passed": 5,
+  "total": 5
+}
