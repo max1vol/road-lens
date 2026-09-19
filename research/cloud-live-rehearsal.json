@@ -1,0 +1,50 @@
+{
+  "analysis_transitions": [
+    {
+      "analysis_status": "running",
+      "observed_at": "2026-09-19T17:16:48.985312+00:00"
+    },
+    {
+      "analysis_status": "complete",
+      "observed_at": "2026-09-19T17:16:53.476384+00:00"
+    }
+  ],
+  "completed_audio_segments_received": 6,
+  "draft_id": "ae804cf2-b90d-444d-ae7b-4127db75de01",
+  "exact_model_readback_transcription_verified": true,
+  "finished_at": "2026-09-19T17:16:53.476410+00:00",
+  "live_submit_tool_called": true,
+  "live_tool_returned_saved_receipt": true,
+  "location_clarification_verified": true,
+  "microphone_opened": false,
+  "mode": "live",
+  "model": "gemini-3.8-live-extended-thinking",
+  "outcome": "pass",
+  "pcm_bytes_received_and_discarded": 993606,
+  "pcm_sha256": "6290913d91f0de6e2b7249fbd4f436771d018658127a3ec2233d95eb2e5abb54",
+  "physical_readback_playback_verified": false,
+  "physical_rehearsal": false,
+  "public_feed_verified": true,
+  "public_report": {
+    "analysis_status": "complete",
+    "received_at": "2026-09-19T17:16:43.875Z",
+    "report_id": "06c4ff3b-9d41-46bf-b18a-9ba226b60801",
+    "review_status": "awaiting_officer_review"
+  },
+  "receipt": {
+    "analysis_status": "queued",
+    "received_at": "2026-09-19T17:16:43.875Z",
+    "report_id": "06c4ff3b-9d41-46bf-b18a-9ba226b60801",
+    "review_status": "awaiting_officer_review"
+  },
+  "site_origin": "https://roadlens-cambridge.max1-volovich.chatgpt.site",
+  "speaker_opened": false,
+  "stage": "complete",
+  "started_at": "2026-09-19T17:15:42.816167+00:00",
+  "synthetic": true,
+  "tool_names_completed": [
+    "prepare_road_report",
+    "prepare_road_report",
+    "submit_road_report"
+  ]
+}

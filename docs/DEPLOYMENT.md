@@ -18,12 +18,13 @@ Status recorded on 19 September 2026. The existing Gemini Live hardware integrat
 | Classifier weights | Modal Volume `roadlens-gliner-pinned-weights`, pinned model revision below |
 | Existing physical voice runtime | User-confirmed working Gemini Live, one press starts hands-free conversation, another stops; 20 seconds without speech ends an idle conversation |
 | New cloud adapter | Installed on the Pi, 19 September 2026; existing voice user service active and ready. |
-| Pi connection | Direct Ethernet reachable at `pi@192.168.2.2`; trusted existing host key verified. |
+| Pi connection | Direct Ethernet `pi@192.168.2.2` and trusted host key verified during installation. The Ethernet adapter later disappeared from the Mac; the last observation showed the service running in standby, with no physical cloud report. |
 | Officer authorization | Owner Site-specific user ID is not configured yet; requires the owner's real ChatGPT sign-in identity |
+| Muted Gemini Live cloud check | Passed; real Live prepare/readback/submit, durable receipt and completed analysis. Synthetic authored input; microphone/speaker unopened. See `research/cloud-live-rehearsal.json`. |
 | New physical cloud rehearsal | **Not exercised**; no physical report/run IDs recorded |
 | Authored agent comparison | A 34/35; B 35/35; C 34/35. All 105 attempts completed. See `research/evaluation-20260919T170203Z/` and fixture ambiguity in `EVALUATION.md`. |
 
-Update the release record after final publication and verify the served Site, GitHub snapshot and deployed Modal code commit correspond. Earlier isolated test report IDs are not production or hardware evidence.
+Sites version `appgver_ca7823da82488191b6b1f7efe32dcc2b` deployed successfully from source `a17d1310b56faa8f4075cb44f738b1e5f9438201`; GitHub import `d18627d9dc812e715c0db0d0b7643883f93aac23` has the identical source tree. Later documentation and rehearsal artifacts do not change deployed application code. Public HTTP access, the completed-report feed and role rejection checks passed. The automated browser could not load the public origin because its connection was reset; the local UI was visually checked. Earlier isolated test report IDs are not production or hardware evidence.
 
 ## Runtime contracts and credentials
 
@@ -126,7 +127,7 @@ python box_adapter/cloud_smoke.py --submit --mode live
 
 Each run writes private `0600` result/envelope files beneath a fresh `0700` directory in `~/.local/state/roadlens-smoke/`. Preserve an uncertain confirmed envelope for an exact-key retry. A saved report whose analysis fails is a received report with failed analysis, not a successful completed rehearsal.
 
-Final release checks still requiring recorded evidence are: final published source/version alignment; anonymous public access; intended owner authorization; the physical report → durable receipt → browser arrival flow; cancellation and lost-response recovery on the real setup; and actual physical report/intake/evidence run IDs. Report any unexercised gate explicitly.
+Final checks still requiring recorded evidence are: intended owner authorization; the physical report → durable receipt → browser arrival flow; cancellation and lost-response recovery on the real setup; and actual physical report/intake/evidence run IDs. Anonymous HTTP access passed; a public browser session still needs visual confirmation. Report any unexercised gate explicitly.
 
 ## Executed cloud replay
 
@@ -139,3 +140,7 @@ During integration, rolling Modal deployments temporarily served an earlier cont
 ## Pi installation record
 
 Installed 19 September 2026 at 18:06 BST. The existing `aiy-gemini-live.service` returned active/running with “Ready: press once to talk; standby after 20 seconds of silence.” The original source was verified against the patch base before installation. Backup: `/home/pi/aiy-gemini-live/backups/pre-cloud-20260919T170437Z-17c772`. Preflight/tests: `/home/pi/aiy-gemini-live/check-cloud-20260919T170437Z-17c772`. The private cloud environment and durable outbox have mode `0600`. Gemini Live extended thinking MEDIUM, GPIO 23/25, and original HAT ALSA configuration remain unchanged. No microphone or speaker test was inferred from the automated checks.
+
+## Executed muted Live check
+
+`research/cloud-live-rehearsal.json` records one real `gemini-3.8-live-extended-thinking` flow from the Mac. Gemini called `prepare_road_report` twice and `submit_road_report` once; exact output transcription and returned PCM passed the readback gate, then a fresh authored confirmation received a durable receipt. Report `06c4ff3b-9d41-46bf-b18a-9ba226b60801` was saved at 17:16:43 UTC and observed with completed analysis at 17:16:53 UTC, with officer review still pending. The adapter discarded 993,606 PCM bytes. No microphone, speaker or GPIO was opened, and the installed Pi was unchanged. This verifies the Live tool loop, not physical playback or a person’s confirmation.

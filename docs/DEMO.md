@@ -2,7 +2,7 @@
 
 Open **https://roadlens-cambridge.max1-volovich.chatgpt.site**. RoadLens saves concerns for review; it is an independent demonstration, not a council reporting service.
 
-**Current state:** the existing Gemini Live box is working and the cloud adapter is installed. Real cloud submission/analysis and the 105-attempt agent comparison have completed. Officer authorization still requires the owner’s Site-specific sign-in ID; the new physical spoken rehearsal awaits user confirmation.
+**Current state:** the existing Gemini Live box is working and the cloud adapter is installed. Real cloud submission/analysis, a muted Gemini Live tool-loop check and the 105-attempt agent comparison have completed. The muted check used authored synthetic turns and no physical audio. Officer authorization still requires the owner’s Site-specific sign-in ID; the new physical spoken rehearsal awaits user confirmation.
 
 Before rehearsing, follow [DEPLOYMENT.md](DEPLOYMENT.md) and [adapter integration](../box_adapter/INTEGRATION.md), verify cloud intake and owner access, and note existing inbox IDs so the genuine new arrival is distinguishable. Do not inject or erase reports for effect.
 
