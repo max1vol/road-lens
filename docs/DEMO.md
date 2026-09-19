@@ -9,7 +9,7 @@ Before rehearsing, follow [DEPLOYMENT.md](DEPLOYMENT.md) and [adapter integratio
 | Time | Action and narration |
 |---|---|
 | **0:00–0:25** | Show the map and scope strip. “National 2025 final data and the newer local provisional snapshot remain separate.” Point to **215 collisions** and **249 people injured**; neither count measures individual journey risk. |
-| **0:25–0:50** | **Press once** and wait for “What road concern would you like to report?” Say **“I can't see past parked cars when I cross.”** Let the box ask which junction. Say **“Vicarage Terrace at St Matthews Street.”** Allow eight seconds of silence after each answer. Press again to cancel. |
+| **0:25–0:50** | **Press once** and wait for “What road concern would you like to report?” Say **“I can't see past parked cars when I cross.”** Let the box ask which junction. Say **“Vicarage Terrace at St Matthews Street.”** Allow two seconds of silence after each answer. Press again to cancel. |
 | **0:50–1:15** | Wait for the entire exact server readback and confirmation question. Say **“Yes, please submit it.”** Only a durable receipt permits the saved acknowledgement. Watch the real report arrive and progress; officer review stays pending. Without a receipt, say confirmation is pending. |
 | **1:15–1:50** | Open the case. Separate the resident's present observation from local record **1737997**: **13 April 2026**, **Serious collision**, **two casualties**, **provisional**. This does not mean both casualties were serious. Show **“Current imagery not supplied.”** |
 | **1:50–2:20** | Ask **“Show cyclists injured in Cambridge in 2025.”** Verify **121 people**, Cambridge district, January–December 2025, national final source. Open the provenance and query reference. |

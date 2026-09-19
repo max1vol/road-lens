@@ -152,3 +152,7 @@ After the user reported the missing location question, device logs showed cloud 
 A real synthetic audio check verified the opening question and measured the eight-second turn pause; see `research/live-audio-eight-second-check.json`. It did not open physical audio or create a report. No website or backend agent code changed.
 
 For rehearsal, the deployed API and classifier were warmed and their runtime idle windows set to 1,200 seconds, the supported maximum. Minimum and buffer containers remain zero, with existing maximum caps (classifier 2, API 3) preserved. This permits scale-to-zero after inactivity and does not guarantee a warm container. Overrides persist until reset or redeployment; source defaults remain 300 seconds. `research/demo-warmup-autoscaler.json` records settings and `research/demo-warmup-prepare.json` records a successful authored preparation in 6.97 seconds, with no draft or report created. Reset each deployed API/Classifier autoscaler with `min_containers=0, buffer_containers=0, scaledown_window=300`.
+
+### Follow-up: two-second reply pause
+
+At the user’s request, the installed voice default is now two seconds (`silenceDurationMs=2000`). The original eight-second audio measurement above is historical evidence, not a measurement of the new setting. Opening question, second-press cancellation, 20% speaker level and separate 20-second idle timeout remain as configured.

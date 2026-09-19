@@ -159,7 +159,7 @@ class VoiceBox:
                     "startOfSpeechSensitivity": "START_SENSITIVITY_LOW",
                     "endOfSpeechSensitivity": "END_SENSITIVITY_LOW",
                     "prefixPaddingMs": 200,
-                    "silenceDurationMs": round(getattr(self.args, 'turn_silence_seconds', 8.0) * 1000),
+                    "silenceDurationMs": round(getattr(self.args, 'turn_silence_seconds', 2.0) * 1000),
                 },
                 "activityHandling": "START_OF_ACTIVITY_INTERRUPTS",
             },
@@ -471,7 +471,7 @@ def parse_args():
     p.add_argument("--model", default="gemini-3.8-live-extended-thinking")
     p.add_argument("--thinking-level", choices=["LOW", "MEDIUM", "HIGH"], default="MEDIUM")
     p.add_argument("--idle-seconds", type=float, default=20.0)
-    p.add_argument("--turn-silence-seconds", type=float, default=8.0,
+    p.add_argument("--turn-silence-seconds", type=float, default=2.0,
                    help="Wait this many seconds of silence before replying to speech")
     p.add_argument("--roadlens", action="store_true", help="Enable the RoadLens Pydantic AI reporting workflow")
     p.add_argument("--key-file", type=Path, default=Path.home() / ".config/aiy-gemini-live/api-key")
