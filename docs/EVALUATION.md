@@ -10,7 +10,7 @@ Arms:
 - B: the production Pydantic AI builders, without classifier advice.
 - C: the same production builders, plus a real call to the deployed Modal `Classifier.predict` for each intake.
 
-All use the same instructions, output models, deterministic evidence functions, and domain validators. This conservative baseline does **not** disable safety. The comparison isolates orchestration and classifier advice; it must not attribute shared infrastructure safeguards to Pydantic. B and C share the officer-evidence path intentionally, since GLiNER preprocesses resident intake only. Budgets are six requests, eight ordinary tools, 2,500 output tokens (including provider-reported thinking tokens), and 90 seconds per task. Runs alternate the arm order by fixture to reduce time/load bias. Retries count against the budget and are recorded. A final-output schema repair is not a new independent example.
+All use the same instructions, output models, deterministic evidence functions, and domain validators. This conservative baseline does **not** disable safety. The comparison isolates orchestration and classifier advice; it must not attribute shared infrastructure safeguards to Pydantic. B and C share the officer-evidence path intentionally, since GLiNER preprocesses resident intake only. Budgets are six requests, eight ordinary tools, 12,000 aggregate output tokens (including provider-reported thinking tokens), 4,096 per response, LOW thinking with thought text disabled, and 90 seconds per task. Runs alternate the arm order by fixture and allow three concurrent tasks; concurrency and per-task budgets are recorded in the manifest. The initial 2,500-token budget was adjusted after an unscored development trace consumed 7,547 tokens under default MEDIUM thinking, before any scored fixtures ran. This change applies equally to A/B/C and was not tuned on test results. Retries count against the budget and are recorded. A final-output schema repair is not a new independent example.
 
 Run deterministic tests first, from the integrated repository:
 
@@ -40,7 +40,7 @@ This creates an isolated ephemeral evaluation application, makes the same real r
 Results:
 
 - `manifest.json`: fixture/data hashes, prompt/code hashes, actual model ID, package versions, code commit, source dirty flag, budgets, review status, and run times.
-- `cases.jsonl`: authored input, expected output, actual output, visible model tool/final calls, classifier output, usage, validation repairs, latency, evaluator outcome, and safe failure metadata. Thinking parts, signatures, credentials, raw audio, and live resident transcripts are excluded.
+- `cases.jsonl`: authored input, expected output, actual output, visible model tool/final calls, classifier output, usage, validation repairs, latency, evaluator outcome, and safe failure metadata. Thinking parts, signatures, credentials, raw audio, and live resident transcripts are excluded. Decimal usage/cost values are exported as exact decimal strings; failed runs identify partial usage explicitly.
 - `summary.json`: pass numerator/denominator, completed attempts, latency, usage, failures, per-task results, and repeat grouping.
 - `pydantic-evals-report.json`: actual Pydantic Evals assertion outcomes.
 
@@ -60,4 +60,8 @@ The HTTP workflow harness is separate:
 
 Only use an empty disposable local Site database, with real Modal workers disabled for that test instance. The harness refuses remote origins and does not delete user data. It seeds ready drafts to isolate infrastructure from AI behavior and calls the actual Site routes. B01 tests cancellation/no write, B02 exact retry and expiry, B03 changed-body conflict, B04 role separation/no writes, and B08 bounded worker failure/claim recovery/stale leases. The optional model-call counter must be maintained by the isolated service test double; if absent, B04's no-model-invocation assertion is explicitly **unmeasured and fails**, rather than being silently credited. B08 simulates failure callbacks and lease expiry; it is not evidence of a real Modal outage rehearsal. The physical box, public deployment, and real scheduled reconciliation still require their own checks.
 
-No scored model comparison or live workflow result is bundled with the harness. Populate claims only after executing it.
+The first executed comparison is in `research/evaluation-20260919T170203Z/`, from clean source commit `f2c31c805d75af51885a66ce4ee2229161faa453`: A passed 34/35, B 35/35 and C 34/35. All 105 attempts completed. Median latencies were 2.95s, 2.70s and 3.09s respectively. This one authored set does not establish a general improvement; GLiNER did not improve the score here.
+
+A and C failed B05's frozen collision-count expectation: they kept the two sources separate and disclosed overlap, but returned people counts (249 national / 252 local) rather than the expected collision counts (215 / 216). The scenario says “combined total” without specifying the unit, so this also exposes ambiguity in the authored fixture. Scores are retained as originally evaluated, with no post-result prompt tuning or relabeling. Future independently reviewed cases should state the unit explicitly.
+
+The separate real-route local workflow check passed 5/5 scenarios, and the concurrency suite passed 11/11 recorded fixtures across five test methods. These are infrastructure results, not AI accuracy or a physical rehearsal.

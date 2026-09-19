@@ -19,4 +19,6 @@ Python 3.12. Install backend/requirements.txt in a virtual environment. Run `pyt
 
 Application secrets belong in a private environment file or platform secret storage. See docs/BUILD_BRIEF.md for the role-separated credentials and acceptance criteria. Never commit Gemini keys, device tokens, Modal credentials or resident transcripts.
 
-Deployment and actual validation results are recorded in docs/DEPLOYMENT.md when completed. Until then, this checkout is under integration and not a claim that hardware/cloud acceptance gates have passed.
+The public dashboard is https://roadlens-cambridge.max1-volovich.chatgpt.site. Release status and configuration are in [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md); the three-minute rehearsal is in [docs/DEMO.md](docs/DEMO.md).
+
+Measured comparison: plain Gemini 34/35, Pydantic AI 35/35, Pydantic AI + GLiNER 34/35 on one fixed authored set; all 105 attempts completed. See [results and limitations](docs/EVALUATION.md). GLiNER did not improve the score in this run. Separate infrastructure checks passed 5/5 workflow scenarios and 11/11 concurrency fixtures. Physical rehearsal status is recorded separately and must not be inferred from these tests.

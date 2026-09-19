@@ -257,7 +257,10 @@ async def api_smoke(args, http, directory, run):
         raise SmokeFailure('The real server did not return a stored draft/readback.')
     run['draft_id'] = draft['draft_id']
     run['readback_source'] = 'Authoritative server response; no audio rendering in API replay mode'
-    await asyncio.sleep(0.01)
+    # A distinct authored confirmation turn follows the ready response. Allow
+    # normal subsecond device/server clock skew in this automated replay; the
+    # physical adapter instead waits for the complete spoken readback and reply.
+    await asyncio.sleep(1.0)
     envelope = {'idempotency_key': str(uuid4()), 'body': {'draft_id': draft['draft_id'],
         'confirmation': {'resident_turn_id': str(uuid4()), 'text': CONFIRMATION,
                          'confirmed_at': utc_now()}}, 'synthetic': True}

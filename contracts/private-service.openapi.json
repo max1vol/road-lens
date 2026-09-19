@@ -1,0 +1,697 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "RoadLens private agent service",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Health",
+        "operationId": "health_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/prepare": {
+      "post": {
+        "summary": "Prepare Route",
+        "operationId": "prepare_route_prepare_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PrepareRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IntakeResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or incorrect service bearer credential."
+          },
+          "413": {
+            "description": "Request body exceeds 16 KiB."
+          },
+          "503": {
+            "description": "Agent preparation or worker wake unavailable."
+          }
+        },
+        "security": [
+          {
+            "ServiceBearer": []
+          }
+        ],
+        "description": "Run typed intake over actual resident turns (at most 4,000 joined characters). This private operation does not persist a draft or submit a report; the Site owns those transitions."
+      }
+    },
+    "/wake": {
+      "post": {
+        "summary": "Wake",
+        "operationId": "wake_wake_post",
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or incorrect service bearer credential."
+          },
+          "413": {
+            "description": "Request body exceeds 16 KiB."
+          },
+          "503": {
+            "description": "Agent preparation or worker wake unavailable."
+          }
+        },
+        "security": [
+          {
+            "ServiceBearer": []
+          }
+        ],
+        "description": "Spawn a bounded worker and return promptly. No callback URL or user-provided job payload is accepted. The worker claims jobs from the fixed configured Site origin."
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ClassifierSuggestion": {
+        "properties": {
+          "model": {
+            "type": "string",
+            "title": "Model",
+            "default": "fastino/gliner2.5-base-v1"
+          },
+          "revision": {
+            "type": "string",
+            "title": "Revision",
+            "default": "78cea040597df251eedefa9d7ee2a756af39fe64"
+          },
+          "issue_label": {
+            "type": "string",
+            "maxLength": 100,
+            "title": "Issue Label"
+          },
+          "entities": {
+            "items": {
+              "$ref": "#/components/schemas/EntitySpan"
+            },
+            "type": "array",
+            "maxItems": 50,
+            "title": "Entities"
+          },
+          "runtime_seconds": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Runtime Seconds"
+          },
+          "confidence": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Confidence"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "issue_label",
+          "runtime_seconds"
+        ],
+        "title": "ClassifierSuggestion"
+      },
+      "EntitySpan": {
+        "properties": {
+          "text": {
+            "type": "string",
+            "maxLength": 300,
+            "title": "Text"
+          },
+          "start": {
+            "type": "integer",
+            "maximum": 4000.0,
+            "minimum": 0.0,
+            "title": "Start"
+          },
+          "end": {
+            "type": "integer",
+            "maximum": 4000.0,
+            "minimum": 0.0,
+            "title": "End"
+          },
+          "confidence": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Confidence"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "text",
+          "start",
+          "end"
+        ],
+        "title": "EntitySpan"
+      },
+      "EvidenceSpan": {
+        "properties": {
+          "turn_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9_.:-]+$",
+            "title": "Turn Id"
+          },
+          "quote": {
+            "type": "string",
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "Quote"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "turn_id",
+          "quote"
+        ],
+        "title": "EvidenceSpan"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "IntakeResponse": {
+        "properties": {
+          "output": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ReadyDraft"
+              },
+              {
+                "$ref": "#/components/schemas/NeedsClarification"
+              },
+              {
+                "$ref": "#/components/schemas/OutOfScope"
+              }
+            ],
+            "title": "Output",
+            "discriminator": {
+              "propertyName": "kind",
+              "mapping": {
+                "needs_clarification": "#/components/schemas/NeedsClarification",
+                "out_of_scope": "#/components/schemas/OutOfScope",
+                "ready_for_confirmation": "#/components/schemas/ReadyDraft"
+              }
+            }
+          },
+          "run": {
+            "$ref": "#/components/schemas/RunSummary"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "output",
+          "run"
+        ],
+        "title": "IntakeResponse"
+      },
+      "Issue": {
+        "type": "string",
+        "enum": [
+          "visibility_obstruction",
+          "road_surface",
+          "crossing_concern",
+          "access_obstruction",
+          "speeding_concern",
+          "signal_or_lighting",
+          "other_road_concern"
+        ],
+        "title": "Issue"
+      },
+      "NeedsClarification": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "const": "needs_clarification",
+            "title": "Kind",
+            "default": "needs_clarification"
+          },
+          "missing_fields": {
+            "items": {
+              "type": "string",
+              "maxLength": 80
+            },
+            "type": "array",
+            "maxItems": 5,
+            "minItems": 1,
+            "title": "Missing Fields"
+          },
+          "question": {
+            "type": "string",
+            "maxLength": 240,
+            "minLength": 5,
+            "title": "Question"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "missing_fields",
+          "question"
+        ],
+        "title": "NeedsClarification"
+      },
+      "OutOfScope": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "const": "out_of_scope",
+            "title": "Kind",
+            "default": "out_of_scope"
+          },
+          "message": {
+            "type": "string",
+            "maxLength": 240,
+            "minLength": 5,
+            "title": "Message"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "message"
+        ],
+        "title": "OutOfScope"
+      },
+      "PrepareRequest": {
+        "properties": {
+          "session_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9_.:-]+$",
+            "title": "Session Id"
+          },
+          "turns": {
+            "items": {
+              "$ref": "#/components/schemas/ResidentTurn"
+            },
+            "type": "array",
+            "maxItems": 30,
+            "minItems": 1,
+            "title": "Turns"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "session_id",
+          "turns"
+        ],
+        "title": "PrepareRequest"
+      },
+      "ReadyDraft": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "const": "ready_for_confirmation",
+            "title": "Kind",
+            "default": "ready_for_confirmation"
+          },
+          "issue": {
+            "$ref": "#/components/schemas/Issue"
+          },
+          "observation": {
+            "type": "string",
+            "maxLength": 1000,
+            "minLength": 5,
+            "title": "Observation",
+            "description": "Exact resident wording describing the concern; no contact information."
+          },
+          "location": {
+            "$ref": "#/components/schemas/ResolvedLocation"
+          },
+          "evidence_spans": {
+            "items": {
+              "$ref": "#/components/schemas/EvidenceSpan"
+            },
+            "type": "array",
+            "maxItems": 10,
+            "minItems": 1,
+            "title": "Evidence Spans"
+          },
+          "readback": {
+            "type": "string",
+            "maxLength": 400,
+            "title": "Readback",
+            "default": ""
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "issue",
+          "observation",
+          "location",
+          "evidence_spans"
+        ],
+        "title": "ReadyDraft"
+      },
+      "ResidentTurn": {
+        "properties": {
+          "turn_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9_.:-]+$",
+            "title": "Turn Id"
+          },
+          "text": {
+            "type": "string",
+            "maxLength": 4000,
+            "minLength": 1,
+            "title": "Text"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Timestamp"
+          },
+          "role": {
+            "type": "string",
+            "const": "resident",
+            "title": "Role",
+            "default": "resident"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "turn_id",
+          "text",
+          "timestamp"
+        ],
+        "title": "ResidentTurn"
+      },
+      "ResolvedLocation": {
+        "properties": {
+          "place_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9_.:-]+$",
+            "title": "Place Id"
+          },
+          "display_name": {
+            "type": "string",
+            "maxLength": 200,
+            "title": "Display Name"
+          },
+          "longitude": {
+            "type": "number",
+            "maximum": 180.0,
+            "minimum": -180.0,
+            "title": "Longitude"
+          },
+          "latitude": {
+            "type": "number",
+            "maximum": 90.0,
+            "minimum": -90.0,
+            "title": "Latitude"
+          },
+          "easting": {
+            "type": "integer",
+            "title": "Easting"
+          },
+          "northing": {
+            "type": "integer",
+            "title": "Northing"
+          },
+          "coordinate_basis": {
+            "type": "string",
+            "maxLength": 200,
+            "title": "Coordinate Basis"
+          },
+          "resolver_provenance": {
+            "type": "string",
+            "maxLength": 200,
+            "title": "Resolver Provenance"
+          },
+          "ambiguity_status": {
+            "type": "string",
+            "const": "resolved_reference_point",
+            "title": "Ambiguity Status",
+            "default": "resolved_reference_point"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "place_id",
+          "display_name",
+          "longitude",
+          "latitude",
+          "easting",
+          "northing",
+          "coordinate_basis",
+          "resolver_provenance"
+        ],
+        "title": "ResolvedLocation"
+      },
+      "RunSummary": {
+        "properties": {
+          "run_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9_.:-]+$",
+            "title": "Run Id"
+          },
+          "model": {
+            "type": "string",
+            "title": "Model"
+          },
+          "model_version": {
+            "type": "string",
+            "title": "Model Version"
+          },
+          "classifier": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ClassifierSuggestion"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "tools": {
+            "items": {
+              "$ref": "#/components/schemas/ToolEvent"
+            },
+            "type": "array",
+            "maxItems": 20,
+            "title": "Tools"
+          },
+          "validation_repairs": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 10,
+            "title": "Validation Repairs"
+          },
+          "usage": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Usage"
+          },
+          "elapsed_seconds": {
+            "type": "number",
+            "title": "Elapsed Seconds"
+          },
+          "outcome": {
+            "type": "string",
+            "title": "Outcome"
+          },
+          "data_hashes": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Data Hashes"
+          },
+          "prompt_hash": {
+            "type": "string",
+            "title": "Prompt Hash"
+          },
+          "code_commit": {
+            "type": "string",
+            "title": "Code Commit"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "run_id",
+          "model",
+          "model_version",
+          "usage",
+          "elapsed_seconds",
+          "outcome",
+          "data_hashes",
+          "prompt_hash",
+          "code_commit"
+        ],
+        "title": "RunSummary"
+      },
+      "ToolEvent": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "inputs": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Inputs"
+          },
+          "output": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "items": {},
+                "type": "array"
+              }
+            ],
+            "title": "Output"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "name",
+          "inputs",
+          "output"
+        ],
+        "title": "ToolEvent"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    },
+    "securitySchemes": {
+      "ServiceBearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "Private Site-to-Modal credential. Distinct from device and internal worker tokens."
+      }
+    }
+  },
+  "security": [
+    {
+      "ServiceBearer": []
+    }
+  ]
+}

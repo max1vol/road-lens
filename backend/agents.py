@@ -133,11 +133,29 @@ def query_metrics_impl(deps: RoadLensDeps, query: EvidenceQuery) -> MetricResult
     return result
 
 
+def canonical_location(supplied: ResolvedLocation, known: ResolvedLocation | None) -> ResolvedLocation | None:
+    """Allow JSON float transport rounding, then use the registered source object.
+
+    One trillionth of a degree is below a micrometre. This is not a location
+    matching tolerance: grid coordinates, ID, labels and provenance must match
+    exactly, and an unresolved ID is never accepted.
+    """
+    if known is None:
+        return None
+    if supplied.model_dump(exclude={'latitude', 'longitude'}) != known.model_dump(exclude={'latitude', 'longitude'}):
+        return None
+    if any(abs(getattr(supplied, axis) - getattr(known, axis)) > 1e-12 for axis in ('latitude', 'longitude')):
+        return None
+    return known
+
+
 def find_local_collisions_impl(deps: RoadLensDeps, location: ResolvedLocation,
                                start: date, end: date, radius_metres: Literal[50, 100, 250] = 100) -> CollisionEvidence:
     supported = deps.locations.get(location.place_id) or (deps.report.location if deps.report and deps.report.location.place_id == location.place_id else None)
-    if supported != location:
+    authoritative = canonical_location(location, supported)
+    if authoritative is None:
         raise ModelRetry('Resolve the location first and use its unmodified object.')
+    location = authoritative
     try:
         result = deps.repo.nearby(location, start, end, radius_metres)
     except ValueError as exc:
@@ -190,8 +208,10 @@ def validate_intake_output(deps: RoadLensDeps, output: IntakeOutput) -> IntakeOu
             _repair(deps, 'Omit personal contact details from the response.')
         return output
     known = deps.locations.get(output.location.place_id)
-    if known is None or known != output.location or deps.repo.location(output.location.place_id) != output.location:
+    authoritative = canonical_location(output.location, known)
+    if authoritative is None or deps.repo.location(output.location.place_id) != authoritative:
         _repair(deps, 'Call resolve_location and use the exact returned location with provenance.')
+    output = output.model_copy(update={'location': authoritative})
     turns = {t.turn_id: t for t in deps.turns}
     for span in output.evidence_spans:
         if span.turn_id not in turns or span.quote not in turns[span.turn_id].text:

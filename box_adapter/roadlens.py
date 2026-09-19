@@ -85,6 +85,17 @@ def speech_words(text):
     return ' '.join(re.findall(r"[a-z0-9]+", text.lower().replace('\u2019', "'")))
 
 
+def readback_words(text):
+    """Normalize only the documented spoken alias for this named street.
+
+    The supplied gazetteer lists Saint Matthew's Street alongside St Matthews
+    Street. Do not globally expand "St", drop possessives, fuzzy-match locations,
+    or apply location aliases to the resident's confirmation.
+    """
+    return re.sub(r'\b(?:st|saint) matthew(?:s| s) street\b',
+                  'st matthews street', speech_words(text))
+
+
 def is_affirmative(text):
     # A narrow, complete utterance is safer than finding "yes" inside a refusal,
     # conditional approval, quoted speech or an unrelated sentence.
@@ -147,6 +158,9 @@ class DeviceHTTP:
             raise ValueError('RoadLens device token is missing or invalid')
         self.token = token
         self.opener = build_opener(NoRedirect())
+        # Identify the legitimate device client explicitly. The public edge
+        # rejects urllib's generic default signature before application auth.
+        self.opener.addheaders = [('User-Agent', 'RoadLens-Voice-Box/1.0 (+https://github.com/max1vol/road-lens)')]
 
     def post(self, path, body, key=None):
         payload = canonical(body).encode()
@@ -322,8 +336,8 @@ class RoadLens:
         """
         if not self.active or not self.draft or self._readback_after is not None or not self._readback_audio:
             return False
-        expected = speech_words(self.draft['readback'])
-        spoken = [speech_words(''.join(self._spoken_parts)), speech_words(' '.join(self._spoken_parts))]
+        expected = readback_words(self.draft['readback'])
+        spoken = [readback_words(''.join(self._spoken_parts)), readback_words(' '.join(self._spoken_parts))]
         if not expected or not any(expected in value for value in spoken):
             return False
         self._open_turn = False

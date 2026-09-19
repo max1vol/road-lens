@@ -1,0 +1,43 @@
+{
+  "status": "complete",
+  "model": "gemini-3.8-flash",
+  "model_case_count": 35,
+  "workflow_passed": 5,
+  "workflow_total": 5,
+  "concurrency_checks_passed": 11,
+  "concurrency_checks_total": 11,
+  "arms": [
+    {
+      "name": "A \u00b7 Plain Gemini",
+      "passed": 34,
+      "total": 35,
+      "completed": 35,
+      "median_seconds": 2.947465,
+      "failures": [
+        "B05"
+      ]
+    },
+    {
+      "name": "B \u00b7 Pydantic AI",
+      "passed": 35,
+      "total": 35,
+      "completed": 35,
+      "median_seconds": 2.697296,
+      "failures": []
+    },
+    {
+      "name": "C \u00b7 Pydantic AI + GLiNER",
+      "passed": 34,
+      "total": 35,
+      "completed": 35,
+      "median_seconds": 3.088017,
+      "failures": [
+        "B05"
+      ]
+    }
+  ],
+  "artifacts_url": "https://github.com/max1vol/road-lens/tree/main/research/evaluation-20260919T170203Z",
+  "fixture_hashes_url": "https://github.com/max1vol/road-lens/blob/main/research/frozen-inputs.json",
+  "run_id": "evaluation-20260919T170203Z",
+  "failure_note": "A and C kept the sources separate but returned people counts; B05 expected collision counts. The authored question did not specify the unit. Original scores are retained."
+}

@@ -1,7 +1,11 @@
-The first deployed development smoke produced a real Gemini response, then failed Pydantic AI's aggregate output budget: `UsageLimitExceeded`, configured 2,500 versus 7,547 actual output tokens. Google's Gemini token usage includes thinking. The key/model/SDK were therefore functioning; this was not an authentication or model availability error.
+# Development integration findings
 
-For backend IntakeAgent and EvidenceAgent, use shared `AGENT_MODEL_SETTINGS` with `google_thinking_config={'thinking_level':'LOW','include_thoughts':False}`, `max_tokens=4096`, and shared `AGENT_OUTPUT_TOKEN_LIMIT=12000`. Six requests, eight tool calls and the 90-second deadline remain unchanged. Apply identical settings to all evaluation arms. The existing Gemini Live extended-thinking configuration is untouched.
+Unscored Modal smoke calls initially failed the 2,500 aggregate output-token limit (7,547 tokens observed). LOW thinking, a 4,096 response cap and a 12,000 aggregate cap were then applied equally to the production agents and all evaluation arms. The six-request, eight-tool and 90-second limits remain.
 
-Also remove the positive `CONCERN` keyword gate from output validation: a valid independently authored observation about a loose paving slab was excluded by its vocabulary. Exact resident quotes, source turn IDs, resolved location/provenance, contact removal, instruction and explicit negation checks remain. This is a general domain-boundary fix, not a held-out fixture change.
+The subsequent visible tool trace identified the underlying retry loop: Gemini returned longitude 0.139839226648259 and latitude 52.2074203872718, while the source values were 0.13983922664825893 and 52.20742038727183. Exact float equality rejected this correct junction. The validator now tolerates at most 1e-12 degrees of JSON number rounding, requires every other field (including original grid coordinates, place ID and provenance) to match exactly, and emits the canonical registered source object. Unknown points and meaningful changes remain rejected. The same rule applies to local-evidence tool inputs and all three evaluation arms.
 
-Official references checked: https://ai.google.dev/gemini-api/docs/thinking (3.8 Flash supports LOW/MEDIUM/HIGH, defaults MEDIUM); https://ai.pydantic.dev/models/google/ (GoogleModelSettings native thinking config).
+The independent loose-paving-slab development fixture also exposed an overly narrow positive-concern keyword list. That positive keyword gate was removed before scored evaluation; exact resident quotes, turn IDs, source provenance, contact and instruction checks, negation and correction handling remain.
+
+The working voice box retains its existing extended-thinking Gemini Live setting. These changes concern the additional backend agents only.
+
+References checked during implementation: https://ai.google.dev/gemini-api/docs/thinking and https://ai.pydantic.dev/models/google/.

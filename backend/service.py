@@ -6,6 +6,7 @@ import os
 
 from fastapi import FastAPI, Request, HTTPException
 from fastapi.responses import JSONResponse
+from fastapi.openapi.utils import get_openapi
 from .agents import prepare
 from .models import PrepareRequest, IntakeResponse
 
@@ -59,4 +60,33 @@ def create_api(classify_fn, wake_fn):
         except Exception:
             raise HTTPException(status_code=503, detail='wake_unavailable') from None
 
+    def documented_openapi():
+        if api.openapi_schema is None:
+            schema = get_openapi(title=api.title, version=api.version, routes=api.routes)
+            schema.setdefault('components', {}).setdefault('securitySchemes', {})['ServiceBearer'] = {
+                'type': 'http', 'scheme': 'bearer',
+                'description': 'Private Site-to-Modal credential. Distinct from device and internal worker tokens.',
+            }
+            schema['security'] = [{'ServiceBearer': []}]
+            schema['paths']['/health']['get']['security'] = []
+            for path in ['/prepare', '/wake']:
+                operation = schema['paths'][path]['post']
+                operation['security'] = [{'ServiceBearer': []}]
+                operation.setdefault('responses', {}).update({
+                    '401': {'description': 'Missing or incorrect service bearer credential.'},
+                    '413': {'description': 'Request body exceeds 16 KiB.'},
+                    '503': {'description': 'Agent preparation or worker wake unavailable.'},
+                })
+            schema['paths']['/prepare']['post']['description'] = (
+                'Run typed intake over actual resident turns (at most 4,000 joined characters). '
+                'This private operation does not persist a draft or submit a report; the Site owns those transitions.'
+            )
+            schema['paths']['/wake']['post']['description'] = (
+                'Spawn a bounded worker and return promptly. No callback URL or user-provided job payload is accepted. '
+                'The worker claims jobs from the fixed configured Site origin.'
+            )
+            api.openapi_schema = schema
+        return api.openapi_schema
+
+    api.openapi = documented_openapi
     return api

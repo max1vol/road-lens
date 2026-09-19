@@ -1,0 +1,329 @@
+{
+  "scope": "Disposable loopback HTTP infrastructure race fixtures; no AI evaluation, production or physical hardware claim",
+  "analysis_callback_fixture": "Strict Pydantic AnalysisResult; model fields explicitly say no model was run; no evidence metrics/records",
+  "cases": [
+    {
+      "case_id": "same_key_same_body:1",
+      "checks": {
+        "one_created_one_replayed": true,
+        "same_real_report_id": true,
+        "one_report_job_receipt_and_received_event": true
+      },
+      "passed": true,
+      "evidence": {
+        "statuses": [
+          200,
+          201
+        ],
+        "report_ids": [
+          "828f2ef1-46da-4748-9c02-c0598e6606ae",
+          "828f2ef1-46da-4748-9c02-c0598e6606ae"
+        ],
+        "counts": {
+          "reports": 1,
+          "jobs": 1,
+          "receipts": 1,
+          "received_events": 1
+        },
+        "elapsed_ms": [
+          96.6,
+          96.0
+        ]
+      }
+    },
+    {
+      "case_id": "same_key_same_body:2",
+      "checks": {
+        "one_created_one_replayed": true,
+        "same_real_report_id": true,
+        "one_report_job_receipt_and_received_event": true
+      },
+      "passed": true,
+      "evidence": {
+        "statuses": [
+          200,
+          201
+        ],
+        "report_ids": [
+          "84871ede-d993-4f7e-b5e7-27d8c338a424",
+          "84871ede-d993-4f7e-b5e7-27d8c338a424"
+        ],
+        "counts": {
+          "reports": 1,
+          "jobs": 1,
+          "receipts": 1,
+          "received_events": 1
+        },
+        "elapsed_ms": [
+          54.34,
+          54.19
+        ]
+      }
+    },
+    {
+      "case_id": "same_key_same_body:3",
+      "checks": {
+        "one_created_one_replayed": true,
+        "same_real_report_id": true,
+        "one_report_job_receipt_and_received_event": true
+      },
+      "passed": true,
+      "evidence": {
+        "statuses": [
+          200,
+          201
+        ],
+        "report_ids": [
+          "c12410eb-f42a-425a-a4ef-8f02c3141e64",
+          "c12410eb-f42a-425a-a4ef-8f02c3141e64"
+        ],
+        "counts": {
+          "reports": 1,
+          "jobs": 1,
+          "receipts": 1,
+          "received_events": 1
+        },
+        "elapsed_ms": [
+          39.48,
+          32.52
+        ]
+      }
+    },
+    {
+      "case_id": "same_key_changed_body:1",
+      "checks": {
+        "one_created_one_conflict": true,
+        "winner_receipt_replays": true,
+        "one_report_job_receipt_and_received_event": true
+      },
+      "passed": true,
+      "evidence": {
+        "statuses": [
+          201,
+          409
+        ],
+        "counts": {
+          "reports": 1,
+          "jobs": 1,
+          "receipts": 1,
+          "received_events": 1
+        },
+        "winner": 0,
+        "elapsed_ms": [
+          44.77,
+          43.81
+        ]
+      }
+    },
+    {
+      "case_id": "same_key_changed_body:2",
+      "checks": {
+        "one_created_one_conflict": true,
+        "winner_receipt_replays": true,
+        "one_report_job_receipt_and_received_event": true
+      },
+      "passed": true,
+      "evidence": {
+        "statuses": [
+          201,
+          409
+        ],
+        "counts": {
+          "reports": 1,
+          "jobs": 1,
+          "receipts": 1,
+          "received_events": 1
+        },
+        "winner": 1,
+        "elapsed_ms": [
+          48.68,
+          34.25
+        ]
+      }
+    },
+    {
+      "case_id": "same_key_changed_body:3",
+      "checks": {
+        "one_created_one_conflict": true,
+        "winner_receipt_replays": true,
+        "one_report_job_receipt_and_received_event": true
+      },
+      "passed": true,
+      "evidence": {
+        "statuses": [
+          201,
+          409
+        ],
+        "counts": {
+          "reports": 1,
+          "jobs": 1,
+          "receipts": 1,
+          "received_events": 1
+        },
+        "winner": 0,
+        "elapsed_ms": [
+          48.19,
+          47.38
+        ]
+      }
+    },
+    {
+      "case_id": "consumed_draft_other_key",
+      "checks": {
+        "initial_created": true,
+        "new_key_conflicts": true,
+        "one_report_job_receipt_and_received_event": true
+      },
+      "passed": true,
+      "evidence": {
+        "statuses": [
+          201,
+          409
+        ],
+        "counts": {
+          "reports": 1,
+          "jobs": 1,
+          "receipts": 1,
+          "received_events": 1
+        }
+      }
+    },
+    {
+      "case_id": "duplicate_active_lease_completion:1",
+      "checks": {
+        "both_callbacks_accepted": true,
+        "exactly_one_duplicate_ack": true,
+        "one_completion_event": true,
+        "stored_result_exactly_matches_typed_fixture": true,
+        "job_completed_once": true,
+        "analysis_complete_review_unchanged": true,
+        "one_report_job_receipt": true
+      },
+      "passed": true,
+      "evidence": {
+        "statuses": [
+          200,
+          200
+        ],
+        "duplicate_flags": [
+          true,
+          false
+        ],
+        "completion_event_delta": 1,
+        "job_id": "cd6fc85c-ffa8-4bc4-9ecc-63a2ab6b8197",
+        "report_id": "ff53be64-d56f-49f7-b225-116149332388",
+        "fixture": "Strictly typed infrastructure fixture: no model, evidence query or physical inspection executed"
+      }
+    },
+    {
+      "case_id": "duplicate_active_lease_completion:2",
+      "checks": {
+        "both_callbacks_accepted": true,
+        "exactly_one_duplicate_ack": true,
+        "one_completion_event": true,
+        "stored_result_exactly_matches_typed_fixture": true,
+        "job_completed_once": true,
+        "analysis_complete_review_unchanged": true,
+        "one_report_job_receipt": true
+      },
+      "passed": true,
+      "evidence": {
+        "statuses": [
+          200,
+          200
+        ],
+        "duplicate_flags": [
+          false,
+          true
+        ],
+        "completion_event_delta": 1,
+        "job_id": "14148a45-1622-47c8-942d-b806cf751064",
+        "report_id": "48e18c62-444d-43b9-9a48-7273bbe3429e",
+        "fixture": "Strictly typed infrastructure fixture: no model, evidence query or physical inspection executed"
+      }
+    },
+    {
+      "case_id": "duplicate_active_lease_completion:3",
+      "checks": {
+        "both_callbacks_accepted": true,
+        "exactly_one_duplicate_ack": true,
+        "one_completion_event": true,
+        "stored_result_exactly_matches_typed_fixture": true,
+        "job_completed_once": true,
+        "analysis_complete_review_unchanged": true,
+        "one_report_job_receipt": true
+      },
+      "passed": true,
+      "evidence": {
+        "statuses": [
+          200,
+          200
+        ],
+        "duplicate_flags": [
+          true,
+          false
+        ],
+        "completion_event_delta": 1,
+        "job_id": "ffef9d4b-d5a5-47ac-aae3-9ac912bb9c1f",
+        "report_id": "27d84ae1-cf86-48de-a919-0536c4f8a5a6",
+        "fixture": "Strictly typed infrastructure fixture: no model, evidence query or physical inspection executed"
+      }
+    },
+    {
+      "case_id": "public_feed_over_100_events",
+      "checks": {
+        "page_1_cursor_is_last_returned_event": true,
+        "page_1_contains_exact_event_report_set": true,
+        "page_1_has_more_is_correct": true,
+        "page_1_is_not_cached": true,
+        "page_2_cursor_is_last_returned_event": true,
+        "page_2_contains_exact_event_report_set": true,
+        "page_2_has_more_is_correct": true,
+        "page_2_is_not_cached": true,
+        "page_3_cursor_is_last_returned_event": true,
+        "page_3_contains_exact_event_report_set": true,
+        "page_3_has_more_is_correct": true,
+        "page_3_is_not_cached": true,
+        "all_125_distinct_reports_seen": true,
+        "all_230_event_positions_consumed": true,
+        "terminal_page_empty_and_cursor_stable": true
+      },
+      "passed": true,
+      "evidence": {
+        "seeded_reports": 125,
+        "seeded_events": 230,
+        "page_event_counts": [
+          100,
+          100,
+          30
+        ],
+        "pages": [
+          {
+            "cursor": 116,
+            "distinct_reports": 100,
+            "expected_event_count": 100,
+            "has_more": true
+          },
+          {
+            "cursor": 216,
+            "distinct_reports": 100,
+            "expected_event_count": 100,
+            "has_more": true
+          },
+          {
+            "cursor": 246,
+            "distinct_reports": 30,
+            "expected_event_count": 30,
+            "has_more": false
+          }
+        ]
+      }
+    }
+  ],
+  "passed": 11,
+  "total": 11,
+  "expected_case_records": 11,
+  "unittest_failures_or_errors": [],
+  "suite_outcome": "pass",
+  "isolated_database_retained": true
+}

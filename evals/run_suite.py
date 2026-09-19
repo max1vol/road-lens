@@ -20,7 +20,7 @@ from uuid import uuid4
 from pydantic_evals import Case, Dataset
 from pydantic_ai.usage import UsageLimits, RunUsage
 from pydantic_ai import capture_run_messages
-from .execution import EvaluationExecutionError, visible_messages
+from .execution import EvaluationExecutionError, visible_messages, json_default, json_safe
 from backend.models import ClassifierSuggestion, IntakeResponse, AnalysisResult
 from backend.evidence import digest
 from backend import agents
@@ -51,7 +51,9 @@ def freeze_metadata(root):
             'code_sha256': code_hashes, 'model': agents.MODEL,
             'prompt_sha256': {name: hashlib.sha256(value.encode()).hexdigest() for name, value in [('intake', agents.INTAKE_PROMPT), ('evidence', agents.EVIDENCE_PROMPT)]},
             'versions': {package: importlib.metadata.version(package) for package in ('pydantic-ai-slim', 'pydantic-evals', 'google-genai', 'pydantic', 'modal')},
-            'budgets': {'requests': 6, 'tool_calls': 8, 'output_tokens': 2500, 'wall_clock_seconds': 90},
+            'budgets': {'requests': 6, 'tool_calls': 8, 'output_tokens': agents.AGENT_OUTPUT_TOKEN_LIMIT, 'output_tokens_per_response': agents.AGENT_MODEL_SETTINGS['max_tokens'], 'thinking': agents.AGENT_MODEL_SETTINGS['google_thinking_config'], 'wall_clock_seconds': 90},
+            'max_concurrency': 3,
+            'budget_revision': 'Before any scored inference: development smoke showed default MEDIUM thinking exceeded the initial 2500 aggregate output limit (7547 observed tokens). All arms now share LOW thinking, 4096 maximum per response and 12000 aggregate output tokens. No scored fixtures informed this change.',
             'scope': '35 authored model fixtures (20 intake, 12 evidence, 3 grounded-behaviour) plus five separate workflow scenarios; not independent human-reviewed held-out evidence.',
             'comparison': 'A plain Google SDK; B Pydantic AI; C Pydantic AI with actual pinned Modal GLiNER intake preprocessing. Evidence B and C intentionally share one execution path. Common domain/write/security guards remain enabled in every arm.',
             'gold_review': freeze.get('gold_review', 'Independent human review not recorded')}
@@ -87,7 +89,7 @@ async def typed_run(fixture, *, repo, classifier=None):
                 model = agents.google_model()
                 agent = agents.create_intake_agent(model) if request else agents.create_evidence_agent(model)
                 user = agents.intake_user_prompt(request, deps.classifier) if request else agents.evidence_user_prompt(fixture['input'], None)
-                result = await agent.run(user, deps=deps, usage_limits=UsageLimits(request_limit=6, tool_calls_limit=8, output_tokens_limit=2500))
+                result = await agent.run(user, deps=deps, usage_limits=UsageLimits(request_limit=6, tool_calls_limit=8, output_tokens_limit=agents.AGENT_OUTPUT_TOKEN_LIMIT))
     except Exception as exc:
         usage = RunUsage()
         for message in messages:
@@ -145,7 +147,7 @@ async def execute(args):
     output.chmod(0o700)
     metadata.update(run_id='evaluation:' + uuid4().hex, started_at=datetime.now(timezone.utc).isoformat(), repetitions=args.repetitions, arms=args.arms)
     os.environ['ROADLENS_CODE_COMMIT'] = metadata['code_commit']
-    (output / 'manifest.json').write_text(json.dumps(metadata, indent=2))
+    (output / 'manifest.json').write_text(json.dumps(metadata, indent=2, default=json_default, allow_nan=False))
     repo = Repository(root / 'data')
     classifier = None
     if 'C' in args.arms:
@@ -187,24 +189,25 @@ async def execute(args):
         envelope['passed'] = all(envelope['checks'].values())
         envelope['provenance'] = {'prompt_sha256': metadata['prompt_sha256']['intake' if fixture['task'] == 'intake' else 'evidence'], 'code_commit': metadata['code_commit'], 'model': metadata['model'], 'data_sha256': repo.hashes}
         # Fixtures are authored test data. This exporter must never process live resident turns.
-        serialized = json.dumps(envelope, ensure_ascii=False)
+        envelope = json_safe(envelope)
+        serialized = json.dumps(envelope, ensure_ascii=False, allow_nan=False)
         if os.environ['GEMINI_API_KEY'] in serialized:
             raise RuntimeError('Secret exposure detected: refusing evaluation export')
         with (output / 'cases.jsonl').open('a') as stream:
             stream.write(serialized + '\n')
         rows.append(envelope)
-        (output / 'summary.json').write_text(json.dumps(summarize(rows), indent=2))
+        (output / 'summary.json').write_text(json.dumps(summarize(rows), indent=2, default=json_default, allow_nan=False))
         print(f'{fixture["id"]} arm {arm} repeat {repeat}: {"pass" if envelope["passed"] else "FAIL"}, {envelope["elapsed_seconds"]:.2f}s', flush=True)
         return envelope
 
     dataset = Dataset(name='RoadLens fixed authored model comparison', cases=cases,
                       evaluators=[RoadLensCorrectness(data_root=str(root / 'data'))])
-    report = await dataset.evaluate(task, name=metadata['run_id'], max_concurrency=1, progress=False)
+    report = await dataset.evaluate(task, name=metadata['run_id'], max_concurrency=3, progress=False)
     # Custom evaluator results are saved directly, alongside all task outputs in cases.jsonl.
     report_rows = [{'case_name': case.name, 'assertions': {name: {'value': value.value, 'reason': value.reason} for name, value in case.assertions.items()}, 'scores': {name: value.value for name, value in case.scores.items()}} for case in report.cases]
-    (output / 'pydantic-evals-report.json').write_text(json.dumps({'name': report.name, 'cases': report_rows, 'evaluator_failures': len(report.failures)}, indent=2))
+    (output / 'pydantic-evals-report.json').write_text(json.dumps({'name': report.name, 'cases': report_rows, 'evaluator_failures': len(report.failures)}, indent=2, default=json_default, allow_nan=False))
     metadata['finished_at'] = datetime.now(timezone.utc).isoformat()
-    (output / 'manifest.json').write_text(json.dumps(metadata, indent=2))
+    (output / 'manifest.json').write_text(json.dumps(metadata, indent=2, default=json_default, allow_nan=False))
     print(f'Results saved to {output}')
 
 

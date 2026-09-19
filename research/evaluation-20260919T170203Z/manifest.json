@@ -1,0 +1,82 @@
+{
+  "fixture_freeze": {
+    "status": "frozen_before_implementation",
+    "gold_review": "Pack gold labels reviewed against domain definitions; no changes. Human independent review not yet recorded.",
+    "sha256": {
+      "data/demo_places.json": "da2c2db1751d0c9b842b0cd9365f5ae5043e66859c591fa83a67a6a5b98c8325",
+      "data/pack_manifest.json": "6a32a0560df9fd1f531559d19d981f4086aa107cc8dd64799692ae1e63966a56",
+      "data/local_profile.json": "d1c7e8557e41046cb48892aa94df07ac6f26916c2eac5b2bf8381e3fd25bc380",
+      "data/roadlens_evidence.sqlite": "d5efa8b2428cf750b2241d6aff0374c2e8151a7ca6cdd841dfed59b7dc3970e7",
+      "data/source_comparison.json": "dbd4dfeed9d5178490374849d0ffc2396f72cf56fa62d37be2719cf8176ab8dd",
+      "data/downloads.json": "8c7637fd9d9c795255c9ed079671c9851075c63300aba1cefa400f03fe7efc50",
+      "data/README.md": "e19a67beb6c3c37f25399895017309a1272e768c24a91f012b0dc13fa9eda937",
+      "data/checks_results.json": "5b8ee8762abe50bed2e0cbad8f6058454104ea64ee4334ef1715b4b708bbbdf5",
+      "data/national_profile.json": "b2f12d1efbd87c8475bdff22c8bb94c214aaed0b9638b085fad97e2f02d7726f",
+      "evals/evidence_cases.json": "e39d4f5763e08e405a5256bfb48154313e238f72082f7687cfaad30c9f5c234b",
+      "evals/README.md": "2057a6b9713ccb991a7c727306f2afa9b63cff6f093cb6ec1dac8e87b931da9a",
+      "evals/behaviour_cases.json": "08845022854fde46b92a544d4714e6c1c951e6c7a6384e6d94042b911f861f27",
+      "evals/intake_cases.json": "c9a28f49d2efdf8e58288f52d737016ee92b10c3d6ff46bfed6c61d9e754f87b"
+    }
+  },
+  "code_commit": "f2c31c805d75af51885a66ce4ee2229161faa453",
+  "working_tree_dirty": false,
+  "code_sha256": {
+    "backend/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "backend/agents.py": "7d16b2a2b0e3478e69b361f96c4bcf1717402ccda2404f3e7b2b54170b673a39",
+    "backend/evidence.py": "3928973c703d9aa60b00d864d045981d06b5335b7c1e3305abbc80ae11f00b53",
+    "backend/modal_app.py": "13b771128f5857d4fd03f2483ac9e2366e27ad59bfa3745ce455716322871787",
+    "backend/models.py": "dda65d3cfb62ca8ac771f73a9f45434ca262e5a5ed1f18fe4a5c0dbedc00c091",
+    "backend/service.py": "6fe474b254e019ca4cad66f80a4f67f146faab5b6c4ff96f33f75ac30c10724c",
+    "backend/worker.py": "16a4ff370ff1e4b60494cd58290882aeabe712491fcc71d994061344a19382c9",
+    "evals/__init__.py": "e12048b399064c599274c6c85d57e32bee6d65cf5e64c43c8b20059db4c99906",
+    "evals/baseline.py": "cfdddb2f506770008bdfb639ae9ef79859c107fd810721690ed895ae72b07dd5",
+    "evals/execution.py": "9ae00ca4c3e41d4047e3009a950d6e7f331a488e549cf3d908403541857926fc",
+    "evals/modal_runner.py": "062fa3d23e279f51804eef07069a66fe0bfb36113e651fdaf1f3ba22a7dc4834",
+    "evals/run_suite.py": "62e5b7fbc02ae29d9b289367372a14f0e08b3e905bcd856fed23cf93e3f11ea4",
+    "evals/scoring.py": "0ec652c9be696e8a647a2c1626be720ad5c92ed9ecb5b3422a87b3e962a30077",
+    "evals/workflow_contract.py": "62367bdac694144bd1972705a7a473d8a8ee63426b1b5c2ff0320431bd880385",
+    "box_adapter/aiy_gemini.py": "5d98e25f64634b7c1550556c0730fc268bb5cdf69791ce3a5d88986e1fdc1177",
+    "box_adapter/cloud_smoke.py": "a182354d3996bdf1ec2d1ff64b6c012129113e740e398157120e1e945aa73ef3",
+    "box_adapter/roadlens.py": "95667cc32ec85b051bd8564655a49dc46997714c54b183fb4598aa04f03d1fa4",
+    "box_adapter/test_cloud_adapter.py": "b676af9e29856aa4fdb3488735e6a9a1ee0bbae1be4b09e01ce6b639c92f9841",
+    "box_adapter/test_cloud_voice.py": "ea853635ea287a459e42e687cf60a83624d1a4cc66fc7d66fb95ad1a62605805",
+    "box_adapter/test_voice_box.py": "b176c44f14738118739bba35a574f6af0e1b75fb9afa1e7187e1caa46edc802b"
+  },
+  "model": "gemini-3.8-flash",
+  "prompt_sha256": {
+    "intake": "d0a0cbc694c4b64c7b0b6175c664cfbdf886b1aee1be9bee2be0ac34aa424991",
+    "evidence": "147b6395188bb0bffa33987dc325319365d766f9da2afaef13f3d9b678447f62"
+  },
+  "versions": {
+    "pydantic-ai-slim": "2.46.0",
+    "pydantic-evals": "2.46.0",
+    "google-genai": "2.24.0",
+    "pydantic": "2.13.5",
+    "modal": "1.5.5"
+  },
+  "budgets": {
+    "requests": 6,
+    "tool_calls": 8,
+    "output_tokens": 12000,
+    "output_tokens_per_response": 4096,
+    "thinking": {
+      "thinking_level": "LOW",
+      "include_thoughts": false
+    },
+    "wall_clock_seconds": 90
+  },
+  "max_concurrency": 3,
+  "budget_revision": "Before any scored inference: development smoke showed default MEDIUM thinking exceeded the initial 2500 aggregate output limit (7547 observed tokens). All arms now share LOW thinking, 4096 maximum per response and 12000 aggregate output tokens. No scored fixtures informed this change.",
+  "scope": "35 authored model fixtures (20 intake, 12 evidence, 3 grounded-behaviour) plus five separate workflow scenarios; not independent human-reviewed held-out evidence.",
+  "comparison": "A plain Google SDK; B Pydantic AI; C Pydantic AI with actual pinned Modal GLiNER intake preprocessing. Evidence B and C intentionally share one execution path. Common domain/write/security guards remain enabled in every arm.",
+  "gold_review": "Pack gold labels reviewed against domain definitions; no changes. Human independent review not yet recorded.",
+  "run_id": "evaluation:0034f374efda4d1c916e551c34d550bb",
+  "started_at": "2026-09-19T16:59:54.506377+00:00",
+  "repetitions": 1,
+  "arms": [
+    "A",
+    "B",
+    "C"
+  ],
+  "finished_at": "2026-09-19T17:02:03.316956+00:00"
+}

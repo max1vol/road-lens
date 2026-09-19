@@ -58,10 +58,15 @@ async def smoke_baseline():
     from backend.evidence import Repository
     from backend.models import PrepareRequest, ResidentTurn
     from evals.baseline import run
+    from evals.execution import EvaluationExecutionError, json_safe
     request = PrepareRequest(session_id='development-smoke', turns=[ResidentTurn(turn_id='development-turn',
         text='A paving slab is loose at York Street and New Street.', timestamp=datetime.now(timezone.utc))])
-    result, calls = await run('intake', repo=Repository(Path('/root/roadlens/data')), request=request)
-    return {'scope': 'Unscored development smoke; not one of the frozen 40 scenarios', 'result': result, 'raw_model_calls': calls}
+    scope = 'Unscored development smoke; not one of the frozen 40 scenarios'
+    try:
+        result, calls = await run('intake', repo=Repository(Path('/root/roadlens/data')), request=request)
+        return json_safe({'ok': True, 'scope': scope, 'result': result, 'raw_model_calls': calls})
+    except EvaluationExecutionError as exc:
+        return {'scope': scope, **exc.as_result()}
 
 
 @app.local_entrypoint()

@@ -1,0 +1,43 @@
+{
+  "analysis_transitions": [
+    {
+      "analysis_status": "queued",
+      "observed_at": "2026-09-19T17:04:28.620407+00:00"
+    },
+    {
+      "analysis_status": "running",
+      "observed_at": "2026-09-19T17:04:30.944823+00:00"
+    },
+    {
+      "analysis_status": "complete",
+      "observed_at": "2026-09-19T17:04:39.710957+00:00"
+    }
+  ],
+  "draft_id": "caf3cf5f-e9ab-4d49-8d42-dd8a89897445",
+  "finished_at": "2026-09-19T17:04:39.710976+00:00",
+  "location_clarification_verified": true,
+  "microphone_opened": false,
+  "mode": "api",
+  "model": null,
+  "outcome": "pass",
+  "physical_rehearsal": false,
+  "public_feed_verified": true,
+  "public_report": {
+    "analysis_status": "complete",
+    "received_at": "2026-09-19T17:04:28.423Z",
+    "report_id": "89dcd199-0122-4768-96a0-cca078c7a28d",
+    "review_status": "awaiting_officer_review"
+  },
+  "readback_source": "Authoritative server response; no audio rendering in API replay mode",
+  "receipt": {
+    "analysis_status": "queued",
+    "received_at": "2026-09-19T17:04:28.423Z",
+    "report_id": "89dcd199-0122-4768-96a0-cca078c7a28d",
+    "review_status": "awaiting_officer_review"
+  },
+  "site_origin": "https://roadlens-cambridge.max1-volovich.chatgpt.site",
+  "speaker_opened": false,
+  "stage": "complete",
+  "started_at": "2026-09-19T17:04:17.381648+00:00",
+  "synthetic": true
+}

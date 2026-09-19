@@ -23,7 +23,7 @@ agent_image = (modal.Image.debian_slim(python_version='3.12')
     .pip_install('pydantic-ai-slim[google]==2.46.0', 'pydantic-evals==2.46.0', 'pydantic==2.13.5',
                  'fastapi==0.141.1', 'httpx==0.28.1')
     .env({'ROADLENS_CODE_COMMIT': os.getenv('ROADLENS_CODE_COMMIT', 'working-tree-uncommitted'), 'PYDANTIC_AI_NO_BANNER': '1'})
-    .add_local_dir(ROOT / 'backend', remote_path='/root/backend', ignore=['__pycache__', '*.pyc'])
+    .add_local_dir(ROOT / 'backend', remote_path='/root/backend', copy=True, ignore=['__pycache__', '*.pyc'])
     .add_local_file(ROOT / 'data' / 'roadlens_evidence.sqlite', remote_path='/root/data/roadlens_evidence.sqlite')
     .add_local_file(ROOT / 'data' / 'demo_places.json', remote_path='/root/data/demo_places.json'))
 classifier_image = (modal.Image.debian_slim(python_version='3.12')
@@ -31,7 +31,7 @@ classifier_image = (modal.Image.debian_slim(python_version='3.12')
     .pip_install('gliner2[local]==2.0.0', 'transformers==4.57.6', 'peft==0.21.0',
                  'huggingface-hub==0.36.2', 'pydantic==2.13.5')
     .env({'HF_HOME': '/weights/hf', 'TOKENIZERS_PARALLELISM': 'false', 'OMP_NUM_THREADS': '4'})
-    .add_local_dir(ROOT / 'backend', remote_path='/root/backend', ignore=['__pycache__', '*.pyc']))
+    .add_local_dir(ROOT / 'backend', remote_path='/root/backend', copy=True, ignore=['__pycache__', '*.pyc']))
 
 
 @app.cls(image=classifier_image, cpu=4, memory=8192, volumes={'/weights': weights},
@@ -80,6 +80,25 @@ class Classifier:
             issue_label=label, entities=spans, confidence=confidence,
             runtime_seconds=time.perf_counter() - started).model_dump(mode='json')
 
+    @modal.method()
+    def runtime_manifest(self):
+        """Capture exact resolved versions in the real, loaded classifier container."""
+        import importlib.metadata
+        import platform
+        import torch
+        return {
+            'python': platform.python_version(),
+            'platform': platform.platform(),
+            'model': CLASSIFIER_MODEL,
+            'revision': CLASSIFIER_REVISION,
+            'torch_threads': torch.get_num_threads(),
+            'device': 'cpu',
+            'packages': dict(sorted(
+                ((p.metadata['Name'], p.version) for p in importlib.metadata.distributions()),
+                key=lambda item: item[0].lower(),
+            )),
+        }
+
 
 @app.function(image=agent_image, secrets=[service_secret], cpu=1, memory=1024,
               timeout=350, max_containers=4)
@@ -125,22 +144,49 @@ def runtime_manifest():
     """Export the exact resolved cloud environment for the deployment lock record."""
     import importlib.metadata
     import platform
-    return {'python': platform.python_version(), 'model': 'gemini-3.8-flash',
+    import backend.agents as agents
+    import hashlib
+    return {'agent_source_sha256':hashlib.sha256(Path(agents.__file__).read_bytes()).hexdigest(), 'canonical_location_present':hasattr(agents, 'canonical_location'), 'python': platform.python_version(), 'model': 'gemini-3.8-flash',
             'code_commit': os.environ.get('ROADLENS_CODE_COMMIT', 'working-tree-uncommitted'),
             'packages': {p.metadata['Name']: p.version for p in importlib.metadata.distributions()}}
 
-@app.function(image=agent_image, secrets=[service_secret], timeout=120)
+@app.function(image=agent_image, secrets=[service_secret], timeout=200)
 async def development_smoke():
-    """Unscored authored development fixture; private Modal RPC, no report creation."""
+    """Unscored authored fixtures; diagnostic metadata excludes response content/thoughts."""
     from datetime import datetime, timezone
+    from dataclasses import asdict
+    import time
+    from pydantic_ai import capture_run_messages
     from backend.agents import prepare, analyze
     from backend.models import PrepareRequest, ResidentTurn
     async def classify(text):
         return await Classifier().predict.remote.aio(text)
+    stages = {}
+    results = {}
+    stage = 'intake'
     try:
-        result = await prepare(PrepareRequest(session_id='development-smoke', turns=[ResidentTurn(turn_id='development-turn', text='A paving slab is loose at York Street and New Street.', timestamp=datetime.now(timezone.utc))]), classifier=classify)
-        evidence = await analyze('How many pedestrians were injured in Cambridge in 2025?')
-        return {'intake':result.model_dump(mode='json'), 'evidence':evidence.model_dump(mode='json')}
+        for stage in ['intake', 'evidence']:
+            start = time.perf_counter()
+            with capture_run_messages() as messages:
+                try:
+                    if stage == 'intake':
+                        result = await prepare(PrepareRequest(session_id='development-smoke', turns=[ResidentTurn(turn_id='development-turn', text='A paving slab is loose at York Street and New Street.', timestamp=datetime.now(timezone.utc))]), classifier=classify)
+                    else:
+                        result = await analyze('How many pedestrians were injured in Cambridge in 2025?')
+                    results[stage] = result.model_dump(mode='json')
+                finally:
+                    stages[stage] = {
+                        'elapsed_seconds': round(time.perf_counter() - start, 3),
+                        'responses': [{
+                            'model': message.model_name,
+                            'usage': asdict(message.usage),
+                            'finish_reason': message.finish_reason,
+                            'part_kinds': [part.part_kind for part in message.parts],
+                            'tool_calls': [{'name': part.tool_name, 'args': part.args_as_dict()} for part in message.parts if part.part_kind == 'tool-call'],
+                        } for message in messages if message.kind == 'response'],
+                        'retry_tools': [{'tool': part.tool_name, 'repair': part.content} for message in messages for part in message.parts if part.part_kind == 'retry-prompt'],
+                    }
+        return {**results, 'diagnostics': stages}
     except Exception as e:
-        message = str(e).replace(os.getenv('GEMINI_API_KEY','__absent__'), '[redacted]')
-        return {'error_type':type(e).__name__, 'message':message[:1500]}
+        message = str(e).replace(os.getenv('GEMINI_API_KEY', '__absent__'), '[redacted]')
+        return {**results, 'error_type': type(e).__name__, 'message': message[:1500], 'failed_stage': stage, 'diagnostics': stages}

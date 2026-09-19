@@ -35,6 +35,19 @@ def test_reject_fabricated_location(repo):
     d.location = d.location.model_copy(update={'latitude':52.99})
     with pytest.raises(ModelRetry): validate_intake_output(deps,d)
 
+def test_provider_float_rounding_uses_canonical_registered_location(repo):
+    deps = RoadLensDeps(repo, turns=[turn('A paving slab is loose at York Street and New Street.')])
+    loc = resolve_location_impl(deps, 'York Street and New Street')[0]
+    rounded = loc.model_copy(update={'longitude':0.139839226648259, 'latitude':52.2074203872718})
+    d = ReadyDraft(issue='road_surface', observation='A paving slab is loose', location=rounded,
+                   evidence_spans=[EvidenceSpan(turn_id='t1', quote=deps.turns[0].text)])
+    assert validate_intake_output(deps,d).location == loc
+    assert find_local_collisions_impl(deps,rounded,date(2017,1,1),date(2026,6,30)).location == loc
+    for field,value in [('latitude',loc.latitude+1e-8),('easting',loc.easting+1),('resolver_provenance','invented')]:
+        with pytest.raises(ModelRetry):
+            validate_intake_output(deps,d.model_copy(update={'location':rounded.model_copy(update={field:value})}))
+    assert canonical_location(rounded,None) is None
+
 def test_reject_contact_and_negation(repo):
     for text in ['There is no pothole here.', 'My email is contact@example.invalid and the road is blocked.']:
         deps = RoadLensDeps(repo)

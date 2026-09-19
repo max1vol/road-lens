@@ -1,0 +1,483 @@
+{
+  "intake": {
+    "output": {
+      "kind": "ready_for_confirmation",
+      "issue": "road_surface",
+      "observation": "A paving slab is loose",
+      "location": {
+        "place_id": "york-new",
+        "display_name": "York Street / New Street",
+        "longitude": 0.13983922664825893,
+        "latitude": 52.20742038727183,
+        "easting": 546314,
+        "northing": 258735,
+        "coordinate_basis": "historic collision reference point, approximate junction location",
+        "resolver_provenance": "ccc_2017_2026h1_20260907:1185039",
+        "ambiguity_status": "resolved_reference_point"
+      },
+      "evidence_spans": [
+        {
+          "turn_id": "development-turn",
+          "quote": "A paving slab is loose"
+        }
+      ],
+      "readback": "A road surface concern at York Street and New Street. Shall I submit that to RoadLens for review?"
+    },
+    "run": {
+      "run_id": "run:54868f98dae74d20aa65f8ec230ea2fc",
+      "model": "gemini-3.8-flash",
+      "model_version": "gemini-3.8-flash",
+      "classifier": {
+        "model": "fastino/gliner2.5-base-v1",
+        "revision": "78cea040597df251eedefa9d7ee2a756af39fe64",
+        "issue_label": "other road concern",
+        "entities": [
+          {
+            "text": "York Street",
+            "start": 26,
+            "end": 37,
+            "confidence": 0.9995167255401611
+          },
+          {
+            "text": "New Street",
+            "start": 42,
+            "end": 52,
+            "confidence": 0.9974345564842224
+          }
+        ],
+        "runtime_seconds": 0.38206310899999885,
+        "confidence": null
+      },
+      "tools": [
+        {
+          "name": "classify_resident_text",
+          "inputs": {
+            "input_sha256": "7dc0c3298cfc59b75e4c0f4e3b1f42c4a287f2c57b87be4bab823ce395d0b950",
+            "characters": 53
+          },
+          "output": {
+            "model": "fastino/gliner2.5-base-v1",
+            "revision": "78cea040597df251eedefa9d7ee2a756af39fe64",
+            "issue_label": "other road concern",
+            "entities": [
+              {
+                "text": "York Street",
+                "start": 26,
+                "end": 37,
+                "confidence": 0.9995167255401611
+              },
+              {
+                "text": "New Street",
+                "start": 42,
+                "end": 52,
+                "confidence": 0.9974345564842224
+              }
+            ],
+            "runtime_seconds": 0.38206310899999885,
+            "confidence": null
+          }
+        },
+        {
+          "name": "resolve_location",
+          "inputs": {
+            "input_sha256": "119ae58f09a19174ca764c1aa5c14bf67996cf5a2b28a6936332dd6573ac08be",
+            "turn_ids": [
+              "development-turn"
+            ]
+          },
+          "output": [
+            {
+              "place_id": "york-new",
+              "display_name": "York Street / New Street",
+              "longitude": 0.13983922664825893,
+              "latitude": 52.20742038727183,
+              "easting": 546314,
+              "northing": 258735,
+              "coordinate_basis": "historic collision reference point, approximate junction location",
+              "resolver_provenance": "ccc_2017_2026h1_20260907:1185039",
+              "ambiguity_status": "resolved_reference_point"
+            }
+          ]
+        }
+      ],
+      "validation_repairs": [],
+      "usage": {
+        "input_tokens": 3275,
+        "cache_write_tokens": 0,
+        "cache_read_tokens": 0,
+        "output_tokens": 315,
+        "input_audio_tokens": 0,
+        "cache_audio_read_tokens": 0,
+        "output_audio_tokens": 0,
+        "details": {
+          "thoughts_tokens": 73,
+          "text_prompt_tokens": 3275
+        },
+        "cost": "0.00363750",
+        "requests": 2,
+        "tool_calls": 1
+      },
+      "elapsed_seconds": 25.6127,
+      "outcome": "ready_for_confirmation",
+      "data_hashes": {
+        "roadlens_evidence.sqlite": "d5efa8b2428cf750b2241d6aff0374c2e8151a7ca6cdd841dfed59b7dc3970e7",
+        "demo_places.json": "da2c2db1751d0c9b842b0cd9365f5ae5043e66859c591fa83a67a6a5b98c8325"
+      },
+      "prompt_hash": "d0a0cbc694c4b64c7b0b6175c664cfbdf886b1aee1be9bee2be0ac34aa424991",
+      "code_commit": "8c3f25066532c39d570fbdfd3abe79097e3adb52"
+    }
+  },
+  "evidence": {
+    "output": {
+      "kind": "evidence_answer",
+      "metric_refs": [
+        "metric:3592bb3c64b13da0"
+      ],
+      "record_refs": [],
+      "limitations": [],
+      "inspection_checks": []
+    },
+    "evidence": {
+      "metrics": [
+        {
+          "reference_id": "metric:3592bb3c64b13da0",
+          "value": 32,
+          "unit": "people",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "geography": "Cambridge district (E07000008)",
+          "source_id": "dft_stats19_2025_final",
+          "provisional": false,
+          "query_hash": "3592bb3c64b13da02a60fd07d4dce3ddb9c1799f8de76b5b0078306b2c73da9b",
+          "row_ids": [
+            "2025351552581:1",
+            "2025351558039:1",
+            "2025351564494:1",
+            "2025351569512:1",
+            "2025351569640:1",
+            "2025351572084:1",
+            "2025351578530:1",
+            "2025351579567:1",
+            "2025351592729:1",
+            "2025351598972:1",
+            "2025351603381:1",
+            "2025351607862:1",
+            "2025351616077:1",
+            "2025351619365:1",
+            "2025351637151:1",
+            "2025351644224:1",
+            "2025351652752:1",
+            "2025351657227:1",
+            "2025351668736:1",
+            "2025351670575:1",
+            "2025351672560:1",
+            "2025351673436:1",
+            "2025351673893:1",
+            "2025351675160:1",
+            "2025351678020:1",
+            "2025351681529:1",
+            "2025351681559:1",
+            "2025351683904:1",
+            "2025351687541:1",
+            "2025351696053:1",
+            "2025351700637:1",
+            "2025351733032:1"
+          ],
+          "query": {
+            "source_id": "dft_stats19_2025_final",
+            "geography": "E07000008",
+            "start": "2025-01-01",
+            "end": "2025-12-31",
+            "unit": "people",
+            "road_user": "pedestrian",
+            "severity": "all",
+            "age": "all",
+            "collision_id": null,
+            "place_id": null,
+            "radius_metres": 100
+          }
+        }
+      ],
+      "records": [],
+      "nearby": [],
+      "sources": [
+        {
+          "source_id": "dft_stats19_2025_final",
+          "title": "DfT STATS19 \u00b7 final 2025",
+          "url": "https://www.gov.uk/government/statistical-data-sets/road-safety-open-data",
+          "period": "1 January\u201331 December 2025",
+          "geography": "Cambridge district (E07000008)",
+          "status": "national final",
+          "caution": "Police-reported injury collisions, not all hazards or all injuries. Collision and casualty severity use different units."
+        }
+      ],
+      "unknowns": []
+    },
+    "run": {
+      "run_id": "run:f73fcf76a59e463497ae577349e668c6",
+      "model": "gemini-3.8-flash",
+      "model_version": "gemini-3.8-flash",
+      "classifier": null,
+      "tools": [
+        {
+          "name": "query_metrics",
+          "inputs": {
+            "source_id": "dft_stats19_2025_final",
+            "geography": "E07000008",
+            "start": "2025-01-01",
+            "end": "2025-12-31",
+            "unit": "people",
+            "road_user": "pedestrian",
+            "severity": "all",
+            "age": "all",
+            "collision_id": null,
+            "place_id": null,
+            "radius_metres": 100
+          },
+          "output": {
+            "reference_id": "metric:3592bb3c64b13da0",
+            "value": 32,
+            "unit": "people",
+            "period_start": "2025-01-01",
+            "period_end": "2025-12-31",
+            "geography": "Cambridge district (E07000008)",
+            "source_id": "dft_stats19_2025_final",
+            "provisional": false,
+            "query_hash": "3592bb3c64b13da02a60fd07d4dce3ddb9c1799f8de76b5b0078306b2c73da9b",
+            "row_ids": [
+              "2025351552581:1",
+              "2025351558039:1",
+              "2025351564494:1",
+              "2025351569512:1",
+              "2025351569640:1",
+              "2025351572084:1",
+              "2025351578530:1",
+              "2025351579567:1",
+              "2025351592729:1",
+              "2025351598972:1",
+              "2025351603381:1",
+              "2025351607862:1",
+              "2025351616077:1",
+              "2025351619365:1",
+              "2025351637151:1",
+              "2025351644224:1",
+              "2025351652752:1",
+              "2025351657227:1",
+              "2025351668736:1",
+              "2025351670575:1",
+              "2025351672560:1",
+              "2025351673436:1",
+              "2025351673893:1",
+              "2025351675160:1",
+              "2025351678020:1",
+              "2025351681529:1",
+              "2025351681559:1",
+              "2025351683904:1",
+              "2025351687541:1",
+              "2025351696053:1",
+              "2025351700637:1",
+              "2025351733032:1"
+            ],
+            "query": {
+              "source_id": "dft_stats19_2025_final",
+              "geography": "E07000008",
+              "start": "2025-01-01",
+              "end": "2025-12-31",
+              "unit": "people",
+              "road_user": "pedestrian",
+              "severity": "all",
+              "age": "all",
+              "collision_id": null,
+              "place_id": null,
+              "radius_metres": 100
+            }
+          }
+        }
+      ],
+      "validation_repairs": [],
+      "usage": {
+        "input_tokens": 5915,
+        "cache_write_tokens": 0,
+        "cache_read_tokens": 0,
+        "output_tokens": 632,
+        "input_audio_tokens": 0,
+        "cache_audio_read_tokens": 0,
+        "output_audio_tokens": 0,
+        "details": {
+          "thoughts_tokens": 492,
+          "text_prompt_tokens": 5915
+        },
+        "cost": "0.00680625",
+        "requests": 2,
+        "tool_calls": 1
+      },
+      "elapsed_seconds": 3.6215,
+      "outcome": "evidence_answer",
+      "data_hashes": {
+        "roadlens_evidence.sqlite": "d5efa8b2428cf750b2241d6aff0374c2e8151a7ca6cdd841dfed59b7dc3970e7",
+        "demo_places.json": "da2c2db1751d0c9b842b0cd9365f5ae5043e66859c591fa83a67a6a5b98c8325"
+      },
+      "prompt_hash": "147b6395188bb0bffa33987dc325319365d766f9da2afaef13f3d9b678447f62",
+      "code_commit": "8c3f25066532c39d570fbdfd3abe79097e3adb52"
+    }
+  },
+  "diagnostics": {
+    "intake": {
+      "elapsed_seconds": 25.613,
+      "responses": [
+        {
+          "model": "gemini-3.8-flash",
+          "usage": {
+            "input_tokens": 1511,
+            "cache_write_tokens": 0,
+            "cache_read_tokens": 0,
+            "output_tokens": 93,
+            "input_audio_tokens": 0,
+            "cache_audio_read_tokens": 0,
+            "output_audio_tokens": 0,
+            "details": {
+              "thoughts_tokens": 73,
+              "text_prompt_tokens": 1511
+            },
+            "cost": "0.00148200"
+          },
+          "finish_reason": "stop",
+          "part_kinds": [
+            "tool-call"
+          ],
+          "tool_calls": [
+            {
+              "name": "resolve_location",
+              "args": {
+                "text": "York Street and New Street"
+              }
+            }
+          ]
+        },
+        {
+          "model": "gemini-3.8-flash",
+          "usage": {
+            "input_tokens": 1764,
+            "cache_write_tokens": 0,
+            "cache_read_tokens": 0,
+            "output_tokens": 222,
+            "input_audio_tokens": 0,
+            "cache_audio_read_tokens": 0,
+            "output_audio_tokens": 0,
+            "details": {
+              "text_prompt_tokens": 1764
+            },
+            "cost": "0.0021555"
+          },
+          "finish_reason": "stop",
+          "part_kinds": [
+            "tool-call"
+          ],
+          "tool_calls": [
+            {
+              "name": "final_result_ReadyDraft",
+              "args": {
+                "kind": "ready_for_confirmation",
+                "issue": "road_surface",
+                "observation": "A paving slab is loose",
+                "location": {
+                  "northing": 258735,
+                  "resolver_provenance": "ccc_2017_2026h1_20260907:1185039",
+                  "ambiguity_status": "resolved_reference_point",
+                  "coordinate_basis": "historic collision reference point, approximate junction location",
+                  "display_name": "York Street / New Street",
+                  "easting": 546314,
+                  "place_id": "york-new",
+                  "longitude": 0.139839226648259,
+                  "latitude": 52.2074203872718
+                },
+                "evidence_spans": [
+                  {
+                    "quote": "A paving slab is loose",
+                    "turn_id": "development-turn"
+                  }
+                ],
+                "readback": ""
+              }
+            }
+          ]
+        }
+      ],
+      "retry_tools": []
+    },
+    "evidence": {
+      "elapsed_seconds": 3.626,
+      "responses": [
+        {
+          "model": "gemini-3.8-flash",
+          "usage": {
+            "input_tokens": 2375,
+            "cache_write_tokens": 0,
+            "cache_read_tokens": 0,
+            "output_tokens": 298,
+            "input_audio_tokens": 0,
+            "cache_audio_read_tokens": 0,
+            "output_audio_tokens": 0,
+            "details": {
+              "thoughts_tokens": 208,
+              "text_prompt_tokens": 2375
+            },
+            "cost": "0.00289875"
+          },
+          "finish_reason": "stop",
+          "part_kinds": [
+            "tool-call"
+          ],
+          "tool_calls": [
+            {
+              "name": "query_metrics",
+              "args": {
+                "start": "2025-01-01",
+                "unit": "people",
+                "geography": "E07000008",
+                "road_user": "pedestrian",
+                "end": "2025-12-31",
+                "source_id": "dft_stats19_2025_final"
+              }
+            }
+          ]
+        },
+        {
+          "model": "gemini-3.8-flash",
+          "usage": {
+            "input_tokens": 3540,
+            "cache_write_tokens": 0,
+            "cache_read_tokens": 0,
+            "output_tokens": 334,
+            "input_audio_tokens": 0,
+            "cache_audio_read_tokens": 0,
+            "output_audio_tokens": 0,
+            "details": {
+              "thoughts_tokens": 284,
+              "text_prompt_tokens": 3540
+            },
+            "cost": "0.0039075"
+          },
+          "finish_reason": "stop",
+          "part_kinds": [
+            "tool-call"
+          ],
+          "tool_calls": [
+            {
+              "name": "final_result_EvidenceAnswer",
+              "args": {
+                "inspection_checks": [],
+                "metric_refs": [
+                  "metric:3592bb3c64b13da0"
+                ],
+                "record_refs": [],
+                "limitations": []
+              }
+            }
+          ]
+        }
+      ],
+      "retry_tools": []
+    }
+  }
+}

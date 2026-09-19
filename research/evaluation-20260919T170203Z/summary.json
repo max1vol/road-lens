@@ -1,0 +1,116 @@
+{
+  "arms": {
+    "A": {
+      "case_attempts_passed": 34,
+      "case_attempts_total": 35,
+      "unique_cases": 35,
+      "unique_cases_passed_every_repeat": 34,
+      "completion_numerator": 35,
+      "completion_denominator": 35,
+      "median_latency_seconds_all_attempts": 2.947465,
+      "validation_repairs": 1,
+      "usage": {
+        "requests": 65,
+        "tool_calls": 30,
+        "input_tokens": 174886,
+        "output_tokens": 14855
+      },
+      "failed_cases": [
+        {
+          "case_id": "B05",
+          "repeat": 1,
+          "checks": [
+            "separate_overlapping_sources"
+          ],
+          "error": null
+        }
+      ],
+      "by_task": {
+        "intake": {
+          "passed": 20,
+          "total": 20
+        },
+        "evidence": {
+          "passed": 12,
+          "total": 12
+        },
+        "behaviour": {
+          "passed": 2,
+          "total": 3
+        }
+      }
+    },
+    "B": {
+      "case_attempts_passed": 35,
+      "case_attempts_total": 35,
+      "unique_cases": 35,
+      "unique_cases_passed_every_repeat": 35,
+      "completion_numerator": 35,
+      "completion_denominator": 35,
+      "median_latency_seconds_all_attempts": 2.697296,
+      "validation_repairs": 2,
+      "usage": {
+        "requests": 65,
+        "tool_calls": 29,
+        "input_tokens": 162106,
+        "output_tokens": 18770
+      },
+      "failed_cases": [],
+      "by_task": {
+        "intake": {
+          "passed": 20,
+          "total": 20
+        },
+        "evidence": {
+          "passed": 12,
+          "total": 12
+        },
+        "behaviour": {
+          "passed": 3,
+          "total": 3
+        }
+      }
+    },
+    "C": {
+      "case_attempts_passed": 34,
+      "case_attempts_total": 35,
+      "unique_cases": 35,
+      "unique_cases_passed_every_repeat": 34,
+      "completion_numerator": 35,
+      "completion_denominator": 35,
+      "median_latency_seconds_all_attempts": 3.088017,
+      "validation_repairs": 1,
+      "usage": {
+        "requests": 65,
+        "tool_calls": 30,
+        "input_tokens": 169871,
+        "output_tokens": 18576
+      },
+      "failed_cases": [
+        {
+          "case_id": "B05",
+          "repeat": 1,
+          "checks": [
+            "separate_overlapping_sources"
+          ],
+          "error": null
+        }
+      ],
+      "by_task": {
+        "intake": {
+          "passed": 20,
+          "total": 20
+        },
+        "evidence": {
+          "passed": 12,
+          "total": 12
+        },
+        "behaviour": {
+          "passed": 2,
+          "total": 3
+        }
+      }
+    }
+  },
+  "comparative_claim": "No workflow/security guarantees are counted as AI-accuracy gains."
+}

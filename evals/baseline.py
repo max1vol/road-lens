@@ -19,7 +19,7 @@ from backend.models import (ReadyDraft, NeedsClarification, OutOfScope, Evidence
     InspectionBrief, EvidenceQuery, ResolvedLocation, SourceId, IntakeResponse,
     AnalysisResult, RunSummary)
 
-from .execution import EvaluationExecutionError
+from .execution import EvaluationExecutionError, json_safe
 
 MODEL = 'gemini-3.8-flash'
 
@@ -67,7 +67,7 @@ async def run(task, *, repo, request=None, question=None, api_key=None):
     try:
         async with asyncio.timeout(90):
             for request_index in range(6):
-                remaining = 2500 - usage['output_tokens']
+                remaining = shared.AGENT_OUTPUT_TOKEN_LIMIT - usage['output_tokens']
                 if remaining <= 0:
                     raise RuntimeError('Output token budget exhausted')
                 response = await client.aio.models.generate_content(
@@ -75,7 +75,8 @@ async def run(task, *, repo, request=None, question=None, api_key=None):
                     config=types.GenerateContentConfig(system_instruction=prompt,
                         tools=[types.Tool(function_declarations=_declarations(tool_specs, output_specs))],
                         automatic_function_calling=types.AutomaticFunctionCallingConfig(disable=True),
-                        max_output_tokens=remaining))
+                        thinking_config=types.ThinkingConfig(**shared.AGENT_MODEL_SETTINGS['google_thinking_config']),
+                        max_output_tokens=shared.AGENT_MODEL_SETTINGS['max_tokens']))
                 usage['requests'] += 1
                 meta = response.usage_metadata
                 if meta:
@@ -90,6 +91,8 @@ async def run(task, *, repo, request=None, question=None, api_key=None):
                 # Keep full structured parts only in memory to preserve provider thought signatures.
                 # Persist authored-fixture visible answers/tool calls, never reasoning/signatures.
                 raw_calls.append({'request_index': request_index, 'model_version': model_version,
+                    'finish_reason': getattr(candidates[0], 'finish_reason', None),
+                    'usage': meta.model_dump(mode='json') if meta else None,
                     'parts': [{'function_call': p.function_call.model_dump(mode='json', exclude_none=True)} if p.function_call else {'text': p.text}
                               for p in content.parts or [] if not getattr(p, 'thought', False) and (p.function_call or p.text)]})
                 contents.append(content)
@@ -135,7 +138,7 @@ async def run(task, *, repo, request=None, question=None, api_key=None):
                             deps.repairs.append(error)
                         value = {'validation_error': error, 'repair_required': True}
                     responses.append(types.Part(function_response=types.FunctionResponse(name=call.name, id=getattr(call, 'id', None), response={'result': value})))
-                if usage['output_tokens'] > 2500:
+                if usage['output_tokens'] > shared.AGENT_OUTPUT_TOKEN_LIMIT:
                     raise RuntimeError('Output token budget exceeded')
                 if completed is not None:
                     summary = RunSummary(run_id='run:' + uuid4().hex, model=MODEL, model_version=model_version,
@@ -147,7 +150,7 @@ async def run(task, *, repo, request=None, question=None, api_key=None):
                         result = IntakeResponse(output=completed, run=summary)
                     else:
                         result = AnalysisResult(output=completed, evidence=shared.evidence_bundle(deps, completed), run=summary)
-                    return result.model_dump(mode='json'), raw_calls
+                    return result.model_dump(mode='json'), json_safe(raw_calls)
                 contents.append(types.Content(role='user', parts=responses))
             raise RuntimeError('Model request budget exhausted')
     except Exception as exc:

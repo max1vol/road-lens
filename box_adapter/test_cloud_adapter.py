@@ -8,7 +8,7 @@ import tempfile
 import unittest
 from urllib.request import Request
 
-from roadlens import DeviceHTTP, NoRedirect, RoadLens, TOOL_DECLARATIONS, is_affirmative
+from roadlens import DeviceHTTP, NoRedirect, RoadLens, TOOL_DECLARATIONS, is_affirmative, readback_words
 
 
 class Clock:
@@ -142,6 +142,46 @@ class AdapterTest(unittest.IsolatedAsyncioTestCase):
         self.box.assistant_output(draft['readback'], audio=True)
         self.clock.advance()
         self.assertTrue(self.box.mark_readback_complete())
+
+    async def test_documented_saint_matthews_aliases_complete_readback(self):
+        for name in ["Saint Matthew's Street", 'Saint Matthew\u2019s Street',
+                     'St. Matthew\u2019s Street', 'Saint Matthews Street']:
+            with self.subTest(name=name):
+                draft = await self.prepare()
+                spoken = draft['readback'].replace('St Matthews Street', name)
+                self.box.assistant_output(spoken, audio=True)
+                self.clock.advance()
+                self.assertTrue(self.box.mark_readback_complete())
+
+    async def test_saint_alias_still_requires_fresh_confirmation_and_respects_no(self):
+        draft = await self.prepare()
+        self.confirm()  # A premature "yes" cannot become valid through alias normalization.
+        self.box.assistant_output(draft['readback'].replace('St Matthews Street', "Saint Matthew's Street"), audio=True)
+        self.clock.advance()
+        self.assertTrue(self.box.mark_readback_complete())
+        rejected = await self.box.execute('submit_road_report', {'draft_id': draft['draft_id']})
+        self.assertIn('error', rejected)
+        self.confirm('No, do not submit it.')
+        rejected = await self.box.execute('submit_road_report', {'draft_id': draft['draft_id']})
+        self.assertIn('error', rejected)
+        self.assertIsNone(self.box.draft)
+        self.assertEqual(self.transport.submissions, [])
+
+    async def test_place_aliases_do_not_accept_other_streets_or_changed_readback(self):
+        changes = [
+            ('St Matthews Street', "Saint Matthew's Road"),
+            ('St Matthews Street', 'Saint Matthias Street'),
+            ('St Matthews Street', 'Saint Matthew Street'),
+            ('Vicarage Terrace', 'New Street'),
+            ('visibility concern', 'surface concern'),
+            ('Shall I submit that?', 'Shall I not submit that?'),
+        ]
+        for original, replacement in changes:
+            with self.subTest(replacement=replacement):
+                draft = await self.prepare()
+                self.box.assistant_output(draft['readback'].replace(original, replacement), audio=True)
+                self.clock.advance()
+                self.assertFalse(self.box.mark_readback_complete())
 
     async def test_streamed_readback_and_confirmation(self):
         draft = await self.prepare()
@@ -314,6 +354,13 @@ class AdapterTest(unittest.IsolatedAsyncioTestCase):
 
 
 class ConsentAndTransportTest(unittest.TestCase):
+    def test_readback_alias_is_limited_to_documented_place_name(self):
+        self.assertEqual(readback_words('St Matthews Street'), readback_words("Saint Matthew's Street"))
+        self.assertEqual(readback_words("Saint Matthew's Street"), readback_words('St Matthews Street'))
+        self.assertNotEqual(readback_words('St Johns Street'), readback_words("Saint John's Street"))
+        self.assertNotEqual(readback_words('Matthews Road'), readback_words("Matthew's Road"))
+        self.assertFalse(is_affirmative("Yes, change it to Saint Matthew's Street"))
+
     def test_refusals_conditionals_quotes_and_guesses_are_not_confirmation(self):
         for text in ['No', "Don't submit it", 'Yes but change the road', 'Yes if you remove my name',
                      'She said yes', 'I might say yes later', 'Yes, not yet', 'Yes? No.',
